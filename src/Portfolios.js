@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
-import Webcam from 'react-webcam';  // Import react-webcam
 import './Portfolios.css';
 
 const Portfolios = () => {
@@ -9,14 +8,13 @@ const Portfolios = () => {
   const [user, setUser] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
-  const [showCamera, setShowCamera] = useState(false);  // Manage camera visibility
-  const webcamRef = useRef(null);  // Reference to the webcam
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await fetchUser();
         setUser(response.data);
+        // Fetch user portfolios after fetching user data
         const portfoliosResponse = await fetchUserPortfolios();
         setPortfolios(portfoliosResponse.data);
       } catch (err) {
@@ -36,7 +34,7 @@ const Portfolios = () => {
             userPortfolio = JSON.parse(userPortfolio);
         } catch (error) {
             console.error("Error parsing user portfolio:", error);
-            return; 
+            return; // Consider notifying the user here
         }
     }
 
@@ -58,20 +56,20 @@ const Portfolios = () => {
             });
         } else {
             console.error("Portfolio not found with ID:", portfolioId);
+            // Consider notifying the user that the portfolio was not found
         }
     } else {
         console.error("User portfolio is not an array:", userPortfolio);
+        // Notify the user that there's an issue with their portfolio data
     }
-  };
+};
 
-  const handleCapture = () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    console.log("Captured image:", imageSrc);
-    // Optionally: Handle the captured image, e.g., upload or process
-  };
-
-  const handleCameraClick = () => {
-    setShowCamera(true);  // Show the camera when the user clicks the button
+  const handleCameraInputChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("File selected: ", file);
+      // You can add further processing of the file (e.g., upload it, or use a QR code scanner library)
+    }
   };
 
   return (
@@ -88,30 +86,23 @@ const Portfolios = () => {
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
             <div>
-              {/* Button to trigger the camera */}
-              <button onClick={handleCameraClick}>
-                <img src="/camera.png" alt="Open Camera" className="img-fluid" />
-              </button>
+              <label htmlFor="cameraInput">
+                <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
+              </label>
+              <input
+                type="file"
+                id="cameraInput"
+                accept="image/*"
+                capture="environment"
+                onChange={handleCameraInputChange}
+                style={{ display: 'none' }}
+              />
             </div>
             <div className="text-center">
-              <h3>Open Camera</h3>
+              <h3>Scan QR Code</h3>
             </div>
           </div>
-
-          {/* Camera will appear here */}
-          {showCamera && (
-            <div className="camera-wrapper">
-              <Webcam
-                audio={false}
-                ref={webcamRef}
-                screenshotFormat="image/jpeg"
-                style={{ width: '100%' }}
-              />
-              <button onClick={handleCapture}>Capture Photo</button>
-            </div>
-          )}
         </div>
-        
         <div className="row">
           {portfolios.length > 0 ? (
             portfolios.map((portfolio) => (
