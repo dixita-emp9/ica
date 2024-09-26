@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
-import QrScanner from 'qr-scanner'; // Import qr-scanner package
+import QrScanner from 'react-qr-scanner';  // Import the QR scanner
 import './Portfolios.css';
 
 const Portfolios = () => {
@@ -9,7 +9,8 @@ const Portfolios = () => {
   const [user, setUser] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
-  const [qrData, setQrData] = useState(null);  // Store the scanned QR data
+  const [showScanner, setShowScanner] = useState(false);  // Control scanner visibility
+  const [qrData, setQrData] = useState(null);  // Store scanned QR data
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -46,8 +47,6 @@ const Portfolios = () => {
             const wishlistName = selectedPortfolio.wishlist;
             const wishlistItems = selectedPortfolio.items || [];
 
-            console.log(`Navigating to Portfolioslist with ID: ${portfolioId}, Wishlist: ${wishlistName}, Products: ${wishlistItems}`);
-
             navigate(`/portfolioslist/${portfolioId}`, {
                 state: { 
                     portfolioId,
@@ -63,17 +62,20 @@ const Portfolios = () => {
     }
   };
 
-  // Handle QR code scan from uploaded image
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      try {
-        const result = await QrScanner.scanImage(file);  // Use qr-scanner to scan the image
-        setQrData(result);
-      } catch (err) {
-        console.error("QR scanning failed:", err);
-      }
+  // Handle QR code scan result
+  const handleScan = (data) => {
+    if (data) {
+      setQrData(data.text);  // Store the scanned data
+      setShowScanner(false);  // Hide scanner once the QR code is detected
     }
+  };
+
+  const handleError = (err) => {
+    console.error("QR scanner error:", err);
+  };
+
+  const handleCameraClick = () => {
+    setShowScanner(true);  // Show the QR scanner when the user clicks the scan button
   };
 
   return (
@@ -90,20 +92,29 @@ const Portfolios = () => {
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
             <div>
-              {/* Button to open file upload for capturing image */}
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"  // Opens phone's camera for image capture
-                onChange={handleImageUpload}
-              />
+              <button onClick={handleCameraClick}>
+                <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
+              </button>
             </div>
             <div className="text-center">
               <h3>Scan QR Code</h3>
             </div>
           </div>
 
-          {/* Display scanned QR data if available */}
+          {/* Show QR Scanner */}
+          {showScanner && (
+            <div className="qr-scanner">
+              <QrScanner
+                delay={300}
+                onError={handleError}
+                onScan={handleScan}
+                style={{ width: '100%' }}
+                facingMode="environment"  // Use the rear camera
+              />
+            </div>
+          )}
+
+          {/* Display scanned QR data */}
           {qrData && (
             <div className="qr-result">
               <h4>QR Code Data:</h4>
