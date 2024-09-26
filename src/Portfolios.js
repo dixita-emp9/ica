@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
-import QrReader from 'react-qr-reader'; // Import the QR reader
 import './Portfolios.css';
 
 const Portfolios = () => {
@@ -9,7 +8,6 @@ const Portfolios = () => {
   const [user, setUser] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
-  const [scanning, setScanning] = useState(false); // State to control scanning
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -66,20 +64,12 @@ const Portfolios = () => {
     }
 };
 
-  const handleCameraInputChange = () => {
-    setScanning(true); // Start scanning
-  };
-
-  const handleScan = (data) => {
-    if (data) {
-      console.log("QR Code data: ", data);
-      // Navigate or handle the QR code data as needed
-      setScanning(false); // Stop scanning after getting data
+  const handleCameraInputChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("File selected: ", file);
+      // You can add further processing of the file (e.g., upload it, or use a QR code scanner library)
     }
-  };
-
-  const handleError = (err) => {
-    console.error("QR Code scan error: ", err);
   };
 
   return (
@@ -97,12 +87,7 @@ const Portfolios = () => {
           <div className="qr-code-box p-3 mb-4">
             <div>
               <label htmlFor="cameraInput">
-                <img 
-                  src="/scanner.png" 
-                  alt="Scan QR Code" 
-                  className="img-fluid" 
-                  onClick={handleCameraInputChange} // Trigger scan on image click
-                />
+                <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
               </label>
               <input
                 type="file"
@@ -117,13 +102,6 @@ const Portfolios = () => {
               <h3>Scan QR Code</h3>
             </div>
           </div>
-          {scanning && ( // Show QR reader when scanning
-            <QrReader
-              onScan={handleScan}
-              onError={handleError}
-              style={{ width: '100%' }} // Set desired width for QR reader
-            />
-          )}
         </div>
         <div className="row">
           {portfolios.length > 0 ? (
@@ -140,7 +118,7 @@ const Portfolios = () => {
                     <h4>{portfolio.wishlist}</h4>
                   </div>
                   <div className="mt-2">
-                    <small>{portfolio.items && portfolio.items.length > 0 ? `${portfolio.items.length} items` : 'Empty'}</small>
+                  <small>{portfolio.items && portfolio.items.length > 0 ? `${portfolio.items.length} items` : 'Empty'}</small>
                   </div>
                 </div>
               </div>
