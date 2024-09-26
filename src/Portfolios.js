@@ -1,19 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal, Button } from 'react-bootstrap';  // Import Modal and Button from react-bootstrap
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
-import Webcam from 'react-webcam';  // Import react-webcam
+import QrScanner from 'qr-scanner'; // Import qr-scanner package
 import './Portfolios.css';
-import 'bootstrap/dist/css/bootstrap.min.css';  // Ensure you have Bootstrap styles
 
 const Portfolios = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
-  const [showModal, setShowModal] = useState(false);  // Control modal visibility
-  const webcamRef = useRef(null);  // Reference to the webcam
-  
+  const [qrData, setQrData] = useState(null);  // Store the scanned QR data
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -38,7 +35,7 @@ const Portfolios = () => {
             userPortfolio = JSON.parse(userPortfolio);
         } catch (error) {
             console.error("Error parsing user portfolio:", error);
-            return; 
+            return;
         }
     }
 
@@ -66,15 +63,17 @@ const Portfolios = () => {
     }
   };
 
-  const handleCapture = () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    console.log("Captured image:", imageSrc);
-    // Optionally: Handle the captured image, e.g., upload or process
-    setShowModal(false);  // Close modal after capturing photo
-  };
-
-  const handleCameraClick = () => {
-    setShowModal(true);  // Show the modal when the user clicks the scan button
+  // Handle QR code scan from uploaded image
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const result = await QrScanner.scanImage(file);  // Use qr-scanner to scan the image
+        setQrData(result);
+      } catch (err) {
+        console.error("QR scanning failed:", err);
+      }
+    }
   };
 
   return (
@@ -91,15 +90,26 @@ const Portfolios = () => {
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
             <div>
-              {/* Button to trigger the camera popup */}
-              <Button onClick={handleCameraClick}>
-                <img src="scanner.png" alt="Open Camera" className="img-fluid" />
-              </Button>
+              {/* Button to open file upload for capturing image */}
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"  // Opens phone's camera for image capture
+                onChange={handleImageUpload}
+              />
             </div>
             <div className="text-center">
-              <h3>Open Camera</h3>
+              <h3>Scan QR Code</h3>
             </div>
           </div>
+
+          {/* Display scanned QR data if available */}
+          {qrData && (
+            <div className="qr-result">
+              <h4>QR Code Data:</h4>
+              <p>{qrData}</p>
+            </div>
+          )}
         </div>
         
         <div className="row">
@@ -127,31 +137,6 @@ const Portfolios = () => {
           )}
         </div>
       </div>
-
-      {/* Modal to display the camera */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Scan QR Code</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* Back Camera */}
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={{ facingMode: { exact: "environment" } }}  // Use back camera
-            style={{ width: '100%' }}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleCapture}>
-            Capture
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };
