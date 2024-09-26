@@ -1,0 +1,60 @@
+.product-container {
+  background-color: #fff !important;
+  padding: 15px !important;
+  /* padding-bottom: 20px !important; */
+  border-radius: 20px !important;
+  /* text-align: center; */
+}
+.image-container {
+  padding: 20px 20px 0px 20px !important;
+}
+.product_img {
+  border-radius: 20px !important;
+  margin-bottom: 10px;
+  height: 200px !important; 
+  width: 100%; display: block;
+}
+
+.product_code {
+  padding-left: 10px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn i {
+  margin-right: 10px;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Align buttons vertically */
+}
+
+.portfolio_btn {
+  width: 100%;
+  max-width: 300px; /* Adjust the max-width as needed */
+  border: none;
+  background-color: #fff;
+  font-size: 20px;
+  margin: 10px 0; /* Adds spacing between the buttons */
+  box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
+  padding: 15px 50px;
+  text-align: left;
+}
+
+
+button.portfolio_btn svg{
+  width: 12%;
+}
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+ul li {
+  margin-bottom: 10px;
+}

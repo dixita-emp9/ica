@@ -1,0 +1,107 @@
+body{
+  color: #555555 !important;
+  background-color: #000 !important;
+}
+/* main >div {
+  width: 90% !important;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  position: relative;
+  justify-content: center;
+} */
+.main_menu_wrapper >div{
+  width: 97% !important;
+  margin: 0 auto;
+}
+.main_menu_wrapper {
+  position: absolute;
+  top: 150px;
+  width: 100% !important;
+}
+div#root{
+  position: relative;
+}
+.black-text{
+  color: #000 !important;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+  color: #555555 !important;
+}
+.bg_danger{
+  background-color: #ff242c !important;
+  color: #fff !important;
+}
+.form-container {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    padding: 50px;
+    /* flex-wrap: wrap; */
+    justify-content: space-between;
+}
+  
+.logo-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+.logo {
+  max-width: 65%;
+  margin-bottom: 10px;
+}
+  
+.form-control {
+  background-color: #eeee !important;
+  border: none;
+  border-radius: 2px !important;
+}
+
+.form-control::placeholder {
+  color: #ccc;
+  font-size: 16px !important;
+}
+
+.btn-register {
+  background-color: #e50914;
+  border: none;
+  color: #fff;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+  
+.btn-register:hover {
+  background-color: #d40812;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #555555;
+}
+
+.login-link a {
+  color: #e50914;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+.home_register{
+  padding: 1rem !important;
+  margin-top: 1rem !important;
+  width: 100% !important;
+  color: #d40812 !important;
+}
+
+.submit_btn{
+  border-radius: 2px !important;
+  width: 100%!important;
+}

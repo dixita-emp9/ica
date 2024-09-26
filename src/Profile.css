@@ -1,0 +1,40 @@
+.profile-form {
+    height: 90vh;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.input-container {
+    background-color: #eeee;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    /* border: 1px solid #ccc; */
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 18px;
+}
+.input-field {
+    background-color: #eeee;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.icon{
+    padding: 10px;
+}
+.savebtn {
+    font-size: 20px;
+    color: #fff;
+    background-color: #ff242c; /* Bootstrap's danger color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.3s;
+    padding: 10px 0px;
+}

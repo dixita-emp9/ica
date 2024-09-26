@@ -1,0 +1,111 @@
+.portfolios{
+  background-color: #fff;
+  height: 90vh;
+  border-radius: 20px;
+  padding: 20px;
+}
+.portfoiliolist{
+  background-color: #fff;
+  padding: 30px;
+  height: 90vh;
+  border-radius: 20px;
+}
+.qr-code-box {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.pdf_btn{
+  width: 100%;
+  max-width: 160px;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 30px !important;
+  border-radius: 10px; 
+  padding: 5px 15px;
+  box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+button{
+  color:#000;
+}
+button.pdf_btn svg{
+  width: 25%;
+}
+.portfolio-box{
+  border-radius: 20px;
+}
+.portfolio-box p {
+  margin-bottom: 0;
+}
+.portfolio-box small {
+  color: #6c757d;
+}
+.card-title {
+  font-size: 1.25rem;
+  margin: 0;
+}
+.btn-outline-light {
+  border: 2px solid white;
+  font-size: 1.5rem;
+  padding: 0 10px;
+  color: white;
+  background-color: transparent;
+  border-radius: 50%;
+}
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+.card-img {
+  border-radius: 15px;
+  height: 150px;
+  object-fit: cover;
+}
+h5.card-title{
+  color: #fff !important;
+}
+.qr-scanner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.qr-scanner-overlay video {
+  border: 1px solid #fff;
+}
+.create_btn{
+  width: 100%;
+  border: none;
+  color: #6c757d;
+  background-color: #fff;
+  font-size: 22px;
+  margin: 10px 0; /* Adds spacing between the buttons */
+  box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
+  padding: 15px 50px;
+  text-align: left;
+}
+.create_btn span{
+  margin-left: 15px;
+}
+button.create_btn svg{
+  width: 20%;
+}
+.modelcard{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px 50px;
+  box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
