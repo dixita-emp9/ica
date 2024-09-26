@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Modal, Button } from 'react-bootstrap';  // Import Modal and Button from react-bootstrap
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
 import Webcam from 'react-webcam';  // Import react-webcam
 import './Portfolios.css';
+import 'bootstrap/dist/css/bootstrap.min.css';  // Ensure you have Bootstrap styles
 
 const Portfolios = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
-  const [showCamera, setShowCamera] = useState(false);  // Manage camera visibility
+  const [showModal, setShowModal] = useState(false);  // Control modal visibility
   const webcamRef = useRef(null);  // Reference to the webcam
   
   useEffect(() => {
@@ -17,7 +19,6 @@ const Portfolios = () => {
       try {
         const response = await fetchUser();
         setUser(response.data);
-        // Fetch user portfolios after fetching user data
         const portfoliosResponse = await fetchUserPortfolios();
         setPortfolios(portfoliosResponse.data);
       } catch (err) {
@@ -69,10 +70,11 @@ const Portfolios = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     console.log("Captured image:", imageSrc);
     // Optionally: Handle the captured image, e.g., upload or process
+    setShowModal(false);  // Close modal after capturing photo
   };
 
   const handleCameraClick = () => {
-    setShowCamera(true);  // Show the camera when the user clicks the button
+    setShowModal(true);  // Show the modal when the user clicks the scan button
   };
 
   return (
@@ -89,28 +91,15 @@ const Portfolios = () => {
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
             <div>
-              {/* Button to trigger the camera */}
-              <button onClick={handleCameraClick}>
-                <img src="/camera.png" alt="Open Camera" className="img-fluid" />
-              </button>
+              {/* Button to trigger the camera popup */}
+              <Button onClick={handleCameraClick}>
+                <img src="scanner.png" alt="Open Camera" className="img-fluid" />
+              </Button>
             </div>
             <div className="text-center">
               <h3>Open Camera</h3>
             </div>
           </div>
-
-          {/* Camera will appear here */}
-          {showCamera && (
-            <div className="camera-wrapper">
-              <Webcam
-                audio={false}
-                ref={webcamRef}
-                screenshotFormat="image/jpeg"
-                style={{ width: '100%' }}
-              />
-              <button onClick={handleCapture}>Capture Photo</button>
-            </div>
-          )}
         </div>
         
         <div className="row">
@@ -128,7 +117,7 @@ const Portfolios = () => {
                     <h4>{portfolio.wishlist}</h4>
                   </div>
                   <div className="mt-2">
-                  <small>{portfolio.items && portfolio.items.length > 0 ? `${portfolio.items.length} items` : 'Empty'}</small>
+                    <small>{portfolio.items && portfolio.items.length > 0 ? `${portfolio.items.length} items` : 'Empty'}</small>
                   </div>
                 </div>
               </div>
@@ -138,6 +127,31 @@ const Portfolios = () => {
           )}
         </div>
       </div>
+
+      {/* Modal to display the camera */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Scan QR Code</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* Back Camera */}
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            videoConstraints={{ facingMode: { exact: "environment" } }}  // Use back camera
+            style={{ width: '100%' }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleCapture}>
+            Capture
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
