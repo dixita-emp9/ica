@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
-import QrScanner from 'react-qr-scanner';  // Import the QR scanner
+import Webcam from 'react-webcam';  // Import react-webcam
 import './Portfolios.css';
 
 const Portfolios = () => {
@@ -9,9 +9,9 @@ const Portfolios = () => {
   const [user, setUser] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
-  const [showScanner, setShowScanner] = useState(false);  // Manage scanner visibility
-  const [qrData, setQrData] = useState(null);  // Store the scanned QR data
-
+  const [showCamera, setShowCamera] = useState(false);  // Manage camera visibility
+  const webcamRef = useRef(null);  // Reference to the webcam
+  
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -65,21 +65,14 @@ const Portfolios = () => {
     }
   };
 
-  // Handle QR code scan result
-  const handleScan = (data) => {
-    if (data) {
-      console.log("QR code data:", data);
-      setQrData(data);  // Store the scanned data
-      setShowScanner(false);  // Hide scanner once the QR is detected
-    }
-  };
-
-  const handleError = (err) => {
-    console.error("QR scanner error:", err);
+  const handleCapture = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    console.log("Captured image:", imageSrc);
+    // Optionally: Handle the captured image, e.g., upload or process
   };
 
   const handleCameraClick = () => {
-    setShowScanner(true);  // Show the QR scanner when the user clicks the scan button
+    setShowCamera(true);  // Show the camera when the user clicks the button
   };
 
   return (
@@ -96,31 +89,26 @@ const Portfolios = () => {
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
             <div>
-              {/* Button to trigger the QR scanner */}
+              {/* Button to trigger the camera */}
               <button onClick={handleCameraClick}>
-                <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
+                <img src="/camera.png" alt="Open Camera" className="img-fluid" />
               </button>
             </div>
             <div className="text-center">
-              <h3>Scan QR Code</h3>
+              <h3>Open Camera</h3>
             </div>
           </div>
 
-          {/* QR Scanner will appear here */}
-          {showScanner && (
-            <QrScanner
-              delay={300}
-              onError={handleError}
-              onScan={handleScan}
-              style={{ width: '100%' }}
-            />
-          )}
-
-          {/* Display scanned QR data if available */}
-          {qrData && (
-            <div className="qr-result">
-              <h4>QR Code Data:</h4>
-              <p>{qrData}</p>
+          {/* Camera will appear here */}
+          {showCamera && (
+            <div className="camera-wrapper">
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                style={{ width: '100%' }}
+              />
+              <button onClick={handleCapture}>Capture Photo</button>
             </div>
           )}
         </div>
