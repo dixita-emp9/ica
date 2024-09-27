@@ -92,6 +92,7 @@ const Portfolios = () => {
               onError={handleError}
               onScan={handleScan}
               style={{ width: '100%' }}
+              facingMode="environment" 
             />
             {scanResult && (
               <div>
