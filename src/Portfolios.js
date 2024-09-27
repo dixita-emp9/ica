@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
-import QrScanner from 'react-qr-scanner';
+import { Html5Qrcode } from 'html5-qrcode'; // Import the library
 import './Portfolios.css';
 
 const Portfolios = () => {
@@ -10,6 +10,7 @@ const Portfolios = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
   const [scanResult, setScanResult] = useState('');
+  const qrCodeRef = useRef(null); // Ref for QR code scanner
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -25,6 +26,31 @@ const Portfolios = () => {
     };
 
     fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    const html5QrCode = new Html5Qrcode("qr-code-scanner");
+
+    const startScanner = () => {
+      const config = { fps: 10, qrbox: 250, facingMode: { exact: "environment" } }; // Back camera
+      html5QrCode.start({ facingMode: { exact: "environment" } }, config, (decodedText) => {
+        console.log('Scanned QR Code:', decodedText);
+        setScanResult(decodedText);
+        window.location.href = decodedText; // Navigate to the scanned URL
+      })
+      .catch(err => {
+        console.error("Error starting QR code scanner:", err);
+      });
+    };
+
+    startScanner();
+
+    // Cleanup function to stop the scanner
+    return () => {
+      html5QrCode.stop().catch(err => {
+        console.error("Error stopping QR code scanner:", err);
+      });
+    };
   }, []);
 
   const handlePortfolioClick = (portfolioId) => {
@@ -61,18 +87,6 @@ const Portfolios = () => {
     }
   };
 
-  const handleScan = (data) => {
-    if (data) {
-      console.log('Scanned QR Code:', data);
-      setScanResult(data);
-      window.location.href = data; // Navigate to the scanned URL
-    }
-  };
-
-  const handleError = (err) => {
-    console.error("Error scanning QR Code:", err);
-  };
-
   return (
     <div className="main_menu_wrapper container">
       <div className="text-center mb-4">
@@ -87,13 +101,7 @@ const Portfolios = () => {
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
             <h3>Scan QR Code</h3>
-            <QrScanner
-              delay={300}
-              onError={handleError}
-              onScan={handleScan}
-              style={{ width: '100%' }}
-              facingMode={{ exact: 'environment' }} // Explicitly set back camera
-            />
+            <div id="qr-code-scanner" style={{ width: '100%' }}></div>
             {scanResult && (
               <div>
                 <p>Scanned Result: {scanResult}</p>
