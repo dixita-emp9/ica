@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
+import QrScanner from 'react-qr-scanner';
 import './Portfolios.css';
 
 const Portfolios = () => {
@@ -8,13 +9,13 @@ const Portfolios = () => {
   const [user, setUser] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
+  const [scanResult, setScanResult] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await fetchUser();
         setUser(response.data);
-        // Fetch user portfolios after fetching user data
         const portfoliosResponse = await fetchUserPortfolios();
         setPortfolios(portfoliosResponse.data);
       } catch (err) {
@@ -30,46 +31,46 @@ const Portfolios = () => {
     let userPortfolio = user.portfolio;
 
     if (typeof userPortfolio === 'string') {
-        try {
-            userPortfolio = JSON.parse(userPortfolio);
-        } catch (error) {
-            console.error("Error parsing user portfolio:", error);
-            return; // Consider notifying the user here
-        }
+      try {
+        userPortfolio = JSON.parse(userPortfolio);
+      } catch (error) {
+        console.error("Error parsing user portfolio:", error);
+        return; 
+      }
     }
 
     if (Array.isArray(userPortfolio)) {
-        const selectedPortfolio = userPortfolio.find(portfolio => portfolio.id === portfolioId);
+      const selectedPortfolio = userPortfolio.find(portfolio => portfolio.id === portfolioId);
 
-        if (selectedPortfolio) {
-            const wishlistName = selectedPortfolio.wishlist;
-            const wishlistItems = selectedPortfolio.items || [];
+      if (selectedPortfolio) {
+        const wishlistName = selectedPortfolio.wishlist;
+        const wishlistItems = selectedPortfolio.items || [];
 
-            console.log(`Navigating to Portfolioslist with ID: ${portfolioId}, Wishlist: ${wishlistName}, Products: ${wishlistItems}`);
-
-            navigate(`/portfolioslist/${portfolioId}`, {
-                state: { 
-                    portfolioId,
-                    wishlistName,
-                    wishlistItems
-                }
-            });
-        } else {
-            console.error("Portfolio not found with ID:", portfolioId);
-            // Consider notifying the user that the portfolio was not found
-        }
+        navigate(`/portfolioslist/${portfolioId}`, {
+          state: { 
+            portfolioId,
+            wishlistName,
+            wishlistItems
+          }
+        });
+      } else {
+        console.error("Portfolio not found with ID:", portfolioId);
+      }
     } else {
-        console.error("User portfolio is not an array:", userPortfolio);
-        // Notify the user that there's an issue with their portfolio data
+      console.error("User portfolio is not an array:", userPortfolio);
     }
-};
+  };
 
-  const handleCameraInputChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log("File selected: ", file);
-      // You can add further processing of the file (e.g., upload it, or use a QR code scanner library)
+  const handleScan = (data) => {
+    if (data) {
+      console.log('Scanned QR Code:', data);
+      setScanResult(data);
+      window.location.href = data; // Navigate to the scanned URL
     }
+  };
+
+  const handleError = (err) => {
+    console.error("Error scanning QR Code:", err);
   };
 
   return (
@@ -85,22 +86,18 @@ const Portfolios = () => {
       <div className="portfolios">
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
-            <div>
-              <label htmlFor="cameraInput">
-                <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
-              </label>
-              <input
-                type="file"
-                id="cameraInput"
-                accept="image/*"
-                capture="environment"
-                onChange={handleCameraInputChange}
-                style={{ display: 'none' }}
-              />
-            </div>
-            <div className="text-center">
-              <h3>Scan QR Code</h3>
-            </div>
+            <h3>Scan QR Code</h3>
+            <QrScanner
+              delay={300}
+              onError={handleError}
+              onScan={handleScan}
+              style={{ width: '100%' }}
+            />
+            {scanResult && (
+              <div>
+                <p>Scanned Result: {scanResult}</p>
+              </div>
+            )}
           </div>
         </div>
         <div className="row">
@@ -118,7 +115,7 @@ const Portfolios = () => {
                     <h4>{portfolio.wishlist}</h4>
                   </div>
                   <div className="mt-2">
-                  <small>{portfolio.items && portfolio.items.length > 0 ? `${portfolio.items.length} items` : 'Empty'}</small>
+                    <small>{portfolio.items && portfolio.items.length > 0 ? `${portfolio.items.length} items` : 'Empty'}</small>
                   </div>
                 </div>
               </div>
