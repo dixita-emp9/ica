@@ -92,7 +92,7 @@ const Portfolios = () => {
               onError={handleError}
               onScan={handleScan}
               style={{ width: '100%' }}
-              facingMode="environment" 
+              facingMode={{ exact: 'environment' }} // Explicitly set back camera
             />
             {scanResult && (
               <div>
