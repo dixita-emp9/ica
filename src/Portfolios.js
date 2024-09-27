@@ -10,6 +10,7 @@ const Portfolios = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
   const [scanResult, setScanResult] = useState('');
+  const [scannerActive, setScannerActive] = useState(false); // State to control scanner
   const qrCodeRef = useRef(null); // Ref for QR code scanner
 
   useEffect(() => {
@@ -43,15 +44,20 @@ const Portfolios = () => {
       });
     };
 
-    startScanner();
+    // Start the scanner only if scannerActive is true
+    if (scannerActive) {
+      startScanner();
+    }
 
     // Cleanup function to stop the scanner
     return () => {
-      html5QrCode.stop().catch(err => {
-        console.error("Error stopping QR code scanner:", err);
-      });
+      if (scannerActive) {
+        html5QrCode.stop().catch(err => {
+          console.error("Error stopping QR code scanner:", err);
+        });
+      }
     };
-  }, []);
+  }, [scannerActive]); // Depend on scannerActive
 
   const handlePortfolioClick = (portfolioId) => {
     let userPortfolio = user.portfolio;
@@ -87,6 +93,10 @@ const Portfolios = () => {
     }
   };
 
+  const handleScanClick = () => {
+    setScannerActive(true); // Activate scanner on button click
+  };
+
   return (
     <div className="main_menu_wrapper container">
       <div className="text-center mb-4">
@@ -100,6 +110,9 @@ const Portfolios = () => {
       <div className="portfolios">
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
+            <button onClick={handleScanClick} className="btn mb-3">
+            <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
+            </button>
             <h3>Scan QR Code</h3>
             <div id="qr-code-scanner" style={{ width: '100%' }}></div>
             {scanResult && (
