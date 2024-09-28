@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, logoutUser } from './services/apiService';
-import { startQrScanner } from './services/qrScanner'; // Ensure this function is defined in qrScanner.js
+import { startQrScanner } from './services/qrScanner';
 import './Head.css';
 
 const Head = () => {
@@ -32,6 +32,7 @@ const Head = () => {
     };
 
     const handleScanClick = async () => {
+        console.log('Scan QR Code clicked!'); // Log to confirm this is triggered
         try {
             await startQrScanner(); // Call the scanner function
         } catch (error) {
@@ -42,8 +43,6 @@ const Head = () => {
     const handleMenuItemClick = (path) => {
         if (path === '/scan-qr') {
             handleScanClick();
-        } else if (path === '/logout') {
-            handleLogout();
         } else {
             navigate(path);
             setIsMenuOpen(false);
