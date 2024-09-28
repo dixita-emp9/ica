@@ -7,7 +7,7 @@
 }
 
 .portfolios.active-scanner {
-  height: calc(100vh + 100px); /* Increased height when scanner is active */
+  height: calc(100vh + 10vh); /* Increased height when scanner is active */
 }
 
 .portfoiliolist{
