@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
-import { Html5Qrcode } from 'html5-qrcode'; // Import the library
+import QrScanner from './QrScanner'; // Import the new component
 import './Portfolios.css';
 
 const Portfolios = () => {
@@ -10,8 +10,6 @@ const Portfolios = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
   const [scanResult, setScanResult] = useState('');
-  const [scannerActive, setScannerActive] = useState(false); // State to control scanner
-  const qrCodeRef = useRef(null); // Ref for QR code scanner
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -28,36 +26,6 @@ const Portfolios = () => {
 
     fetchUserData();
   }, []);
-
-  useEffect(() => {
-    const html5QrCode = new Html5Qrcode("qr-code-scanner");
-
-    const startScanner = () => {
-      const config = { fps: 10, qrbox: 250, facingMode: { exact: "environment" } }; // Back camera
-      html5QrCode.start({ facingMode: { exact: "environment" } }, config, (decodedText) => {
-        console.log('Scanned QR Code:', decodedText);
-        setScanResult(decodedText);
-        window.location.href = decodedText; // Navigate to the scanned URL
-      })
-      .catch(err => {
-        console.error("Error starting QR code scanner:", err);
-      });
-    };
-
-    // Start the scanner only if scannerActive is true
-    if (scannerActive) {
-      startScanner();
-    }
-
-    // Cleanup function to stop the scanner
-    return () => {
-      if (scannerActive) {
-        html5QrCode.stop().catch(err => {
-          console.error("Error stopping QR code scanner:", err);
-        });
-      }
-    };
-  }, [scannerActive]); // Depend on scannerActive
 
   const handlePortfolioClick = (portfolioId) => {
     let userPortfolio = user.portfolio;
@@ -93,8 +61,9 @@ const Portfolios = () => {
     }
   };
 
-  const handleScanClick = () => {
-    setScannerActive(true); // Activate scanner on button click
+  const handleScanResult = (decodedText) => {
+    setScanResult(decodedText);
+    window.location.href = decodedText;
   };
 
   return (
@@ -110,11 +79,8 @@ const Portfolios = () => {
       <div className="portfolios">
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
-            <button onClick={handleScanClick} className="btn mb-3">
-            <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
-            </button>
             <h3>Scan QR Code</h3>
-            <div id="qr-code-scanner" style={{ width: '100%' }}></div>
+            <QrScanner onScan={handleScanResult} />
             {scanResult && (
               <div>
                 <p>Scanned Result: {scanResult}</p>
