@@ -7,6 +7,7 @@ import './Head.css';
 const Head = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [userName, setUserName] = useState('');
+    const [scannerActive, setScannerActive] = useState(false); // State for scanner activity
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,22 +20,14 @@ const Head = () => {
             });
     }, []);
 
-    const handllogoClick = () => {
-        navigate('/portfolios');
-    };
-
-    const handlprofileClick = () => {
-        navigate('/profile');
-    };
-
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
     const handleScanClick = async () => {
         console.log('Scan QR Code clicked!'); // Log to confirm this is triggered
         try {
-            await startQrScanner(); // Call the scanner function
+            // Start QR Scanner and pass necessary state functions
+            await startQrScanner((decodedText) => {
+                console.log('Scanned QR Code:', decodedText);
+                window.location.href = decodedText; // Redirect to the scanned URL
+            }, setScannerActive); // Pass setScannerActive function
         } catch (error) {
             console.error('Error starting QR scanner:', error);
         }
@@ -66,19 +59,19 @@ const Head = () => {
                 <i 
                     className="bi bi-list" 
                     style={{ fontSize: "2rem", cursor: "pointer" }} 
-                    onClick={toggleMenu}
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
                 ></i>
                 <img 
                     src="/logo.png" 
                     alt="ICA Logo" 
                     className="img-fluid mainlogo" 
-                    onClick={handllogoClick}
+                    onClick={() => navigate('/portfolios')}
                 />
                 <img 
                     src="/profile.png" 
                     alt="Profile Logo" 
                     className="img-fluid profilelogo" 
-                    onClick={handlprofileClick}
+                    onClick={() => navigate('/profile')}
                 />
             </nav>
             
@@ -88,7 +81,7 @@ const Head = () => {
                         <i 
                             className="bi bi-x" 
                             style={{ fontSize: "2rem", cursor: "pointer" }} 
-                            onClick={toggleMenu}
+                            onClick={() => setIsMenuOpen(false)}
                         ></i>
                         <div className="menu-header">
                             <img 
