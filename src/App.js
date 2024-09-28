@@ -32,7 +32,7 @@ function App() {
           <Route path="createportfolio" element={<PrivateRoute><CreatePortfolio /></PrivateRoute>} />
           <Route path="selectmodel" element={<PrivateRoute><Selectmodel /></PrivateRoute>} />
           <Route path="viewinar" element={<PrivateRoute><ViewinAr /></PrivateRoute>} />
-          <Route path="scan-qr" element={<PrivateRoute><QrScanner onScan={(decodedText) => window.location.href = decodedText} /></PrivateRoute>} />
+          <Route path="scan-qr" element={<PrivateRoute><QrScanner /></PrivateRoute>} /> {/* New QR scanner route */}
         </Route>
 
         {/* Routes that don't require the Layout (e.g., Register, Login) */}

@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUser, logoutUser } from './services/apiService'; // Import fetchUser
-import QrScanner from './QrScanner';
+import { fetchUser, logoutUser } from './services/apiService';
 import './Head.css';
 
 const Head = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [userName, setUserName] = useState(''); // State for storing user name
-    const [isQrScannerVisible, setIsQrScannerVisible] = useState(false); // State for QR scanner visibility
+    const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
-    // Fetch current user data when the component mounts
     useEffect(() => {
         fetchUser()
             .then((response) => {
-                setUserName(response.data.name); // Update userName with the fetched name
+                setUserName(response.data.name);
             })
             .catch((error) => {
                 console.error('Error fetching user data:', error);
@@ -22,12 +19,10 @@ const Head = () => {
     }, []);
 
     const handllogoClick = () => {
-        console.log("Logo clicked");
         navigate('/portfolios');
     };
 
     const handlprofileClick = () => {
-        console.log("Profile clicked");
         navigate('/profile');
     };
 
@@ -38,9 +33,6 @@ const Head = () => {
     const handleMenuItemClick = (path) => {
         if (path === '/logout') {
             handleLogout();
-        } else if (path === '/scan-qr') {
-            setIsQrScannerVisible(true); // Activate the QR scanner
-            setIsMenuOpen(false); // Close the menu after activation
         } else {
             navigate(path);
             setIsMenuOpen(false); // Close the menu after navigation
@@ -50,10 +42,8 @@ const Head = () => {
     const handleLogout = () => {
         logoutUser()
             .then(() => {
-                // Clear local storage or any other cleanup
                 localStorage.removeItem('authToken');
-                // Redirect to login or home page after logout
-                navigate('/login'); // Adjust the path as necessary
+                navigate('/login');
             })
             .catch(error => {
                 console.error('Logout error:', error);
@@ -115,19 +105,6 @@ const Head = () => {
                             <p>ITALIAN WOOD FINISHES</p>
                         </div>
                     </div>
-                </div>
-            )}
-
-            {/* QR Scanner Modal */}
-            {isQrScannerVisible && (
-                <div className="qr-scanner-modal">
-                    <QrScanner onScan={(decodedText) => {
-                        setIsQrScannerVisible(false); // Hide scanner after scanning
-                        window.location.href = decodedText; // Navigate to the scanned URL
-                    }} />
-                    <button onClick={() => setIsQrScannerVisible(false)} className="btn btn-secondary">
-                        Close Scanner
-                    </button>
                 </div>
             )}
         </header>
