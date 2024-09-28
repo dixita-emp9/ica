@@ -35,11 +35,12 @@ const Head = () => {
     const handleMenuItemClick = (path) => {
         setIsMenuOpen(false); // Close the menu
         if (path === '/scan-qr') {
-            handleScanClick(); // Always call handleScanClick for the QR code
+            navigate('/portfolios', { replace: true }); // Navigate first
+            setTimeout(handleScanClick, 500); // Call handleScanClick after a slight delay
         } else {
             navigate(path); // Navigate to other paths
         }
-    };
+    };    
 
     const handleLogoClick = () => {
         if (location.pathname === '/portfolios') {
