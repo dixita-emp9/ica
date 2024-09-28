@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchUser, logoutUser } from './services/apiService';
 import { startQrScanner } from './services/qrScanner';
 import './Head.css';
@@ -7,8 +7,8 @@ import './Head.css';
 const Head = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [userName, setUserName] = useState('');
-    const [scannerActive, setScannerActive] = useState(false); // State for scanner activity
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         fetchUser()
@@ -21,13 +21,12 @@ const Head = () => {
     }, []);
 
     const handleScanClick = async () => {
-        console.log('Scan QR Code clicked!'); // Log to confirm this is triggered
+        console.log('Scan QR Code clicked!');
         try {
-            // Start QR Scanner and pass necessary state functions
             await startQrScanner((decodedText) => {
                 console.log('Scanned QR Code:', decodedText);
-                window.location.href = decodedText; // Redirect to the scanned URL
-            }, setScannerActive); // Pass setScannerActive function
+                window.location.href = decodedText; // Redirect to scanned URL
+            }, () => {}); // You can pass a no-op for setScannerActive
         } catch (error) {
             console.error('Error starting QR scanner:', error);
         }
@@ -35,13 +34,19 @@ const Head = () => {
 
     const handleMenuItemClick = (path) => {
         if (path === '/scan-qr') {
-            // Close the menu first
-            setIsMenuOpen(false);
-            // Call the scan function
-            handleScanClick();
+            setIsMenuOpen(false); // Close the menu
+            handleScanClick(); // Always call handleScanClick for the QR code
         } else {
-            navigate(path);
-            setIsMenuOpen(false);
+            navigate(path); // Navigate to other paths
+        }
+    };
+
+    const handleLogoClick = () => {
+        if (location.pathname === '/portfolios') {
+            // Refresh the page
+            window.location.reload();
+        } else {
+            navigate('/portfolios');
         }
     };
 
@@ -68,7 +73,7 @@ const Head = () => {
                     src="/logo.png" 
                     alt="ICA Logo" 
                     className="img-fluid mainlogo" 
-                    onClick={() => navigate('/portfolios')}
+                    onClick={handleLogoClick} 
                 />
                 <img 
                     src="/profile.png" 
@@ -99,7 +104,7 @@ const Head = () => {
                             <li className='btn' onClick={() => handleMenuItemClick('/portfolios')}><i className="fa fa-home"></i> Home</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/scan-qr')}><i className="fa fa-camera"></i> Scan QR Code</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/createportfolio')}><i className="fa fa-briefcase"></i> Create New Portfolio</li>
-                            <li className='btn' onClick={() => handleMenuItemClick('/logout')}><i className="fa fa-sign-out"></i> Sign Out</li>
+                            <li className='btn' onClick={handleLogout}><i className="fa fa-sign-out"></i> Sign Out</li>
                         </ul>
                         <div className="menu-footer">
                             <img 
