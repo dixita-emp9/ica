@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUser, logoutUser } from './services/apiService'; // Import fetchUser
-import { startQrScanner } from './services/qrScanner';
+import { fetchUser, logoutUser } from './services/apiService';
+import { startQrScanner } from './services/qrScanner'; // Ensure this function is defined in qrScanner.js
 import './Head.css';
 
 const Head = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [userName, setUserName] = useState(''); // State for storing user name
-    const [scannerActive, setScannerActive] = useState(false); // State for QR scanner
+    const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
-    // Fetch current user data when the component mounts
     useEffect(() => {
         fetchUser()
             .then((response) => {
-                setUserName(response.data.name); // Update userName with the fetched name
+                setUserName(response.data.name);
             })
             .catch((error) => {
                 console.error('Error fetching user data:', error);
@@ -22,12 +20,10 @@ const Head = () => {
     }, []);
 
     const handllogoClick = () => {
-        console.log("Logo clicked");
         navigate('/portfolios');
     };
 
     const handlprofileClick = () => {
-        console.log("Profile clicked");
         navigate('/profile');
     };
 
@@ -35,13 +31,17 @@ const Head = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const handleScanClick = () => {
-        setScannerActive(true); // Activate the scanner
+    const handleScanClick = async () => {
+        try {
+            await startQrScanner(); // Call the scanner function
+        } catch (error) {
+            console.error('Error starting QR scanner:', error);
+        }
     };
 
     const handleMenuItemClick = (path) => {
         if (path === '/scan-qr') {
-            handleScanClick(); // Call the function to start scanning
+            handleScanClick();
         } else if (path === '/logout') {
             handleLogout();
         } else {
@@ -83,7 +83,6 @@ const Head = () => {
                 />
             </nav>
             
-            {/* Side Menu */}
             {isMenuOpen && (
                 <div className="side-menu">
                     <div className="side-menu-content">
