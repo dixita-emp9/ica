@@ -12,11 +12,10 @@ const Profile = () => {
         email: '',
         phone_number: '',
         city: '',
-        avatar: ''
+        avatar: '' // Avatar state
     });
+    const [avatarPreview, setAvatarPreview] = useState(''); // State for avatar preview
     const [showModal, setShowModal] = useState(false);
-    const [avatarPreview, setAvatarPreview] = useState('');
-    const [avatarFile, setAvatarFile] = useState(null);
 
     useEffect(() => {
         fetchUser().then(response => {
@@ -24,24 +23,30 @@ const Profile = () => {
             const nameParts = (data.name || '').split(' ', 2);
             const first_name = nameParts[0] || '';
             const last_name = nameParts[1] || '';
-
+    
             setUser({
                 first_name,
                 last_name,
                 email: data.email || '',
                 phone_number: data.phone_number || '',
                 city: data.city || '',
-                avatar: data.avatar || ''
+                // Use string interpolation to include the `/storage/` prefix
+                avatar: `https://api.ica.amigosserver.com/storage/${data.avatar || ''}` 
             });
-
-            // Update avatar preview if an avatar exists
-            if (data.avatar) {
-                setAvatarPreview(data.avatar); // Directly set the avatar URL
-            }
+            // Set the avatar preview with the updated URL
+            setAvatarPreview(`https://api.ica.amigosserver.com/storage/${data.avatar || '/default-avatar.png'}`); 
         }).catch(error => {
             console.error("Error fetching user data:", error);
         });
-    }, []);
+    }, []);    
+
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setUser({ ...user, avatar: file }); // Update avatar state with the file
+            setAvatarPreview(URL.createObjectURL(file)); // Preview the selected image
+        }
+    };
 
     const handleSaveChanges = () => {
         const formData = new FormData();
@@ -50,17 +55,13 @@ const Profile = () => {
         formData.append('email', user.email);
         formData.append('phone_number', user.phone_number);
         formData.append('city', user.city);
-        if (avatarFile) {
-            formData.append('avatar', avatarFile);
+        if (user.avatar instanceof File) {
+            formData.append('avatar', user.avatar); // Append avatar to form data if it's a file
         }
 
         updateUserDetails(formData)
             .then(response => {
                 setShowModal(true);
-                // Optionally update the avatar preview after upload
-                if (avatarFile) {
-                    setAvatarPreview(URL.createObjectURL(avatarFile));
-                }
             })
             .catch(error => {
                 console.error('Error updating user details:', error);
@@ -70,19 +71,11 @@ const Profile = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
+        window.location.reload();
     };
 
     const handleBackClick = () => {
         navigate('/portfolios');
-    };
-
-    const handleAvatarChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setAvatarFile(file);
-            const previewUrl = URL.createObjectURL(file);
-            setAvatarPreview(previewUrl);
-        }
     };
 
     return (
@@ -100,13 +93,32 @@ const Profile = () => {
                 </div>            
                 <div className="profile-form bg-white p-4 mt-4 rounded">
                     <form className="form-content">
-                    {avatarPreview ? (
-                            <div className="avatar-preview-container">
-                                <img src={avatarPreview} alt="Avatar Preview" className="avatar-preview" />
-                            </div>
-                        ) : (
-                            <div className="avatar-placeholder">No Image</div>
-                        )}
+                        {/* Avatar Upload and Preview */}
+                        <div className="form-group text-center mt-4">
+                            <label htmlFor="avatar" className="d-block position-relative">
+                                <img 
+                                    src={avatarPreview}
+                                    alt="Avatar Preview"
+                                    className="avatar-preview rounded-circle" // Add any custom styling you want
+                                    style={{ width: '150px', height: '150px' }} // Size of the preview image
+                                />
+                                {/* Edit icon on top of the avatar */}
+                                <i 
+                                    className="fa fa-edit edit-icon" 
+                                    onClick={() => document.getElementById('avatar').click()} 
+                                    style={{ position: 'absolute', bottom: '10px', right: '10px', cursor: 'pointer', fontSize: '20px', color: '#000', backgroundColor: '#eeee', borderRadius: '50%', padding: '5px' }} 
+                                ></i>
+                            </label>
+                            <input
+                                id="avatar"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleAvatarChange}
+                                className="d-none" // Hide the file input
+                            />
+                        </div>
+
+                        {/* Other input fields */}
                         <div className="form-group mt-4">
                             <div className="input-container">
                                 <i className="fa fa-user icon"></i>
@@ -168,18 +180,6 @@ const Profile = () => {
                                     placeholder="City"
                                     value={user.city}
                                     onChange={(e) => setUser({ ...user, city: e.target.value })}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="form-group mt-4">
-                            <div className="input-container">
-                                <i className="fa fa-image icon"></i>
-                                <input
-                                    type="file"
-                                    className="input-field"
-                                    onChange={handleAvatarChange}
-                                    accept="image/*" // Only accept images
                                 />
                             </div>
                         </div>

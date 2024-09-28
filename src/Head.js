@@ -7,6 +7,7 @@ import './Head.css';
 const Head = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [userName, setUserName] = useState('');
+    const [userAvatar, setUserAvatar] = useState(''); // State for user's avatar
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -14,6 +15,8 @@ const Head = () => {
         fetchUser()
             .then((response) => {
                 setUserName(response.data.name);
+                // Set the avatar URL dynamically
+                setUserAvatar(`https://api.ica.amigosserver.com/storage/${response.data.avatar || 'default-avatar.png'}`); 
             })
             .catch((error) => {
                 console.error('Error fetching user data:', error);
@@ -77,7 +80,7 @@ const Head = () => {
                     onClick={handleLogoClick} 
                 />
                 <img 
-                    src="/profile.png" 
+                    src={userAvatar} // Use dynamic avatar here
                     alt="Profile Logo" 
                     className="img-fluid profilelogo" 
                     onClick={() => navigate('/profile')}
@@ -94,7 +97,7 @@ const Head = () => {
                         ></i>
                         <div className="menu-header">
                             <img 
-                                src="/profile.png" 
+                                src={userAvatar} // Use dynamic avatar here
                                 alt="Profile" 
                                 className="profile-picture"
                             />

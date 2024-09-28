@@ -45,12 +45,11 @@
 }
 
 .avatar-preview {
-    width: 100px; /* Adjust as necessary */
-    height: 100px; /* Adjust as necessary */
-    border-radius: 50%; /* Make it circular */
-    object-fit: cover; /* Ensure the image covers the area */
-    border: 2px solid #ccc; /* Optional: add border */
+    border: 2px solid #ddd; /* Example border */
+    border-radius: 50%; /* Make it round */
+    object-fit: cover; /* Ensure the image covers the container */
 }
+
 
 .avatar-placeholder {
     width: 100px;
