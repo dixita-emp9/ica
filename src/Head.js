@@ -35,6 +35,9 @@ const Head = () => {
 
     const handleMenuItemClick = (path) => {
         if (path === '/scan-qr') {
+            // Close the menu first
+            setIsMenuOpen(false);
+            // Call the scan function
             handleScanClick();
         } else {
             navigate(path);
