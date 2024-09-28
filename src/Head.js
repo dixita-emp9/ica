@@ -33,8 +33,8 @@ const Head = () => {
     };
 
     const handleMenuItemClick = (path) => {
+        setIsMenuOpen(false); // Close the menu
         if (path === '/scan-qr') {
-            setIsMenuOpen(false); // Close the menu
             handleScanClick(); // Always call handleScanClick for the QR code
         } else {
             navigate(path); // Navigate to other paths
