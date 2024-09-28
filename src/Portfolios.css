@@ -1,15 +1,9 @@
-.portfolios {
+.portfolios{
   background-color: #fff;
-  height: 100vh; /* Default height */
+  min-height: 90vh;
   border-radius: 20px;
   padding: 20px;
-  transition: height 0.3s ease; /* Smooth transition for height changes */
 }
-
-.portfolios.active-scanner {
-  height: calc(100vh + 10vh); /* Increased height when scanner is active */
-}
-
 .portfoiliolist{
   background-color: #fff;
   padding: 30px;
