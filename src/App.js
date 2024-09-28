@@ -11,7 +11,6 @@ import ProductDetail from './ProductDetail';
 import CreatePortfolio from './CreatePortfolio';
 import ViewinAr from './ViewinAR';
 import Selectmodel from './Selectmodel';
-import QrScanner from './QrScanner';
 import PrivateRoute from './components/PrivateRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -32,7 +31,6 @@ function App() {
           <Route path="createportfolio" element={<PrivateRoute><CreatePortfolio /></PrivateRoute>} />
           <Route path="selectmodel" element={<PrivateRoute><Selectmodel /></PrivateRoute>} />
           <Route path="viewinar" element={<PrivateRoute><ViewinAr /></PrivateRoute>} />
-          <Route path="scan-qr" element={<PrivateRoute><QrScanner /></PrivateRoute>} /> {/* New QR scanner route */}
         </Route>
 
         {/* Routes that don't require the Layout (e.g., Register, Login) */}

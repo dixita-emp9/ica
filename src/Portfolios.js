@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser, fetchUserPortfolios } from './services/apiService';
-import QrScanner from './QrScanner'; // Import the new component
+import { startQrScanner } from './services/qrScanner';
 import './Portfolios.css';
 
 const Portfolios = () => {
@@ -10,6 +10,7 @@ const Portfolios = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState('');
   const [scanResult, setScanResult] = useState('');
+  const [scannerActive, setScannerActive] = useState(false); // State to control scanner
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -26,6 +27,22 @@ const Portfolios = () => {
 
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    let stopScanner;
+
+    if (scannerActive) {
+      stopScanner = startQrScanner(setScanResult, setScannerActive);
+    }
+
+    return () => {
+      if (stopScanner) stopScanner();
+    };
+  }, [scannerActive]);
+
+  const handleScanClick = () => {
+    setScannerActive(true);
+  };
 
   const handlePortfolioClick = (portfolioId) => {
     let userPortfolio = user.portfolio;
@@ -61,11 +78,6 @@ const Portfolios = () => {
     }
   };
 
-  const handleScanResult = (decodedText) => {
-    setScanResult(decodedText);
-    window.location.href = decodedText;
-  };
-
   return (
     <div className="main_menu_wrapper container">
       <div className="text-center mb-4">
@@ -79,8 +91,11 @@ const Portfolios = () => {
       <div className="portfolios">
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
+            <button onClick={handleScanClick} className="btn mb-3">
+            <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
+            </button>
             <h3>Scan QR Code</h3>
-            <QrScanner onScan={handleScanResult} />
+            <div id="qr-code-scanner" style={{ width: '100%' }}></div>
             {scanResult && (
               <div>
                 <p>Scanned Result: {scanResult}</p>

@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUser, logoutUser } from './services/apiService';
+import { fetchUser, logoutUser } from './services/apiService'; // Import fetchUser
+import { startQrScanner } from './services/qrScanner';
 import './Head.css';
 
 const Head = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [userName, setUserName] = useState('');
+    const [userName, setUserName] = useState(''); // State for storing user name
+    const [scannerActive, setScannerActive] = useState(false); // State for QR scanner
     const navigate = useNavigate();
 
+    // Fetch current user data when the component mounts
     useEffect(() => {
         fetchUser()
             .then((response) => {
-                setUserName(response.data.name);
+                setUserName(response.data.name); // Update userName with the fetched name
             })
             .catch((error) => {
                 console.error('Error fetching user data:', error);
@@ -19,10 +22,12 @@ const Head = () => {
     }, []);
 
     const handllogoClick = () => {
+        console.log("Logo clicked");
         navigate('/portfolios');
     };
 
     const handlprofileClick = () => {
+        console.log("Profile clicked");
         navigate('/profile');
     };
 
@@ -30,12 +35,18 @@ const Head = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleScanClick = () => {
+        setScannerActive(true); // Activate the scanner
+    };
+
     const handleMenuItemClick = (path) => {
-        if (path === '/logout') {
+        if (path === '/scan-qr') {
+            handleScanClick(); // Call the function to start scanning
+        } else if (path === '/logout') {
             handleLogout();
         } else {
             navigate(path);
-            setIsMenuOpen(false); // Close the menu after navigation
+            setIsMenuOpen(false);
         }
     };
 
@@ -91,7 +102,7 @@ const Head = () => {
                         </div>
                         <ul className="menu-items">
                             <li className='btn' onClick={() => handleMenuItemClick('/profile')}><i className="fa fa-user"></i> Profile</li>
-                            <li className='btn' onClick={() => handleMenuItemClick('/portfolios')}><i className="fa fa-home"></i>Home</li>
+                            <li className='btn' onClick={() => handleMenuItemClick('/portfolios')}><i className="fa fa-home"></i> Home</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/scan-qr')}><i className="fa fa-camera"></i> Scan QR Code</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/createportfolio')}><i className="fa fa-briefcase"></i> Create New Portfolio</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/logout')}><i className="fa fa-sign-out"></i> Sign Out</li>
