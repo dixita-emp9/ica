@@ -110,9 +110,9 @@ nav {
   border: none;
 }
 .iframe-container {
-  position: fixed;
-  width: 92% !important;
-  height: 75vh;
+  /* position: fixed; */
+  /* width: 100% !important; */
+  height: 100vh;
   margin: 0 auto;
   padding: 0;
 }
