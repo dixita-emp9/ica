@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { fetchPostById } from './services/apiService';
 
 const ViewAr = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { productId } = location.state || {}; // Retrieve productId from state
+  const { productId, arUrl: initialArUrl } = location.state || {};
+
+  const [arUrl, setArUrl] = useState(initialArUrl || '');
+
+  useEffect(() => {
+    // Fetch product data if arUrl is not available
+    if (!arUrl && productId) {
+      const fetchProductData = async () => {
+        try {
+          const response = await fetchPostById(productId);
+          if (response && response.data) {
+            setArUrl(response.data.ar_url);
+          }
+        } catch (error) {
+          console.error('Error fetching product data:', error);
+        }
+      };
+
+      fetchProductData();
+    }
+  }, [productId, arUrl]);
 
   const handleBackClick = () => {
     if (productId) {
@@ -21,17 +42,21 @@ const ViewAr = () => {
           <button onClick={handleBackClick}><i className="fa fa-arrow-left"></i></button>
         </div>
         <div className="iframe-container mt-4">
-          <iframe 
-            src="https://mywebar.com/p/Project_0_qbtprz8dtu" 
-            width="100%" 
-            height="100%" 
-            style={{ border: 'none', borderRadius: '20px' }} 
-            title="AR Content"
-          ></iframe>
+          {arUrl ? (
+            <iframe 
+              src={arUrl}
+              width="100%" 
+              height="100%" 
+              style={{ border: 'none', borderRadius: '20px' }} 
+              title="AR Content"
+            ></iframe>
+          ) : (
+            <p>Loading AR content...</p>
+          )}
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ViewAr;

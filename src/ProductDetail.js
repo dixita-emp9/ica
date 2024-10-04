@@ -54,8 +54,8 @@ const ProductDetail = () => {
   };
   
   const handleViewInARClick = () => {
-    navigate('/viewinar', { state: { productId } });
-  };
+    navigate('/viewinar', { state: { productId, arUrl: product.ar_url } });
+  };  
   
   const handleSaveToPortfolioClick = () => {
     setShowModal(true);
