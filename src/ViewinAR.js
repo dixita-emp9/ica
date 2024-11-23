@@ -41,19 +41,23 @@ const ViewAr = () => {
         <div className='backbtn'>
           <button onClick={handleBackClick}><i className="fa fa-arrow-left"></i></button>
         </div>
-        <div className="iframe-container mt-4"> 
-        <iframe
-          src="https://mywebar.com/p/Project_0_qbtprz8dtu"
-          frameBorder="0"
-          scrolling="yes"
-          seamless="seamless"
-          style={{
-            display: 'block',
-            width: '100%',
-            height: '100vh',
-          }}
-          allow="camera; gyroscope; accelerometer; magnetometer; xr-spatial-tracking; microphone;"
-        ></iframe>
+        <div className="iframe-container mt-4">
+          {arUrl ? (
+            <iframe 
+              src={arUrl}
+              frameBorder="0"
+              scrolling="yes"
+              seamless="seamless"
+              style={{
+                display: 'block',
+                width: '100%',
+                height: '100vh',
+               }}
+              allow="camera; gyroscope; accelerometer; magnetometer; xr-spatial-tracking; microphone;"
+            ></iframe>
+          ) : (
+            <p>Loading AR content...</p>
+          )}
         </div>
       </div>
     </div>
