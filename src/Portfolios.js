@@ -103,6 +103,9 @@ const Portfolios = () => {
             )}
           </div>
         </div>
+        <div>
+          <h5>View In AR</h5>
+        </div>
         <div className="row">
           {portfolios.length > 0 ? (
             portfolios.map((portfolio) => (
