@@ -103,7 +103,7 @@ const Portfolios = () => {
             )}
           </div>
         </div>
-        <div className="text-center mt-4">
+        <div className="text-center mt-4 mb-4">
           <h5>View In AR</h5>
         </div>
         <div className="row">
