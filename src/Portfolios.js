@@ -94,8 +94,7 @@ const Portfolios = () => {
             <button onClick={handleScanClick} className="btn mb-3">
             <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
             </button>
-            <h3>Scan QR Code</h3>
-            <h5>View In AR</h5>
+            <h3>Scan QR Code <br/> View In AR</h3>
             <div id="qr-code-scanner" style={{ width: '100%' }}></div>
             {scanResult && (
               <div>

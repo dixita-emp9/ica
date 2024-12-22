@@ -114,12 +114,6 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          <div className="row justify-content-center mt-4">
-            <div className="col-10 col-md-6">
-              <div dangerouslySetInnerHTML={{ __html: product.body }} />
-            </div>
-          </div>
-
           <div className='button-container'>
             <button className="portfolio_btn" onClick={handleSaveToPortfolioClick}>
               <i className="fa fa-folder-open" style={{ marginRight: '10px' }}></i>Save to Portfolio
@@ -128,6 +122,13 @@ const ProductDetail = () => {
               <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
             </button>
           </div>
+          
+          <div className="row justify-content-center mt-4">
+            <div className="col-10 col-md-6">
+              <div dangerouslySetInnerHTML={{ __html: product.body }} />
+            </div>
+          </div>
+
         </div>
 
         <Modal show={showModal} onHide={handleModalClose}>
