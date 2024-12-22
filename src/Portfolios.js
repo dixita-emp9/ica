@@ -95,6 +95,7 @@ const Portfolios = () => {
             <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
             </button>
             <h3>Scan QR Code</h3>
+            <h5>View In AR</h5>
             <div id="qr-code-scanner" style={{ width: '100%' }}></div>
             {scanResult && (
               <div>
@@ -102,9 +103,6 @@ const Portfolios = () => {
               </div>
             )}
           </div>
-        </div>
-        <div className="text-center mt-4 mb-4">
-          <h5>View In AR</h5>
         </div>
         <div className="row">
           {portfolios.length > 0 ? (
