@@ -83,7 +83,7 @@ const Head = () => {
                     src={userAvatar} // Use dynamic avatar here
                     alt="Profile Logo" 
                     className="img-fluid profilelogo" 
-                    onClick={() => navigate('/profile')}
+                    onClick={() => navigate('/portfolios')}
                 />
             </nav>
             
