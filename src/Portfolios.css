@@ -148,12 +148,12 @@ button.create_btn svg{
   position: absolute;
   top: 10px;
   right: 10px;
-  background: none;
+  background: red;
   border: 2px solid red; /* Red border for the icon */
-  border-radius: 50%; /* Circular border */
+  border-radius: 30%; /* Circular border */
   font-size: 1.5rem;
   font-weight: bold;
-  color: black; /* Black color for the icon */
+  color: #fff; /* Black color for the icon */
   cursor: pointer;
   width: 30px;
   height: 30px;
