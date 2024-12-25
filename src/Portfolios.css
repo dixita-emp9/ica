@@ -130,6 +130,7 @@ button.create_btn svg{
   text-align: center;
   max-width: 600px;
   width: 90%;
+  border: 2px solid red;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -151,10 +152,12 @@ button.create_btn svg{
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #333;
+  font-weight: bold;
+  color: red; /* Red color for the icon */
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .close-button:hover {
-  color: #ff0000;
+  color: darkred; /* Darker shade of red on hover */
 }
