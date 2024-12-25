@@ -15,7 +15,8 @@ const Login = () => {
       try {
           const response = await loginUser(email, password);
           localStorage.setItem('authToken', response.data.token);
-          navigate('/portfolios'); // Redirect to profile or home page
+          localStorage.setItem('showWelcomePopup', 'true'); // Set a flag for the popup
+          navigate('/portfolios'); // Redirect to portfolios page
       } catch (err) {
           setError('Login failed. Please check your credentials.');
       }
