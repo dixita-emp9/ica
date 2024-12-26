@@ -107,10 +107,11 @@ const ProductDetail = () => {
 
         <div className='product-container mt-4'>
           <div className='image-container'>
-            <h5 className="black-text">{product.title}</h5>
-            <div className='col-12'>
+            <span className="black-text product_code">Product Name : </span><span>{product.title}</span>
+            <br />
+            <span className="black-text product_code">Product Code: </span><span>{product.product_code}</span>
+            <div className='col-12 mt-3'>
               <img src={`https://api.ica.amigosserver.com/storage/${product.image}`} alt={product.title} className="img-fluid product_img" />
-              <p className="product_code">Product Code: <b>{product.product_code}</b></p>
             </div>
           </div>
 
@@ -126,6 +127,21 @@ const ProductDetail = () => {
           <div className="row justify-content-center mt-4">
             <div className="col-10 col-md-6">
               <div dangerouslySetInnerHTML={{ __html: product.body }} />
+            
+            <div className="mt-3 mb-2">
+              <div><strong>Follow us on Social Media:</strong></div>
+              <div className="footer-social">
+                <a href="https://www.linkedin.com/in/ica-pidilite-private-limited" target="_blank">
+                  <img src="/linkedin.png" alt="LinkedIn" />
+                </a>
+                <a href="https://www.instagram.com/icapidilite" target="_blank">
+                  <img src="/instagram.png" alt="Instagram" />
+                </a>
+                <a href="https://www.facebook.com/ICAPidiliteIndia" target="_blank">
+                  <img src="/facebook.png" alt="Facebook" />
+                </a>
+              </div>
+              </div>
             </div>
           </div>
 
