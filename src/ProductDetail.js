@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { generatePdf } from './services/apiService';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { fetchUserPortfolios, addItemToPortfolio, fetchPostById } from './services/apiService';
@@ -43,6 +44,38 @@ const ProductDetail = () => {
     getProduct();
   }, [productId]);
 
+  const handleDownloadPDF = async () => {
+    try {
+      const response = await generatePdf([productId]); // Pass productId in an array
+  
+      if (response && response.data) {
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const filename = `Product_${productId}_${Date.now()}.pdf`; // Unique filename
+  
+        a.href = url;
+        a.setAttribute('download', filename);
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        throw new Error('PDF generation failed. No data returned.');
+      }
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+      setError('Failed to download PDF.');
+    }
+  };
+
+  const handleCreateNewPortfolio = () => {
+    // Redirect to create portfolio page
+    window.location.href = "/createportfolio";
+  
+    // OR open a modal for portfolio creation
+    // setShowCreatePortfolioModal(true);
+  };
+  
   const handleBackClick = () => {
     const { portfolioId, wishlistItems } = location.state || {};
   
@@ -67,9 +100,15 @@ const ProductDetail = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Reset error before proceeding
 
     if (!selectedPortfolio) {
         setError('Please select a portfolio.');
+        return;
+    }
+
+    if (!productId) {
+        setError('Invalid item selected.');
         return;
     }
 
@@ -81,13 +120,25 @@ const ProductDetail = () => {
             return;
         }
 
-        await addItemToPortfolio(selectedPortfolio, productId);
+        const response = await addItemToPortfolio(selectedPortfolio, productId);
+
+        if (response?.error) {
+            throw new Error(response.error);
+        }
+
         setShowModal(false);
     } catch (error) {
         console.error('Error saving to portfolio:', error);
-        setError('Something went wrong, please try again.');
+
+        if (error.response?.status === 400) {
+            setError('Item already exists in the portfolio.');
+        } else if (error.response?.status === 404) {
+            setError('Portfolio not found.');
+        } else {
+            setError('Something went wrong, please try again.');
+        }
     }
-  };
+};
 
   if (!product) {
     return <p>Loading...</p>;
@@ -96,13 +147,21 @@ const ProductDetail = () => {
   return (
     <div className='main_menu_wrapper'>
       <div className='container'>
-        <div className='d-flex justify-content-between'>
+
+        <div className='d-flex align-items-center justify-content-between' >
+          {/* Back Button */}
           <div className='backbtn'>
-            <button onClick={handleBackClick}>
-            <i className="fa fa-arrow-left"></i>
+        <button onClick={handleBackClick}>
+          <i className="fa fa-arrow-left"></i>
+        </button>
+      </div>
+
+          {/* Download PDF Button */}
+          <div>
+            <button className="pdf_btn" onClick={handleDownloadPDF}>
+              <i className="fa fa-download"></i> Save PDF
             </button>
           </div>
-          <h5 className="black-text">{product.title}</h5>
         </div>
 
         <div className='product-container mt-4'>
@@ -159,7 +218,13 @@ const ProductDetail = () => {
                 <Form.Control
                   as="select"
                   value={selectedPortfolio}
-                  onChange={(e) => setSelectedPortfolio(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value === "create_new") {
+                      handleCreateNewPortfolio(); // Open create portfolio modal
+                    } else {
+                      setSelectedPortfolio(e.target.value);
+                    }
+                  }}
                   required
                 >
                   <option value="">Select a portfolio</option>
@@ -168,6 +233,7 @@ const ProductDetail = () => {
                       {portfolio.wishlist}
                     </option>
                   ))}
+                  <option value="create_new">Create New Portfolio</option>
                 </Form.Control>
               </Form.Group>
 

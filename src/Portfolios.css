@@ -22,7 +22,7 @@
   width: 100%;
   max-width: 160px;
   border: none;
-  font-size: 1.2rem;
+  font-size: 15px;
   font-weight: 500;
   line-height: 30px !important;
   border-radius: 10px; 
@@ -124,7 +124,7 @@ button.create_btn svg{
 .popup-content {
   position: relative;
   background: white;
-  padding: 30px;
+  padding: 18px;
   border-radius: 10px;
   text-align: center;
   max-width: 600px;
@@ -132,13 +132,13 @@ button.create_btn svg{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.popup-content h2 {
+.popup-content h4 {
   margin-bottom: 20px;
+  margin-top: 20px;
   color: #333;
 }
 
 .popup-content p {
-  margin-bottom: 30px;
   color: #555;
   font-size: 1.1em;
 }
@@ -146,17 +146,14 @@ button.create_btn svg{
 /* Close button styling */
 .close-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   background: red;
-  border: 2px solid red; /* Red border for the icon */
-  border-radius: 30%; /* Circular border */
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #fff; /* Black color for the icon */
+  border: none;
+  color: #fff;
   cursor: pointer;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -74,7 +74,7 @@ const Head = () => {
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 ></i>
                 <img 
-                    src="/logo.png" 
+                    src="/ICA_new_logo_Black.png" 
                     alt="ICA Logo" 
                     className="img-fluid mainlogo" 
                     onClick={handleLogoClick} 
@@ -83,7 +83,7 @@ const Head = () => {
                     src={userAvatar} // Use dynamic avatar here
                     alt="Profile Logo" 
                     className="img-fluid profilelogo" 
-                    onClick={() => navigate('/portfolios')}
+                    onClick={() => navigate('/profile')}
                 />
             </nav>
             
@@ -112,11 +112,10 @@ const Head = () => {
                         </ul>
                         <div className="menu-footer">
                             <img 
-                                src="/logo.png" 
+                                src="/ICA_new_logo_Black.png" 
                                 alt="ICA Logo" 
                                 className="img-fluid"
                             />
-                            <p>ITALIAN WOOD FINISHES</p>
                         </div>
                     </div>
                 </div>

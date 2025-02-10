@@ -45,7 +45,7 @@ const Portfolios = () => {
 
   const handlePortfolioClick = (portfolioId) => {
     let userPortfolio = user.portfolio;
-
+  
     if (typeof userPortfolio === 'string') {
       try {
         userPortfolio = JSON.parse(userPortfolio);
@@ -54,20 +54,20 @@ const Portfolios = () => {
         return;
       }
     }
-
+  
     if (Array.isArray(userPortfolio)) {
       const selectedPortfolio = userPortfolio.find(
         (portfolio) => portfolio.id === portfolioId
       );
-
+  
       if (selectedPortfolio) {
-        const wishlistName = selectedPortfolio.wishlist;
+        const wishlistName = selectedPortfolio.wishlist; // Extract wishlist name
         const wishlistItems = selectedPortfolio.items || [];
-
+  
         navigate(`/portfolioslist/${portfolioId}`, {
           state: {
             portfolioId,
-            wishlistName,
+            wishlistName, // Pass wishlist name
             wishlistItems,
           },
         });
@@ -77,21 +77,24 @@ const Portfolios = () => {
     } else {
       console.error("User portfolio is not an array:", userPortfolio);
     }
-  };
+  };  
 
   return (
     <div className="main_menu_wrapper container">
       {showPopup && (
         <div className="full-screen-popup">
           <div className="popup-content">
+            {/* Close Button with Icon */}
             <button className="close-button" onClick={handleClosePopup}>
-              &times;
+              <i className="fa fa-times"></i>
             </button>
-            <h2>Welcome to ICA La Galleria</h2>
+
+            {/* Title and Description */}
+            <h4>Welcome to ICA La Galleria</h4>
             <p>
-              Explore the world of Italian Wood Finishes. Take a walkthrough of
-              the ICA La Galleria and scan the QR Code to add the finishes you
-              like to your portfolio or view in AR.
+              Explore the world of Italian Wood Finishes. Take a walkthrough of the ICA
+              La Galleria and scan the QR Code to add the finishes you like to your
+              portfolio or view in AR.
             </p>
           </div>
         </div>

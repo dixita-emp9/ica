@@ -25,7 +25,7 @@ const Login = () => {
   return (
     <div className="form-container">
       <div className="logo-box mb-4">
-        <img src="/logo.png" alt="ICA Logo" className="logo" />
+        <img src="/ICA_new_logo_White.png" alt="ICA Logo" className="logo" />
       </div>
       
       <form className="form-content" onSubmit={handleLogin}>

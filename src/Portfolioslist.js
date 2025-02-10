@@ -8,10 +8,9 @@ const Portfolioslist = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-  const { wishlistItems } = location.state || { wishlistItems: [] };
 
   // Extract portfolio data from location state
-  const { portfolioId } = location.state || {};
+  const { portfolioId, wishlistName, wishlistItems } = location.state || {};
 
   useEffect(() => {
     if (!wishlistItems || wishlistItems.length === 0) {
@@ -62,18 +61,24 @@ const Portfolioslist = () => {
    
   return (
     <div className="main_menu_wrapper container-fluid">
-      <div className='d-flex justify-content-between'>
-        <div className='backbtn'>
-          <button onClick={handleBackClick}>
+     <div className='d-flex justify-content-between align-items-center'>
+      <div className='backbtn'>
+        <button onClick={handleBackClick}>
           <i className="fa fa-arrow-left"></i>
-          </button>
-        </div>
-        <div>
-          <button className="pdf_btn" onClick={handleDownloadPDF}>
-          <i className="fa fa-download"></i>  Save PDF
-          </button>
-        </div>
+        </button>
       </div>
+
+      {/* Wishlist Name in Center */}
+      <div className="wishlist-name text-center flex-grow-1">
+        <h4 className="mb-0 black-text">{wishlistName}</h4>
+      </div>
+
+      <div>
+        <button className="pdf_btn" onClick={handleDownloadPDF}>
+          <i className="fa fa-download"></i> Save PDF
+        </button>
+      </div>
+    </div>
 
       <div className="portfoiliolist container mt-4">
         {error && <div className="alert alert-warning">{error}</div>} {/* Display error message if any */}
