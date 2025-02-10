@@ -1,15 +1,17 @@
-.portfolios{
+.portfolios {
   background-color: #fff;
-  min-height: 90vh;
+  height: auto; /* Adjust height based on content */
   border-radius: 20px;
   padding: 20px;
 }
-.portfoiliolist{
+
+.portfoiliolist {
   background-color: #fff;
   padding: 30px;
-  height: 90vh;
+  height: auto; /* Adjust height dynamically */
   border-radius: 20px;
 }
+
 .qr-code-box {
   background-color: #f8f9fa;
   border-radius: 8px;
