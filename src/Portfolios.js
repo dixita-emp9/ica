@@ -35,9 +35,17 @@ const Portfolios = () => {
     }
   }, []);
 
-  const handleScanClick = () => {
-    setScannerActive(true);
-  };
+    const handleScanClick = async () => {
+        console.log('Scan QR Code clicked!');
+        try {
+            await startQrScanner((decodedText) => {
+                console.log('Scanned QR Code:', decodedText);
+                window.location.href = decodedText; // Redirect to scanned URL
+            }, () => {}); // You can pass a no-op for setScannerActive
+        } catch (error) {
+            console.error('Error starting QR scanner:', error);
+        }
+    };
 
   const handleClosePopup = () => {
     setShowPopup(false); // Close the popup
