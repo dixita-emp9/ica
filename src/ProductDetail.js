@@ -270,7 +270,7 @@ const ProductDetail = () => {
                 </Form.Control>
               </Form.Group>
 
-              <Button variant="primary" type="submit" className="mt-4">
+              <Button variant="danger" type="submit" className="mt-4">
                 Save to Portfolio
               </Button>
             </Form>

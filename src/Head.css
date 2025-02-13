@@ -116,3 +116,6 @@ nav {
   margin: 0 auto;
   padding: 0;
 }
+.btn-danger{
+  background-color: #e30613 !important;
+}

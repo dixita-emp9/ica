@@ -136,14 +136,7 @@ const Portfolioslist = () => {
           </button>
         </div>
 
-        <div className="wishlist-name text-center flex-grow-1">
-          <h4 className="mb-0 black-text">
-            {wishlistTitle}
-            <button className="btn btn-sm ml-2" onClick={handleEditClick}>
-              <i className="fa fa-edit"></i>
-            </button>
-          </h4>
-        </div>
+
 
         <div>
           <button className="pdf_btn" onClick={handleDownloadPDF}>
@@ -152,6 +145,15 @@ const Portfolioslist = () => {
         </div>
       </div>
 
+      <div className="wishlist-name text-center flex-grow-1">
+          <h3 className="mb-0 text-light">
+            {wishlistTitle}
+            <button className="btn btn-sm ml-2" onClick={handleEditClick}>
+              <i className="fa fa-edit"></i>
+            </button>
+          </h3>
+        </div>
+        
       {/* Edit Name Modal */}
       {isEditing && (
         <div className="modal-overlay">

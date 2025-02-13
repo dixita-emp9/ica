@@ -151,10 +151,10 @@ const Newportfolio = () => {
           {error && <p className="text-danger">{error}</p>}
           <Form onSubmit={handleFormSubmit}>
             <Form.Group controlId="formCategory">
-              <Form.Label>Wishlist Name</Form.Label>
+              <Form.Label>Portfolio Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Wishlist Name"
+                placeholder="Enter Portfolio Name"
                 value={wishlist}
                 onChange={(e) => setWishlist(e.target.value)}
                 required
