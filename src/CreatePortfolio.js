@@ -161,7 +161,7 @@ const Newportfolio = () => {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-4">
+            <Button variant="danger" type="submit" className="mt-4">
               Submit
             </Button>
           </Form>
