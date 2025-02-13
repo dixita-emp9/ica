@@ -167,33 +167,3 @@ button.create_btn svg{
   color: white; /* White icon on hover */
   border-color: darkred; /* Darker red border on hover */
 }
-
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
-    text-align: center;
-  }
-
-  .modal-buttons {
-    display: flex;
-    justify-content: center;
-  }
-
-  .modal-buttons button {
-    min-width: 80px;
-  }

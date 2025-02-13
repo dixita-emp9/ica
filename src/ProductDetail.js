@@ -244,7 +244,6 @@ const ProductDetail = () => {
             {error && <p className="text-danger">{error}</p>}
             <Form onSubmit={handleFormSubmit}>
               <Form.Group controlId="formPortfolio">
-                <Form.Label>Select Wishlist (Portfolio)</Form.Label>
                 <Form.Control
                   as="select"
                   value={selectedPortfolio}
