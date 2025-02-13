@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { fetchUser, fetchUserPortfolios, updatePortfolio } from './services/apiService';
+import { fetchUser, fetchUserPortfolios, createPortfolio } from './services/apiService';
 import './Portfolios.css';
 
 const Newportfolio = () => {
@@ -20,49 +20,39 @@ const Newportfolio = () => {
         setUser(response.data);
         
         const portfoliosResponse = await fetchUserPortfolios();
-        setPortfolios(portfoliosResponse.data);
+        console.log("Fetched Portfolios:", portfoliosResponse.data);
+  
+        if (portfoliosResponse.data && portfoliosResponse.data.wishlists) {
+          setPortfolios(portfoliosResponse.data.wishlists);  // ✅ Ensure wishlists are stored
+        }
       } catch (err) {
         console.log("Error fetching user:", err);
-        setError('Failed to load user data.');
+        setError("Failed to load user data.");
       }
     };
-
+  
     fetchUserData();
-  }, []);
+  }, []);  
 
-  const handlePortfolioClick = (portfolioId) => {
-    let userPortfolio = user.portfolio;
-
-    if (typeof userPortfolio === 'string') {
-      try {
-        userPortfolio = JSON.parse(userPortfolio);
-      } catch (error) {
-        console.error("Error parsing user portfolio:", error);
-        return;
-      }
+  const handlePortfolioClick = (wishlistId) => {
+    if (!portfolios || portfolios.length === 0) {
+      console.error("No wishlists found.");
+      return;
     }
-
-    if (Array.isArray(userPortfolio)) {
-      const selectedPortfolio = userPortfolio.find(portfolio => portfolio.id === portfolioId);
-
-      if (selectedPortfolio) {
-        const wishlistName = selectedPortfolio.wishlist;
-        const wishlistItems = selectedPortfolio.items || [];
-
-        console.log(`Navigating to Portfolioslist with ID: ${portfolioId}, Wishlist: ${wishlistName}, Items: ${wishlistItems}`);
-
-        navigate(`/portfolioslist/${portfolioId}`, {
-          state: { 
-            portfolioId: portfolioId,
-            wishlistName: wishlistName,
-            wishlistItems: wishlistItems
-          }
-        });
-      } else {
-        console.error("Portfolio not found with ID:", portfolioId);
-      }
+  
+    const selectedWishlist = portfolios.find((wishlist) => wishlist.id === wishlistId);
+  
+    if (selectedWishlist) {
+      console.log("Navigating with:", selectedWishlist);
+      navigate(`/portfolioslist/${wishlistId}`, {
+        state: {
+          portfolioId: wishlistId, 
+          wishlistName: selectedWishlist.name, 
+          wishlistItems: selectedWishlist.items || [],  // ✅ Sending full post details
+        },
+      });
     } else {
-      console.error("User portfolio is not an array:", userPortfolio);
+      console.error("Wishlist not found with ID:", wishlistId);
     }
   };
 
@@ -79,18 +69,22 @@ const Newportfolio = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await updatePortfolio(wishlist, []);  // Creating a new portfolio with empty items
-      console.log('Portfolio updated:', response.data);
+      const response = await createPortfolio(wishlist, []);
+      console.log("Portfolio created:", response.data);
+  
       setShowModal(false);
-
+      setWishlist("");
+  
       // Refresh portfolios
       const refreshedResponse = await fetchUserPortfolios();
-      setPortfolios(refreshedResponse.data);
+      if (refreshedResponse.data && refreshedResponse.data.wishlists) {
+        setPortfolios(refreshedResponse.data.wishlists);
+      }
     } catch (error) {
-      console.error('Error:', error);
-      setError('Something went wrong, please try again.');
+      console.error("Error:", error);
+      setError("Something went wrong, please try again.");
     }
-  };
+  };  
 
   return (
     <div className="main_menu_wrapper container">
@@ -122,27 +116,28 @@ const Newportfolio = () => {
         </div>
         
         <div className="row">
-          {portfolios.length > 0 ? (
-            portfolios.map((portfolio) => (
-              <div key={portfolio.id} className="col-6 col-md-3 mb-4">
-                <div
-                  className="shadow portfolio-box p-3"
-                  onClick={() => handlePortfolioClick(portfolio.id)}
-                >
+          {portfolios && portfolios.length > 0 ? ( // ✅ Ensure portfolios is checked properly
+            portfolios.map((wishlist) => (
+              <div key={wishlist.id} className="col-6 col-md-3 mb-4">
+                <div className="shadow portfolio-box p-3" onClick={() => handlePortfolioClick(wishlist.id)}>
                   <div>
-                    <img src="/home.svg" alt={`Portfolio ${portfolio.id}`} className="img-fluid mb-2" />
+                    <img src="/home.svg" alt={`Wishlist ${wishlist.id}`} className="img-fluid mb-2" />
                   </div>
                   <div className="mt-2">
-                    <h4>{portfolio.wishlist}</h4>
+                    <h4>{wishlist.name}</h4>
                   </div>
                   <div className="mt-2">
-                    <small>{portfolio.items && portfolio.items.length > 0 ? `${portfolio.items.length} items` : 'Empty'}</small>
+                    <small>
+                      {wishlist.items && wishlist.items.length > 0
+                        ? `${wishlist.items.length} items`
+                        : 'Empty'}
+                    </small>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <p>No portfolios found.</p>
+            <p>No wishlists found.</p> // ✅ Will only show if portfolios is empty
           )}
         </div>
       </div>

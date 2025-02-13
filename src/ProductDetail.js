@@ -2,31 +2,61 @@ import React, { useState, useEffect } from 'react';
 import { generatePdf } from './services/apiService';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { fetchUserPortfolios, addItemToPortfolio, fetchPostById } from './services/apiService';
+import { fetchUserPortfolios, addItemToPortfolio, fetchPostById, fetchUser } from './services/apiService';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
+  const [user, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [portfolios, setPortfolios] = useState([]);
-  const [selectedPortfolio, setSelectedPortfolio] = useState('');
+  const [selectedPortfolio, setSelectedPortfolio] = useState("");
   const [error, setError] = useState('');
   const [product, setProduct] = useState(null);
   const location = useLocation();
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetchUser();
+        setUser(response.data);
+  
+        const portfolioResponse = await fetchUserPortfolios();
+        console.log("Fetched Portfolio Response:", portfolioResponse.data);
+  
+        if (portfolioResponse.data && portfolioResponse.data.wishlists) {
+          setPortfolios(portfolioResponse.data.wishlists); // ✅ Store only user's wishlists
+        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        setError('Failed to load user data.');
+      }
+    };
+  
+    fetchUserData();
+  }, []);
+
   
   useEffect(() => {
     const getPortfolios = async () => {
       try {
         const response = await fetchUserPortfolios();
-        setPortfolios(response.data);
+        const data = response.data;
+  
+        if (Array.isArray(data)) {
+          setPortfolios(data);
+        } else {
+          setPortfolios([data]); // ✅ Wrap single object in an array
+        }
       } catch (error) {
         console.error('Error fetching portfolios:', error);
       }
     };
-
+  
     getPortfolios();
-  }, []);
+  }, []);  
 
   useEffect(() => {
     const getProduct = async () => {
@@ -228,11 +258,15 @@ const ProductDetail = () => {
                   required
                 >
                   <option value="">Select a portfolio</option>
-                  {portfolios.map((portfolio) => (
-                    <option key={portfolio.id} value={portfolio.id}>
-                      {portfolio.wishlist}
-                    </option>
-                  ))}
+                  {portfolios.length > 0 ? (
+                    portfolios.map((wishlist) => (
+                      <option key={wishlist.id} value={wishlist.id}>
+                        {wishlist.name}  {/* ✅ Use `wishlist.name` instead of `wishlist.wishlist` */}
+                      </option>
+                    ))
+                  ) : (
+                    <option disabled>No wishlists found</option>
+                  )}
                   <option value="create_new">Create New Portfolio</option>
                 </Form.Control>
               </Form.Group>
