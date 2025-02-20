@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.ica.amigosserver.com/api';
-// const API_URL = 'http://127.0.0.1:8000/api';
+// const API_URL = 'https://api.ica.amigosserver.com/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 // Create an axios instance for API calls
 const axiosInstance = axios.create({
@@ -17,6 +17,7 @@ const API_ENDPOINTS = {
   USER_UPDATE: '/user/update',
   LOGOUT: '/logout',
   USER_PORTFOLIOS: '/user/portfolios',
+  USER_PORTFOLIO : '/user/portfolio',
   USER_WISHLIST: '/user/wishlist',
   GENERATE_PDF: '/generate-pdf',
 };
@@ -74,8 +75,8 @@ export const logoutUser = () => {
 };
 
 // Update user's portfolio
-export const createPortfolio = (wishlist) => {
-  return axiosInstance.post(`${API_ENDPOINTS.USER}/portfolio`, { wishlist });
+export const createPortfolio = async (name) => {
+  return axiosInstance.post(API_ENDPOINTS.USER_PORTFOLIO, { name });
 };
 
 // Fetch user's portfolios

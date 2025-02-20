@@ -11,6 +11,8 @@ const Newportfolio = () => {
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);  // Modal state
   const [wishlist, setWishlist] = useState('');  // Wishlist state for new portfolio
+  const [portfolioName, setPortfolioName] = useState('');
+
 
   // Fetch user data and portfolios
   useEffect(() => {
@@ -68,8 +70,10 @@ const Newportfolio = () => {
   // Handle form submission for creating new portfolio
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
+  
     try {
-      const response = await createPortfolio(wishlist, []);
+      const response = await createPortfolio(portfolioName);
       console.log("Portfolio created:", response.data);
   
       setShowModal(false);
@@ -81,10 +85,13 @@ const Newportfolio = () => {
         setPortfolios(refreshedResponse.data.wishlists);
       }
     } catch (error) {
-      console.error("Error:", error);
-      setError("Something went wrong, please try again.");
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message); // Set the exact error message from API
+      } else {
+        setError("Something went wrong, please try again."); // Fallback error message
+      }
     }
-  };  
+  };   
 
   return (
     <div className="main_menu_wrapper container">
@@ -155,8 +162,8 @@ const Newportfolio = () => {
               <Form.Control
                 type="text"
                 placeholder="Enter Portfolio Name"
-                value={wishlist}
-                onChange={(e) => setWishlist(e.target.value)}
+                value={portfolioName}
+                onChange={(e) => setPortfolioName(e.target.value)}
                 required
               />
             </Form.Group>
