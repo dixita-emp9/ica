@@ -23,6 +23,7 @@ nav {
   height: 75px !important;
 }
 .profilelogo{
+  margin-top: 10px !important;
   height: 50px !important;
   border-radius: 50%;
 }
@@ -118,4 +119,7 @@ nav {
 }
 .btn-danger{
   background-color: #e30613 !important;
+}
+.bi-list {
+  margin-top: 10px !important;
 }
