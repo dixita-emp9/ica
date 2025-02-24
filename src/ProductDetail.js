@@ -127,14 +127,16 @@ const ProductDetail = () => {
   };  
   
   const handleBackClick = () => {
-    const { portfolioId, wishlistItems } = location.state || {};
+    const { portfolioId, wishlistItems, wishlistName } = location.state || {}; // Extract wishlistName too
   
-    if (portfolioId && wishlistItems) {
-      navigate(`/portfolioslist/${portfolioId}`, { state: { portfolioId, wishlistItems } });
+    if (portfolioId && wishlistItems && wishlistName) {
+      navigate(`/portfolioslist/${portfolioId}`, { 
+        state: { portfolioId, wishlistItems, wishlistName } // Ensure wishlistName is passed
+      });
     } else {
       navigate('/portfolios'); // Fallback if no state is available
     }
-  };
+  };  
   
   const handleViewInARClick = () => {
     navigate('/viewinar', { state: { productId, arUrl: product.ar_url } });

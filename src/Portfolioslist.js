@@ -66,8 +66,14 @@ const Portfolioslist = () => {
   };
 
   const handleCardClick = (postId) => {
-    navigate(`/portfolios/${postId}`, { state: { portfolioId, wishlistItems } });
-  };
+    navigate(`/portfolios/${postId}`, {
+      state: { 
+        portfolioId, 
+        wishlistName, // Include wishlist name
+        wishlistItems 
+      },
+    });
+  };  
 
   const handleDownloadPDF = async () => {
     try {
