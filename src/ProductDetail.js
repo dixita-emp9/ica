@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { generatePdf } from './services/apiService';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { fetchUserPortfolios, addItemToPortfolio, fetchPostById, fetchUser } from './services/apiService';
+import { fetchUserPortfolios, addItemToPortfolio, fetchPostById, fetchUser, createPortfolio } from './services/apiService';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
@@ -98,12 +98,27 @@ const ProductDetail = () => {
     }
   };
 
-  const handleCreateNewPortfolio = () => {
-    // Redirect to create portfolio page
-    window.location.href = "/createportfolio";
+  const handleCreateNewPortfolio = async () => {
+    try {
+      const today = new Date();
+      const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
+      
+      // Count how many portfolios exist with today's date in their name
+      const todayPortfolios = portfolios.filter(portfolio => portfolio.name.startsWith(dateStr));
+      const newCount = todayPortfolios.length + 1;
   
-    // OR open a modal for portfolio creation
-    // setShowCreatePortfolioModal(true);
+      const newPortfolioName = `${dateStr}(${newCount})`;
+  
+      // API call to create portfolio
+      const response = await createPortfolio(newPortfolioName); // Assuming createPortfolio API exists
+      if (response?.data) {
+        setPortfolios([...portfolios, response.data]); // Update state with new portfolio
+        setSelectedPortfolio(response.data.id); // Select newly created portfolio
+      }
+    } catch (error) {
+      console.error("Error creating new portfolio:", error);
+      setError('Failed to create new portfolio.');
+    }
   };
   
   const handleBackClick = () => {
@@ -143,29 +158,45 @@ const ProductDetail = () => {
     }
 
     try {
-        // Check if the item is already in the selected portfolio
-        const portfolio = portfolios.find(p => p.id === selectedPortfolio);
-        if (portfolio && portfolio.items.includes(productId)) {
-            setError('Item already exists in the selected portfolio.');
-            return;
+        console.log("Selected Portfolio ID:", selectedPortfolio);
+
+        // Check if the item exists in the selected portfolio
+        const portfolio = portfolios.find(p => p.id === Number(selectedPortfolio));
+
+        console.log("Found Portfolio:", portfolio);
+
+        if (portfolio) {
+            console.log("Portfolio Items:", portfolio.items);
+            if (portfolio.items.includes(productId)) {
+                setError('Item already exists in the selected portfolio.');
+                return;
+            }
         }
 
         const response = await addItemToPortfolio(selectedPortfolio, productId);
+        console.log("Add Item Response:", response);
 
         if (response?.error) {
             throw new Error(response.error);
         }
 
+        // ✅ Manually update the portfolio state after adding the item
+        const updatedPortfolios = portfolios.map(p => 
+          p.id === Number(selectedPortfolio) ? { ...p, items: [...p.items, Number(productId)] } : p
+      );
+      
+        setPortfolios(updatedPortfolios);
+
         setShowModal(false);
     } catch (error) {
-        console.error('Error saving to portfolio:', error);
+        console.error("Error saving to portfolio:", error);
 
         if (error.response?.status === 400) {
-            setError('Item already exists in the portfolio.');
+            setError("Item already exists in the portfolio.");
         } else if (error.response?.status === 404) {
-            setError('Portfolio not found.');
+            setError("Portfolio not found.");
         } else {
-            setError('Something went wrong, please try again.');
+            setError("Something went wrong, please try again.");
         }
     }
 };
