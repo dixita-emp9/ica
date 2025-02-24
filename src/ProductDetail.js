@@ -102,7 +102,7 @@ const ProductDetail = () => {
     try {
       const today = new Date();
       const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
-      
+  
       // Count how many portfolios exist with today's date in their name
       const todayPortfolios = portfolios.filter(portfolio => portfolio.name.startsWith(dateStr));
       const newCount = todayPortfolios.length + 1;
@@ -114,12 +114,17 @@ const ProductDetail = () => {
       if (response?.data) {
         setPortfolios([...portfolios, response.data]); // Update state with new portfolio
         setSelectedPortfolio(response.data.id); // Select newly created portfolio
+  
+        // Wait a short time, then reload
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       }
     } catch (error) {
       console.error("Error creating new portfolio:", error);
       setError('Failed to create new portfolio.');
     }
-  };
+  };  
   
   const handleBackClick = () => {
     const { portfolioId, wishlistItems } = location.state || {};
