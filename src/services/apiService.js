@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.ica.amigosserver.com/api';
-// const API_URL = 'http://127.0.0.1:8000/api';
+// const API_URL = 'https://api.ica.amigosserver.com/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 // Create an axios instance for API calls
 const axiosInstance = axios.create({
@@ -109,6 +109,20 @@ export const addItemToPortfolio = async (portfolioId, itemId) => {
     throw error;
   }
 };
+
+export const createPortfolioAndAddItem = async (name, itemId) => {
+  try {
+      const response = await axiosInstance.post('/portfolios/create-and-add-item', {
+          name,
+          item_id: itemId,
+      });
+      return response.data;
+  } catch (error) {
+      console.error("Error creating portfolio and adding item:", error.response?.data);
+      throw error;
+  }
+};
+
 
 // Fetch a specific product by ID
 export const fetchPostById = (id) => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { generatePdf } from './services/apiService';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { fetchUserPortfolios, addItemToPortfolio, fetchPostById, fetchUser, createPortfolio } from './services/apiService';
+import { fetchUserPortfolios, addItemToPortfolio, fetchPostById, fetchUser, createPortfolio,createPortfolioAndAddItem } from './services/apiService';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
@@ -102,29 +102,61 @@ const ProductDetail = () => {
     try {
       const today = new Date();
       const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
-  
-      // Count how many portfolios exist with today's date in their name
+      
       const todayPortfolios = portfolios.filter(portfolio => portfolio.name.startsWith(dateStr));
       const newCount = todayPortfolios.length + 1;
-  
       const newPortfolioName = `${dateStr}(${newCount})`;
   
-      // API call to create portfolio
-      const response = await createPortfolio(newPortfolioName); // Assuming createPortfolio API exists
-      if (response?.data) {
-        setPortfolios([...portfolios, response.data]); // Update state with new portfolio
-        setSelectedPortfolio(response.data.id); // Select newly created portfolio
+      // Create portfolio
+      const response = await createPortfolio(newPortfolioName);
+      console.log("Portfolio Creation Response:", response); // Debug API response
   
-        // Wait a short time, then reload
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+      if (!response?.data || !response.data.id) {
+        throw new Error("Portfolio creation failed, no valid ID returned.");
       }
+  
+      const newPortfolio = response.data;
+      setPortfolios([...portfolios, newPortfolio]);
+      setSelectedPortfolio(newPortfolio.id);
+  
+      // Add item to newly created portfolio
+      const addItemResponse = await addItemToPortfolio(newPortfolio.id, productId);
+      console.log("Add Item Response:", addItemResponse);
+  
+      setShowModal(false);
     } catch (error) {
-      console.error("Error creating new portfolio:", error);
-      setError('Failed to create new portfolio.');
+      console.error("Error:", error);
+      setError("Failed to create portfolio and add item.");
     }
-  };  
+  };
+  
+  const handleCreateNewPortfolioAndAddItem = async () => {
+    try {
+      const today = new Date();
+      const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
+      
+      // Count existing portfolios with today's date prefix
+      const todayPortfolios = portfolios.filter(portfolio => portfolio.name.startsWith(dateStr));
+      const newCount = todayPortfolios.length + 1;
+      const newPortfolioName = `${dateStr}(${newCount})`;
+  
+      // Call API to create portfolio and add item
+      const response = await createPortfolioAndAddItem(newPortfolioName, productId);
+  
+      console.log("Portfolio Created & Item Added:", response);
+  
+      if (response?.portfolio) {
+        setPortfolios([...portfolios, response.portfolio]);
+        setSelectedPortfolio(response.portfolio.id);
+      }
+  
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Failed to create portfolio and add item.");
+    }
+  };
+  
   
   const handleBackClick = () => {
     const { portfolioId, wishlistItems, wishlistName } = location.state || {}; // Extract wishlistName too
@@ -282,38 +314,42 @@ const ProductDetail = () => {
             {error && <p className="text-danger">{error}</p>}
             <Form onSubmit={handleFormSubmit}>
               <Form.Group controlId="formPortfolio">
+                <Form.Label>Select an existing portfolio</Form.Label>
                 <Form.Control
                   as="select"
                   value={selectedPortfolio}
-                  onChange={(e) => {
-                    if (e.target.value === "create_new") {
-                      handleCreateNewPortfolio(); // Open create portfolio modal
-                    } else {
-                      setSelectedPortfolio(e.target.value);
-                    }
-                  }}
+                  onChange={(e) => setSelectedPortfolio(e.target.value)}
                   required
                 >
                   <option value="">Select a portfolio</option>
                   {portfolios.length > 0 ? (
-                    portfolios.map((wishlist) => (
-                      <option key={wishlist.id} value={wishlist.id}>
-                        {wishlist.name}  {/* ✅ Use `wishlist.name` instead of `wishlist.wishlist` */}
+                    portfolios.map((portfolio) => (
+                      <option key={portfolio.id} value={portfolio.id}>
+                        {portfolio.name}
                       </option>
                     ))
                   ) : (
-                    <option disabled>No wishlists found</option>
+                    <option disabled>No portfolios found</option>
                   )}
-                  <option value="create_new">Create New Portfolio</option>
                 </Form.Control>
               </Form.Group>
 
-              <Button variant="danger" type="submit" className="mt-4">
+              <Button variant="danger" type="submit" className="mt-3">
                 Save to Portfolio
               </Button>
             </Form>
+
+            <hr />
+
+            <div className="text-center">
+              <p>OR</p>
+              <Button variant="danger" onClick={handleCreateNewPortfolioAndAddItem}>
+                Create New Portfolio
+              </Button>
+            </div>
           </Modal.Body>
         </Modal>
+
       </div>
     </div>
   );
