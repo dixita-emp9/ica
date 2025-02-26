@@ -132,12 +132,22 @@ const ProductDetail = () => {
   
   const handleCreateNewPortfolioAndAddItem = async () => {
     try {
-        const today = new Date();
-        const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
-
-        const todayPortfolios = portfolios.filter(portfolio => portfolio.name.startsWith(dateStr));
-        const newCount = todayPortfolios.length + 1;
-        const newPortfolioName = `${dateStr}(${newCount})`;
+      const today = new Date();
+      const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
+      
+      const todayPortfolios = portfolios
+        .map(portfolio => portfolio.name)
+        .filter(name => name.startsWith(dateStr))
+        .map(name => {
+          const match = name.match(/\((\d+)\)$/);
+          return match ? parseInt(match[1], 10) : 0;
+        });
+      
+      const newCount = todayPortfolios.length ? Math.max(...todayPortfolios) + 1 : 1;
+      const newPortfolioName = `${dateStr}(${newCount})`;
+      
+      console.log("New Portfolio Name:", newPortfolioName);
+           
 
         // Create portfolio & add item
         const response = await createPortfolioAndAddItem(newPortfolioName, productId);
