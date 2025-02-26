@@ -167,3 +167,12 @@ button.create_btn svg{
   color: white; /* White icon on hover */
   border-color: darkred; /* Darker red border on hover */
 }
+
+.portfolio-box {
+  position: relative;
+  border-radius: 10px;
+  padding: 15px;
+  background: #fff;
+  transition: 0.3s;
+}
+

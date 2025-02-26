@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchUser, fetchUserPortfolios } from './services/apiService';
+import { fetchUser, fetchUserPortfolios, deletePortfolio  } from './services/apiService';
 import { startQrScanner } from './services/qrScanner';
 import './Portfolios.css';
 
@@ -46,6 +46,16 @@ const Portfolios = () => {
       }, () => {});
     } catch (error) {
       console.error('Error starting QR scanner:', error);
+    }
+  };
+
+  const handleDeletePortfolio = async (portfolioId) => {
+    try {
+      await deletePortfolio(portfolioId);
+      setPortfolios((prevPortfolios) => prevPortfolios.filter(p => p.id !== portfolioId));
+      console.log("Portfolio deleted:", portfolioId);
+    } catch (error) {
+      console.error("Failed to delete portfolio:", error);
     }
   };
 
@@ -131,6 +141,15 @@ const Portfolios = () => {
                         : 'Empty'}
                     </small>
                   </div>
+                  <button
+              className="btn position-absolute top-0 end-0 m-2"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent click from triggering navigation
+                handleDeletePortfolio(wishlist.id);
+              }}
+            >
+              <i className="fa fa-trash"></i>
+            </button>
                 </div>
               </div>
             ))

@@ -123,6 +123,15 @@ export const createPortfolioAndAddItem = async (name, itemId) => {
   }
 };
 
+export const deletePortfolio = async (portfolioId) => {
+  try {
+    const response = await axiosInstance.delete(`/portfolios/${portfolioId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting portfolio:", error);
+    throw error;
+  }
+};
 
 // Fetch a specific product by ID
 export const fetchPostById = (id) => {
