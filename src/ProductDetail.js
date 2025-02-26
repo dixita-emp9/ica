@@ -132,32 +132,42 @@ const ProductDetail = () => {
   
   const handleCreateNewPortfolioAndAddItem = async () => {
     try {
-      const today = new Date();
-      const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
-      
-      // Count existing portfolios with today's date prefix
-      const todayPortfolios = portfolios.filter(portfolio => portfolio.name.startsWith(dateStr));
-      const newCount = todayPortfolios.length + 1;
-      const newPortfolioName = `${dateStr}(${newCount})`;
-  
-      // Call API to create portfolio and add item
-      const response = await createPortfolioAndAddItem(newPortfolioName, productId);
-  
-      console.log("Portfolio Created & Item Added:", response);
-  
-      if (response?.portfolio) {
-        setPortfolios([...portfolios, response.portfolio]);
-        setSelectedPortfolio(response.portfolio.id);
-      }
-  
-      setShowModal(false);
+        const today = new Date();
+        const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
+
+        const todayPortfolios = portfolios.filter(portfolio => portfolio.name.startsWith(dateStr));
+        const newCount = todayPortfolios.length + 1;
+        const newPortfolioName = `${dateStr}(${newCount})`;
+
+        // Create portfolio & add item
+        const response = await createPortfolioAndAddItem(newPortfolioName, productId);
+
+        console.log("Portfolio Created & Item Added:", response);
+
+        if (response?.portfolio) {
+            setPortfolios([...portfolios, response.portfolio]); // Update state immediately
+
+            // ✅ Fetch updated portfolios to get the latest items
+            const updatedPortfolios = await fetchUserPortfolios();
+            console.log("Updated Portfolios:", updatedPortfolios.data);
+            setPortfolios(updatedPortfolios.data.wishlists || []);
+
+            navigate(`/portfolioslist/${response.portfolio.id}`, {
+                state: {
+                    portfolioId: response.portfolio.id,
+                    wishlistName: response.portfolio.name,
+                    wishlistItems: updatedPortfolios.data.wishlists.find(p => p.id === response.portfolio.id)?.items || [],
+                },
+            });
+        }
+
+        setShowModal(false);
     } catch (error) {
-      console.error("Error:", error);
-      setError("Failed to create portfolio and add item.");
+        console.error("Error:", error);
+        setError("Failed to create portfolio and add item.");
     }
   };
-  
-  
+
   const handleBackClick = () => {
     const { portfolioId, wishlistItems, wishlistName } = location.state || {}; // Extract wishlistName too
   
