@@ -5,7 +5,7 @@ const Register = () => {
   return (
     <div className="form-container">
         <div className="logo-box mb-4">
-          <img src="/ICA_new_logo_White.png" alt="ICA Logo" className="logo" />
+          <img src="/2-ICA-GOOD-TASTE-SHOWS-Red.png" alt="ICA Logo" className="logo" />
         </div>
         <div>
           <a href="/register" className="btn home_register border-danger" role="button">Register</a>

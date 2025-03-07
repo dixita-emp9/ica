@@ -193,7 +193,10 @@ const Portfolioslist = () => {
 
         {groupedPosts.map(({ parentCategory, categories }) => (
           <div key={parentCategory} className="category-section mb-4">
-            <h3 className="parent-category">{parentCategory}</h3>
+            {/* Only show the parent category name if it exists */}
+            {parentCategory !== "Uncategorized" && parentCategory && (
+              <h3 className="parent-category">{parentCategory}</h3>
+            )}
 
             {categories.map(({ category, posts }) => (
               <div key={category} className="sub-category">

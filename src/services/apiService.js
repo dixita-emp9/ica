@@ -20,6 +20,8 @@ const API_ENDPOINTS = {
   USER_PORTFOLIO : '/user/portfolio',
   USER_WISHLIST: '/user/wishlist',
   GENERATE_PDF: '/generate-pdf',
+  SEND_OTP: "/send-otp", // New OTP endpoint
+  VERIFY_OTP: "/verify-otp", // New OTP verification endpoint
 };
 
 // Intercept request to include token automatically if it exists
@@ -140,4 +142,12 @@ export const fetchPostById = (id) => {
 
 export const updateWishlistName = async (wishlistId, newName) => {
   return await axiosInstance.put(`/wishlist/${wishlistId}/update-name`, { name: newName });
+};
+
+export const sendOtp = async (phone_number) => {
+  return axiosInstance.post("/send-otp", { phone_number });
+};
+
+export const verifyOtp = async (phone_number, otp) => {
+  return axiosInstance.post("/verify-otp", { phone_number, otp });
 };

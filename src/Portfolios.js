@@ -35,7 +35,14 @@ const Portfolios = () => {
     };
   
     fetchUserData();
-  }, []);  
+    
+    // ✅ Show popup only on first login
+    const showPopupFlag = localStorage.getItem('showWelcomePopup');
+    if (showPopupFlag === 'true') {
+      setShowPopup(true);
+      localStorage.removeItem('showWelcomePopup'); // Remove so it doesn't show again
+    }
+  }, []); 
   
   const handleScanClick = async () => {
     console.log('Scan QR Code clicked!');
@@ -94,12 +101,7 @@ const Portfolios = () => {
             <button className="close-button" onClick={handleClosePopup}>
               <i className="fa fa-times"></i>
             </button>
-            <h4>Welcome to ICA La Galleria</h4>
-            <p>
-              Explore the world of Italian Wood Finishes. Take a walkthrough of the ICA
-              La Galleria and scan the QR Code to add the finishes you like to your
-              portfolio or view in AR.
-            </p>
+            <h5>Welcome to ICA La Galleria – Experience Center. <br/> Explore the world of Luxury Italian Wood Finishes</h5>
           </div>
         </div>
       )}
@@ -124,7 +126,7 @@ const Portfolios = () => {
         </div>
 
         <div className="row">
-          {portfolios && portfolios.length > 0 ? ( // ✅ Ensure portfolios is checked properly
+          {portfolios && portfolios.length > 0 ? (
             portfolios.map((wishlist) => (
               <div key={wishlist.id} className="col-6 col-md-3 mb-4">
                 <div className="shadow portfolio-box p-3" onClick={() => handlePortfolioClick(wishlist.id)}>
@@ -142,22 +144,21 @@ const Portfolios = () => {
                     </small>
                   </div>
                   <button
-              className="btn position-absolute top-0 end-0 m-2"
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent click from triggering navigation
-                handleDeletePortfolio(wishlist.id);
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </button>
+                    className="btn position-absolute top-0 end-0 m-2"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent click from triggering navigation
+                      handleDeletePortfolio(wishlist.id);
+                    }}
+                  >
+                    <i className="fa fa-trash"></i>
+                  </button>
                 </div>
               </div>
             ))
           ) : (
-            <p>No wishlists found.</p> // ✅ Will only show if portfolios is empty
+            <p>No wishlists found.</p>
           )}
         </div>
-
       </div>
     </div>
   );

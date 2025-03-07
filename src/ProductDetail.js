@@ -132,22 +132,25 @@ const ProductDetail = () => {
   
   const handleCreateNewPortfolioAndAddItem = async () => {
     try {
-      const today = new Date();
-      const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
-      
-      const todayPortfolios = portfolios
-        .map(portfolio => portfolio.name)
-        .filter(name => name.startsWith(dateStr))
-        .map(name => {
-          const match = name.match(/\((\d+)\)$/);
-          return match ? parseInt(match[1], 10) : 0;
-        });
-      
-      const newCount = todayPortfolios.length ? Math.max(...todayPortfolios) + 1 : 1;
-      const newPortfolioName = `${dateStr}(${newCount})`;
-      
-      console.log("New Portfolio Name:", newPortfolioName);
-           
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = today.toLocaleString('en-US', { month: 'short' });
+        const year = String(today.getFullYear()).slice(-2);
+        
+        const dateStr = `${day}${month}${year}`; // Format: 02Feb25
+
+        const todayPortfolios = portfolios
+            .map(portfolio => portfolio.name)
+            .filter(name => name.startsWith(dateStr))
+            .map(name => {
+                const match = name.match(/\((\d+)\)$/);
+                return match ? parseInt(match[1], 10) : 0;
+            });
+
+        const newCount = todayPortfolios.length ? Math.max(...todayPortfolios) + 1 : 1;
+        const newPortfolioName = `${dateStr}(${newCount})`;
+
+        console.log("New Portfolio Name:", newPortfolioName);
 
         // Create portfolio & add item
         const response = await createPortfolioAndAddItem(newPortfolioName, productId);
@@ -286,7 +289,8 @@ const ProductDetail = () => {
 
         <div className='product-container mt-4'>
           <div className='image-container'>
-            <span className="black-text product_code">Product Name : </span><span>{product.title}</span>
+            <h5 className="black-text product_code">Product Name : </h5>
+            <span>{product.title}</span>
             <br />
             <span className="black-text product_code">Product Code: </span><span>{product.product_code}</span>
             <div className='col-12 mt-3'>
