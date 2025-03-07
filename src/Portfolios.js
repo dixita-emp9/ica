@@ -117,9 +117,9 @@ const Portfolios = () => {
             <button onClick={handleScanClick} className="btn mb-3">
               <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
             </button>
-            <h3>
-              Scan QR Code <br /> View In AR
-            </h3>
+            <h5 style={{ fontSize: '1rem' }}>
+            Scan the QR Code on the finished panel in the ICA Experience Center to know more about the finishes
+            </h5>
             <div id="qr-code-scanner" style={{ width: '100%' }}></div>
             {scanResult && <div><p>Scanned Result: {scanResult}</p></div>}
           </div>
