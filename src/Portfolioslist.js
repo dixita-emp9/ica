@@ -65,15 +65,18 @@ const Portfolioslist = () => {
     navigate("/portfolios");
   };
 
-  const handleCardClick = (postId) => {
-    navigate(`/portfolios/${postId}`, {
+  const handleCardClick = (post) => {
+    console.log("Navigating with:", post);
+    navigate(`/portfolios/${post.post_id}`, {
       state: { 
         portfolioId, 
-        wishlistName, // Include wishlist name
-        wishlistItems 
+        wishlistName, 
+        wishlistItems,
+        category: post.category_name, 
+        parentCategory: post.parent_category_name 
       },
     });
-  };  
+  };     
 
   const handleDownloadPDF = async () => {
     try {
@@ -206,7 +209,7 @@ const Portfolioslist = () => {
                     <div
                       className="col-12 mb-4"
                       key={post.post_id}
-                      onClick={() => handleCardClick(post.post_id)}
+                      onClick={() => handleCardClick(post)}
                     >
                       <div className="card bg-dark text-white">
                         <img

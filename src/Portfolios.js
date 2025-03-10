@@ -101,13 +101,13 @@ const Portfolios = () => {
             <button className="close-button" onClick={handleClosePopup}>
               <i className="fa fa-times"></i>
             </button>
-            <h5>Welcome to ICA La Galleria – Experience Center. <br/> Explore the world of Luxury Italian Wood Finishes</h5>
+            <h5>Welcome to ICA La Galleria – Experience Center. <br/><br/> Explore the world of Luxury Italian Wood Finishes</h5>
           </div>
         </div>
       )}
 
       <div className="text-center mb-4">
-        {user ? <h5 className="black-text">{user.name}</h5> : <p>Loading...</p>}
+        {user ? <h5 className="text-light">{user.name}</h5> : <p>Loading...</p>}
         {error && <p className="text-danger">{error}</p>}
       </div>
 

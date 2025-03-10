@@ -74,9 +74,9 @@ const Head = () => {
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 ></i>
                 <img 
-                    src="/2-ICA-GOOD-TASTE-SHOWS.png" 
+                    src="/ICA_logo_White.png" 
                     alt="ICA Logo" 
-                    className="img-fluid mainlogo" 
+                    className="mainlogo" 
                     onClick={handleLogoClick} 
                 />
                 <img 
@@ -112,7 +112,7 @@ const Head = () => {
                         </ul>
                         <div className="menu-footer">
                             <img 
-                                src="/2-ICA-GOOD-TASTE-SHOWS.png" 
+                                src="/ICA_logo_Black.png" 
                                 alt="ICA Logo" 
                                 className="img-fluid"
                             />

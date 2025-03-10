@@ -98,6 +98,16 @@ const ProductDetail = () => {
     }
   };
 
+  const handleWhatsAppClick = (event) => {
+    event.preventDefault(); // Prevent default link behavior
+  
+    const currentUrl = encodeURIComponent(window.location.href); // Encode URL
+    const message = `Check out this link: ${currentUrl}`; // WhatsApp auto-links URLs
+  
+    // Open WhatsApp with the message
+    window.open(`https://wa.me/?text=${message}`, "_blank");
+  };
+
   const handleCreateNewPortfolio = async () => {
     try {
       const today = new Date();
@@ -288,46 +298,64 @@ const ProductDetail = () => {
         </div>
 
         <div className='product-container mt-4'>
+          <div clasName='detail-about'>
+            <h5 className="black-text">About ICA</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> 
+          </div>
+          
           <div className='image-container'>
-            <h5 className="black-text product_code">Product Name : </h5>
-            <span>{product.title}</span>
-            <br />
-            <span className="black-text product_code">Product Code: </span><span>{product.product_code}</span>
+            <h5 className="black-text">Your Selection</h5>
             <div className='col-12 mt-3'>
               <img src={`https://api.ica.amigosserver.com/storage/${product.image}`} alt={product.title} className="img-fluid product_img" />
             </div>
           </div>
 
-          <div className='button-container'>
-            <button className="portfolio_btn" onClick={handleSaveToPortfolioClick}>
-              <i className="fa fa-folder-open" style={{ marginRight: '10px' }}></i>Save to Portfolio
-            </button>
-            <button className="portfolio_btn" onClick={handleViewInARClick}>
-              <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
-            </button>
-          </div>
-          
-          <div className="row justify-content-center mt-4">
-            <div className="col-10 col-md-6">
-              <div dangerouslySetInnerHTML={{ __html: product.body }} />
-            
-            <div className="mt-3 mb-2">
-              <div><strong>Follow us on Social Media:</strong></div>
-              <div className="footer-social">
-                <a href="https://www.linkedin.com/in/ica-pidilite-private-limited" target="_blank">
-                  <img src="/linkedin.png" alt="LinkedIn" />
-                </a>
-                <a href="https://www.instagram.com/icapidilite" target="_blank">
-                  <img src="/instagram.png" alt="Instagram" />
-                </a>
-                <a href="https://www.facebook.com/ICAPidiliteIndia" target="_blank">
-                  <img src="/facebook.png" alt="Facebook" />
-                </a>
-              </div>
-              </div>
-            </div>
+          <div className='prod-cat'>
+            {product.parent_category_name && (
+              <h6 className="black-text">{product.parent_category_name}</h6>
+            )}
+            {product.category_name && (
+              <h6 className="black-text pl-10">- {product.category_name}</h6>
+            )}
+          </div> 
+              
+          <div className='prod-title'>
+            <h5 className="black-text product_code">Product Name : </h5>     
+            <span>{product.title}</span>
           </div>
 
+          <div>
+            <h5 className="black-text product_code">Product Code: </h5>
+            <span>{product.product_code}</span>
+          </div>
+
+          <div className="row justify-content-center mt-4">
+            <div className="col-12 col-md-6">
+              <div dangerouslySetInnerHTML={{ __html: product.body }} />
+              </div>
+            
+              <div className='button-container pt-3 pb-3'>
+                <strong>Like the Finish? Add it your collection </strong>
+                <button className="portfolio_btn" onClick={handleSaveToPortfolioClick}>
+                  <i className="fa fa-folder-open" style={{ marginRight: '10px' }}></i>Save to Portfolio
+                </button>
+                
+              </div>
+
+              <div className='button-container pb-3'>
+              <strong>Visualise the Finish on a furniture piece </strong>
+                <button className="portfolio_btn" onClick={handleViewInARClick}>
+                  <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
+                </button>
+              </div>
+
+              <div className="whatsapp">
+                <a href="#" onClick={handleWhatsAppClick}>
+                  <h5>Share via WhatsApp  </h5>
+                  <img src="/whatsapp.png" alt="whatsapp" />
+                </a>
+              </div>
+          </div>
         </div>
 
         <Modal show={showModal} onHide={handleModalClose}>

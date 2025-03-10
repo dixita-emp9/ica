@@ -1,18 +1,7 @@
 header{
   position: relative;
   overflow: hidden;
-  &::before {
-    content: '';
-    display: block;
-    background: #ff242c;
-    position: absolute;
-    left: 0%;
-    bottom: 0;
-    width: 100%;
-    height: 345px;
-    z-index: -2;
-    clip-path: circle(130% at 50% -48%);
-  }
+ 
 }
 nav {
   display: flex;
@@ -20,7 +9,7 @@ nav {
   justify-content: space-between;
 }
 .mainlogo{
-  height: 75px !important;
+  height: 100px !important;
 }
 .profilelogo{
   margin-top: 10px !important;

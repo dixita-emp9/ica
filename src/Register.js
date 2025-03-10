@@ -31,7 +31,7 @@ const Register = () => {
     return (
         <div className="form-container">
             <div className="logo-box mb-4">
-                <img src="/2-ICA-GOOD-TASTE-SHOWS-Red.png" alt="ICA Logo" className="logo" />
+                <img src="/ICA_logo_Red.png" alt="ICA Logo" className="logo" />
             </div>
             <form className="form-content" onSubmit={handleRegister}>
                 <div className="form-group mt-4">
