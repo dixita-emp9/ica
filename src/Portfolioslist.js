@@ -155,10 +155,10 @@ const Portfolioslist = () => {
       </div>
 
       <div className="wishlist-name text-center flex-grow-1">
-          <h3 className="mb-0 text-light">
+          <h3 className="mb-0 mt-3 text-light">
             {wishlistTitle}
             <button className="btn btn-sm ml-2" onClick={handleEditClick}>
-              <i className="fa fa-edit"></i>
+              <i className="fa fa-edit text-white"></i>
             </button>
           </h3>
         </div>
