@@ -1,19 +1,22 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { sendOtp, verifyOtp } from "./services/apiService";
+import "./Auth.css"; // Using the same styles as normal login
 
 const LoginWithOtp = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState("");
-  const [step, setStep] = useState(1);
+  const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSendOtp = async () => {
     setLoading(true);
     setError("");
     try {
       await sendOtp(phoneNumber);
-      setStep(2);
+      setOtpSent(true);
     } catch (err) {
       setError("Failed to send OTP. Try again.");
     }
@@ -25,56 +28,64 @@ const LoginWithOtp = () => {
     setError("");
     try {
       const response = await verifyOtp(phoneNumber, otp);
-      localStorage.setItem("authToken", response.data.token);
-      window.location.href = "/dashboard"; // Redirect after login
+      localStorage.setItem("authToken", response.token);
+      localStorage.setItem('showWelcomePopup', 'true');
+      // alert("OTP verified successfully!");
+      navigate("/portfolios"); // Redirect after login
     } catch (err) {
-      setError("Invalid OTP. Try again.");
+      setError(err.message);
     }
     setLoading(false);
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="p-6 bg-white rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4">Login with OTP</h2>
-        {step === 1 ? (
-          <>
+    <div className="form-container">
+      <div className="logo-box mb-4">
+        <img src="/ICA_logo_Red.png" alt="ICA Logo" className="logo" />
+      </div>
 
-            <input
-              type="tel"
-              pattern="[0-9]{10}"
-              placeholder="Enter Phone Number"
-              className="w-full p-2 border rounded mb-4"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            <button
-              className="w-full p-2 bg-blue-600 text-white rounded"
-              onClick={handleSendOtp}
-              disabled={loading}
-            >
-              {loading ? "Sending..." : "Send OTP"}
-            </button>
-          </>
-        ) : (
-          <>
+      <div className="form-content">
+        <div className="form-group mt-4">
+          <input
+            type="tel"
+            pattern="[0-9]{10}"
+            className="form-control p-3"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="Enter Phone Number"
+            disabled={otpSent} // Disable phone input after sending OTP
+          />
+        </div>
+
+        {otpSent && (
+          <div className="form-group mt-4">
             <input
               type="text"
-              placeholder="Enter OTP"
-              className="w-full p-2 border rounded mb-4"
+              className="form-control p-3"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
+              placeholder="Enter OTP"
             />
-            <button
-              className="w-full p-2 bg-green-600 text-white rounded"
-              onClick={handleVerifyOtp}
-              disabled={loading}
-            >
-              {loading ? "Verifying..." : "Verify OTP"}
-            </button>
-          </>
+          </div>
         )}
-        {error && <p className="text-red-600 mt-2">{error}</p>}
+
+        {!otpSent ? (
+          <button className="submit_btn btn bg_danger p-3 mt-4" onClick={handleSendOtp} disabled={loading}>
+            {loading ? "Sending..." : "Send OTP"}
+          </button>
+        ) : (
+          <button className="submit_btn btn bg_danger p-3 mt-4" onClick={handleVerifyOtp} disabled={loading}>
+            {loading ? "Verifying..." : "Verify OTP"}
+          </button>
+        )}
+
+        {error && <p className="text-red-600 mt-2 text-center">{error}</p>}
+
+        <div className="login-link mt-4">
+          <p>
+            Go back to <a href="/login">Email Login</a>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.ica.amigosserver.com/api';
-// const API_URL = 'http://127.0.0.1:8000/api';
+// const API_URL = 'https://api.ica.amigosserver.com/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 // Create an axios instance for API calls
 const axiosInstance = axios.create({
@@ -148,6 +148,15 @@ export const sendOtp = async (phone_number) => {
   return axiosInstance.post("/send-otp", { phone_number });
 };
 
-export const verifyOtp = async (phone_number, otp) => {
-  return axiosInstance.post("/verify-otp", { phone_number, otp });
+export const verifyOtp = async (phoneNumber, otp) => {
+  try {
+    const response = await axiosInstance.post("/verify-otp", { 
+      phone_number: phoneNumber, 
+      otp 
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Verification failed. Try again.");
+  }
 };
+

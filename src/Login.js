@@ -54,6 +54,7 @@ const Login = () => {
         </button>
         <div className="login-link mt-4">
           <p>Forgot Password? <a href="/register">Go Back</a></p>
+          <p>Login With <a href="/login-otp">Phone Number</a></p>
         </div>
       </form>
     </div>
