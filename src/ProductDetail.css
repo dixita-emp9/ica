@@ -96,7 +96,9 @@ footer {
 .footer-social a:hover {
   color: #0056b3;
 }
-
+.whatsapp{
+  margin-bottom: 15px;
+}
 .whatsapp img,.whatsapp h5{
   display: inline-block;
   color: #000 !important;

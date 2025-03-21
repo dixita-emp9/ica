@@ -298,26 +298,6 @@ const ProductDetail = () => {
         </div>
 
         <div className='product-container mt-4'>
-          <div clasName='detail-about'>
-            <h5 className="black-text">About ICA</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> 
-          </div>
-          
-          <div className='image-container'>
-            <h5 className="black-text">Your Selection</h5>
-            <div className='col-12 mt-3'>
-              <img src={`https://api.ica.amigosserver.com/storage/${product.image}`} alt={product.title} className="img-fluid product_img" />
-            </div>
-          </div>
-
-          <div className='prod-cat'>
-            {product.parent_category_name && (
-              <h6 className="black-text">{product.parent_category_name}</h6>
-            )}
-            {product.category_name && (
-              <h6 className="black-text pl-10">- {product.category_name}</h6>
-            )}
-          </div> 
               
           <div className='prod-title'>
             <h5 className="black-text product_code">Product Name : </h5>     

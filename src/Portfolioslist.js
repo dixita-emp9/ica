@@ -47,16 +47,24 @@ const Portfolioslist = () => {
 
     // Convert object to sorted array
     const sortedData = Object.entries(categorizedPosts)
-      .sort(([, a], [, b]) => a.order - b.order) // Sort parent categories first
-      .map(([parentCategory, parentData]) => ({
+    .sort(([, a], [, b]) => a.order - b.order)
+    .map(([parentCategory, parentData]) => {
+      let categoryIndex = 0;
+  
+      const sortedCategories = Object.entries(parentData.categories)
+        .sort(([, a], [, b]) => a.order - b.order)
+        .map(([category, catData]) => ({
+          category: `${String.fromCharCode(65 + categoryIndex++)}. ${category}`,
+          posts: catData.posts.map((post, i) => ({ ...post, displayIndex: i + 1 })),
+        }));
+  
+      return {
         parentCategory,
-        categories: Object.entries(parentData.categories)
-          .sort(([, a], [, b]) => a.order - b.order) // Sort child categories
-          .map(([category, catData]) => ({
-            category,
-            posts: catData.posts
-          }))
-      }));
+        categories: sortedCategories,
+      };
+    });
+  
+  console.log(sortedData);   
 
     setGroupedPosts(sortedData);
   }, [wishlistItems]);
@@ -134,8 +142,8 @@ const Portfolioslist = () => {
         setError("An error occurred while updating.");
       }
     }
-  };
-  
+  };  
+
   return (
     <div className="main_menu_wrapper container-fluid">
       <div className="d-flex justify-content-between align-items-center">
@@ -191,44 +199,43 @@ const Portfolioslist = () => {
         </div>
       )}
 
-      <div className="portfoiliolist container mt-4">
-        {error && <div className="alert alert-warning">{error}</div>}
+    <div className="portfoiliolist container mt-4">
+      {error && <div className="alert alert-warning">{error}</div>}
 
-        {groupedPosts.map(({ parentCategory, categories }) => (
-          <div key={parentCategory} className="category-section mb-4">
-            {/* Only show the parent category name if it exists */}
-            {parentCategory !== "Uncategorized" && parentCategory && (
-              <h3 className="parent-category">{parentCategory}</h3>
-            )}
+      {groupedPosts.map(({ parentCategory, categories }) => (
+        <div key={parentCategory} className="category-section mb-4">
+          {parentCategory !== "Uncategorized" && (
+            <h3 className="parent-category font-weight-bold">{parentCategory}</h3>
+          )}
 
-            {categories.map(({ category, posts }) => (
-              <div key={category} className="sub-category">
-                <h5 className="category-name">{category}</h5>
-                <div className="row">
-                  {posts.map((post) => (
-                    <div
-                      className="col-12 mb-4"
-                      key={post.post_id}
-                      onClick={() => handleCardClick(post)}
-                    >
-                      <div className="card bg-dark text-white">
-                        <img
-                          src={`https://api.ica.amigosserver.com/storage/${post.image}`}
-                          className="card-img"
-                          alt={post.title}
-                        />
-                        <div className="card-img-overlay d-flex justify-content-between align-items-center">
-                          <h5 className="card-title">{post.title}</h5>
-                        </div>
+          {categories.map(({ category, posts }) => (
+            <div key={category} className="sub-category">
+              <h5 className="category-name">{category}</h5>
+              <div className="row">
+                {posts.map((post) => (
+                  <div
+                    className="col-12 mb-4"
+                    key={post.post_id}
+                    onClick={() => handleCardClick(post)}
+                  >
+                    <div className="card bg-dark text-white">
+                      <img
+                        src={`https://api.ica.amigosserver.com/storage/${post.image}`}
+                        className="card-img"
+                        alt={post.title}
+                      />
+                      <div className="card-img-overlay d-flex justify-content-between align-items-center">
+                        <h5 className="card-title">{post.displayIndex}. {post.title}</h5>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
 
       {/* Styles for modal */}
       <style>
@@ -261,6 +268,14 @@ const Portfolioslist = () => {
 
           .modal-buttons button {
             min-width: 80px;
+          }
+          .parent-category {
+            font-weight: bold;
+            font-size: 1.5rem;
+          }
+
+          .category-name {
+            font-weight: 500;
           }
         `}
       </style>

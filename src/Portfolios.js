@@ -114,12 +114,12 @@ const Portfolios = () => {
       <div className="portfolios">
         <div className="text-center mt-4">
           <div className="qr-code-box p-3 mb-4">
+            <h5 style={{ fontSize: '1rem' }}>
+              Scan the QR Code on the finished panel in the ICA Experience Center to know more about the finishes
+            </h5>
             <button onClick={handleScanClick} className="btn mb-3">
               <img src="/scanner.png" alt="Scan QR Code" className="img-fluid" />
             </button>
-            <h5 style={{ fontSize: '1rem' }}>
-            Scan the QR Code on the finished panel in the ICA Experience Center to know more about the finishes
-            </h5>
             <div id="qr-code-scanner" style={{ width: '100%' }}></div>
             {scanResult && <div><p>Scanned Result: {scanResult}</p></div>}
           </div>
