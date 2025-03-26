@@ -11,62 +11,92 @@ const Portfolioslist = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Extract portfolio data from location state
-  const { portfolioId, wishlistName, wishlistItems } = location.state || {};
+  // Extract portfolio data from location state with proper fallbacks
+  const { portfolioId, wishlistName = "", wishlistItems = [] } = location.state || {};
   const [wishlistTitle, setWishlistTitle] = useState(wishlistName);
 
   useEffect(() => {
     if (!wishlistItems || wishlistItems.length === 0) {
       setError("Your Portfolio is empty");
+      setGroupedPosts([]); // Explicitly set empty array
       return;
     }
 
-    const categorizedPosts = wishlistItems.reduce((acc, post) => {
-      const parentCategory = post.parent_category_name || "Uncategorized";
-      const parentCategoryOrder = post.parent_category_order || 9999;
-      const category = post.category_name || "Other";
-      const categoryOrder = post.category_order || 9999;
+    try {
+      const categorizedPosts = wishlistItems.reduce((acc, post) => {
+        const parentCategory = post.parent_category_name || "Uncategorized";
+        const parentCategoryOrder = post.parent_category_order || 9999;
+        const subcategory = post.subcategory_name || "Other";
+        const subcategoryOrder = post.subcategory_order || 9999;
+        const category = post.category_name || "Other";
+        const categoryOrder = post.category_order || 9999;
 
-      if (!acc[parentCategory]) {
-        acc[parentCategory] = { 
-          order: parentCategoryOrder, 
-          categories: {} 
-        };
-      }
+        if (!acc[parentCategory]) {
+          acc[parentCategory] = { 
+            order: parentCategoryOrder, 
+            subcategories: {} 
+          };
+        }
 
-      if (!acc[parentCategory].categories[category]) {
-        acc[parentCategory].categories[category] = { 
-          order: categoryOrder, 
-          posts: [] 
-        };
-      }
+        if (!acc[parentCategory].subcategories[subcategory]) {
+          acc[parentCategory].subcategories[subcategory] = { 
+            order: subcategoryOrder, 
+            categories: {} 
+          };
+        }
 
-      acc[parentCategory].categories[category].posts.push(post);
-      return acc;
-    }, {});
+        if (!acc[parentCategory].subcategories[subcategory].categories[category]) {
+          acc[parentCategory].subcategories[subcategory].categories[category] = { 
+            order: categoryOrder, 
+            posts: [] 
+          };
+        }
 
-    // Convert object to sorted array
-    const sortedData = Object.entries(categorizedPosts)
-    .sort(([, a], [, b]) => a.order - b.order)
-    .map(([parentCategory, parentData]) => {
-      let categoryIndex = 0;
-  
-      const sortedCategories = Object.entries(parentData.categories)
-        .sort(([, a], [, b]) => a.order - b.order)
-        .map(([category, catData]) => ({
-          category: `${String.fromCharCode(65 + categoryIndex++)}. ${category}`,
-          posts: catData.posts.map((post, i) => ({ ...post, displayIndex: i + 1 })),
-        }));
-  
-      return {
-        parentCategory,
-        categories: sortedCategories,
-      };
-    });
-  
-  console.log(sortedData);   
+        acc[parentCategory].subcategories[subcategory].categories[category].posts.push(post);
+        return acc;
+      }, {});
 
-    setGroupedPosts(sortedData);
+      // Convert object to sorted array with proper null checks
+      const sortedData = Object.entries(categorizedPosts)
+        .sort(([, a], [, b]) => (a?.order || 0) - (b?.order || 0))
+        .map(([parentCategory, parentData]) => {
+          const subcategories = parentData?.subcategories ? Object.entries(parentData.subcategories) : [];
+          
+          const sortedSubcategories = subcategories
+            .sort(([, a], [, b]) => (a?.order || 0) - (b?.order || 0))
+            .map(([subcategory, subcatData], subcatIndex) => {
+              const categories = subcatData?.categories ? Object.entries(subcatData.categories) : [];
+              
+              const sortedCategories = categories
+                .sort(([, a], [, b]) => (a?.order || 0) - (b?.order || 0))
+                .map(([category, catData], catIndex) => ({
+                  category,
+                  posts: catData?.posts?.map((post, i) => ({ 
+                    ...post, 
+                    displayIndex: i + 1 
+                  })) || [],
+                  categoryPrefix: String.fromCharCode(97 + catIndex) // a, b, c
+                }));
+              
+              return {
+                subcategory,
+                categories: sortedCategories,
+                subcategoryPrefix: String.fromCharCode(65 + subcatIndex) // A, B, C
+              };
+            });
+          
+          return {
+            parentCategory,
+            subcategories: sortedSubcategories,
+          };
+        });
+
+      setGroupedPosts(sortedData);
+    } catch (error) {
+      console.error("Error processing wishlist items:", error);
+      setError("Failed to organize portfolio items");
+      setGroupedPosts([]);
+    }
   }, [wishlistItems]);
 
   const handleBackClick = () => {
@@ -199,43 +229,59 @@ const Portfolioslist = () => {
         </div>
       )}
 
-    <div className="portfoiliolist container mt-4">
-      {error && <div className="alert alert-warning">{error}</div>}
+<div className="portfoiliolist container mt-4">
+        {error && <div className="alert alert-warning">{error}</div>}
 
-      {groupedPosts.map(({ parentCategory, categories }) => (
-        <div key={parentCategory} className="category-section mb-4">
-          {parentCategory !== "Uncategorized" && (
-            <h3 className="parent-category font-weight-bold">{parentCategory}</h3>
-          )}
+        {/* Add null check before mapping */}
+        {Array.isArray(groupedPosts) && groupedPosts.map(({ parentCategory, subcategories = [] }) => (
+          <div key={parentCategory} className="category-section mb-4">
+            {parentCategory !== "Uncategorized" && (
+              <h3 className="parent-category font-weight-bold">
+                {parentCategory}
+              </h3>
+            )}
 
-          {categories.map(({ category, posts }) => (
-            <div key={category} className="sub-category">
-              <h5 className="category-name">{category}</h5>
-              <div className="row">
-                {posts.map((post) => (
-                  <div
-                    className="col-12 mb-4"
-                    key={post.post_id}
-                    onClick={() => handleCardClick(post)}
-                  >
-                    <div className="card bg-dark text-white">
-                      <img
-                        src={`https://api.ica.amigosserver.com/storage/${post.image}`}
-                        className="card-img"
-                        alt={post.title}
-                      />
-                      <div className="card-img-overlay d-flex justify-content-between align-items-center">
-                        <h5 className="card-title">{post.displayIndex}. {post.title}</h5>
-                      </div>
+            {subcategories.map(({ subcategory, categories = [], subcategoryPrefix }) => (
+              <div key={`${parentCategory}-${subcategory}`} className="sub-category mb-3 ml-3">
+                <h5 className="subcategory-name">
+                  {subcategoryPrefix}. {subcategory}
+                </h5>
+
+                {categories.map(({ category, posts = [], categoryPrefix }) => (
+                  <div key={`${parentCategory}-${subcategory}-${category}`} className="category ml-4 mb-3">
+                    <p className="category-name mb-2">
+                      {categoryPrefix}. {category}
+                    </p>
+                    
+                    <div className="posts ml-4">
+                      {posts.map((post) => (
+                        <div
+                          className="mb-4"
+                          key={post.post_id}
+                          onClick={() => handleCardClick(post)}
+                        >
+                          <div className="card bg-dark text-white">
+                            {post.image && (
+                              <img
+                                src={`https://api.ica.amigosserver.com/storage/${post.image}`}
+                                className="card-img"
+                                alt={post.title}
+                              />
+                            )}
+                            <div className="card-img-overlay d-flex justify-content-between align-items-center">
+                              <h5 className="card-title">{post.displayIndex}. {post.title}</h5>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+            ))}
+          </div>
+        ))}
+      </div>
 
       {/* Styles for modal */}
       <style>

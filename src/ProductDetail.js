@@ -310,7 +310,7 @@ const ProductDetail = () => {
           </div>
 
           <div className="row justify-content-center mt-4">
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-6 justify_center">
               <div dangerouslySetInnerHTML={{ __html: product.body }} />
               </div>
             
