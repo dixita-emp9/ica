@@ -314,16 +314,16 @@ const ProductDetail = () => {
               <div dangerouslySetInnerHTML={{ __html: product.body }} />
               </div>
             
-              <div className='button-container pt-3 pb-3'>
-                <strong>Like the Finish? Add it your collection </strong>
+              <div className='portfolio_btn-div button-container pt-3'>
+                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Liked the Finish? Add it to your collection </strong></span></h5>
                 <button className="portfolio_btn" onClick={handleSaveToPortfolioClick}>
                   <i className="fa fa-folder-open" style={{ marginRight: '10px' }}></i>Save to Portfolio
                 </button>
                 
               </div>
 
-              <div className='button-container pb-3'>
-              <strong>Visualise the Finish on a furniture piece </strong>
+              <div className='button-container portfolio_btn-div '>
+              <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Visualise the Finish on a furniture piece </strong></span></h5>
                 <button className="portfolio_btn" onClick={handleViewInARClick}>
                   <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
                 </button>
@@ -331,7 +331,7 @@ const ProductDetail = () => {
 
               <div className="whatsapp">
                 <a href="#" onClick={handleWhatsAppClick}>
-                  <h5>Share via WhatsApp  </h5>
+                  <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Share via WhatsApp </strong></span></h5>
                   <img src="/whatsapp.png" alt="whatsapp" />
                 </a>
               </div>

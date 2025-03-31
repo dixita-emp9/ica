@@ -46,13 +46,16 @@
   max-width: 300px; /* Adjust the max-width as needed */
   border: none;
   background-color: #fff;
+  color: #555555;
   font-size: 20px;
   margin: 10px 0; /* Adds spacing between the buttons */
   box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
   padding: 15px 50px;
   text-align: left;
 }
-
+.portfolio_btn-div {
+  padding-bottom: 2rem ;
+}
 
 button.portfolio_btn svg{
   width: 12%;
