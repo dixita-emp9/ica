@@ -140,6 +140,10 @@ export const fetchPostById = (id) => {
   return axiosInstance.get(`/portfolios/${id}`);
 };
 
+export const fetchPostBySlug = (slug) => {
+  return axiosInstance.get(`/portfolios/${slug}`);
+};
+
 export const updateWishlistName = async (wishlistId, newName) => {
   return await axiosInstance.put(`/wishlist/${wishlistId}/update-name`, { name: newName });
 };

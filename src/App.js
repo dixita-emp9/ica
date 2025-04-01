@@ -27,7 +27,7 @@ function App() {
           <Route path="home" element={<PrivateRoute><Home /></PrivateRoute>} />
           <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route path="portfolios" element={<PrivateRoute><Portfolios /></PrivateRoute>} />
-          <Route path="/portfolios/:productId" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
+          <Route path="/portfolios/:slug" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
           <Route path="portfolioslist/:id" element={<PrivateRoute><Portfolioslist /></PrivateRoute>} />
           <Route path="createportfolio" element={<PrivateRoute><CreatePortfolio /></PrivateRoute>} />
           <Route path="selectmodel" element={<PrivateRoute><Selectmodel /></PrivateRoute>} />

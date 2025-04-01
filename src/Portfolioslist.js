@@ -105,17 +105,22 @@ const Portfolioslist = () => {
 
   const handleCardClick = (post) => {
     console.log("Navigating with:", post);
-    navigate(`/portfolios/${post.post_id}`, {
-      state: { 
-        portfolioId, 
-        wishlistName, 
-        wishlistItems,
-        category: post.category_name, 
-        parentCategory: post.parent_category_name 
-      },
-    });
-  };     
-
+  
+    if (!post.slug) {
+      console.error("Slug is missing for the post object", post);
+    } else {
+      navigate(`/portfolios/${post.slug}`, {
+        state: {
+          portfolioId,
+          wishlistName,
+          wishlistItems,
+          category: post.category_name,
+          parentCategory: post.parent_category_name,
+        },
+      });
+    }
+  };  
+  
   const handleDownloadPDF = async () => {
     try {
       const productIds = wishlistItems.map(item => item.post_id);

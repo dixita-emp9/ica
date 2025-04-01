@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { generatePdf } from './services/apiService';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { fetchUserPortfolios, addItemToPortfolio, fetchPostById, fetchUser, createPortfolio,createPortfolioAndAddItem } from './services/apiService';
+import { fetchUserPortfolios, addItemToPortfolio, fetchPostBySlug, fetchUser, createPortfolio,createPortfolioAndAddItem } from './services/apiService';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
+  const { slug } = useParams();
   const [user, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [portfolios, setPortfolios] = useState([]);
@@ -61,7 +62,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const response = await fetchPostById(productId);
+        const response = await fetchPostBySlug(slug);
         setProduct(response.data);
         if (response.data.wishlistId) {
           setSelectedPortfolio(response.data.wishlistId);
@@ -72,7 +73,7 @@ const ProductDetail = () => {
     };
 
     getProduct();
-  }, [productId]);
+  }, [slug]);
 
   const handleDownloadPDF = async () => {
     try {
