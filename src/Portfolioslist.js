@@ -116,6 +116,7 @@ const Portfolioslist = () => {
           wishlistItems,
           category: post.category_name,
           parentCategory: post.parent_category_name,
+          productId : post.id,
         },
       });
     }

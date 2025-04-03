@@ -7,7 +7,8 @@ import './ProductDetail.css';
 
 const ProductDetail = () => {
   const navigate = useNavigate();
-  const { productId } = useParams();
+  const location = useLocation();
+  const productId = location.state?.productId;
   const { slug } = useParams();
   const [user, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -15,8 +16,6 @@ const ProductDetail = () => {
   const [selectedPortfolio, setSelectedPortfolio] = useState("");
   const [error, setError] = useState('');
   const [product, setProduct] = useState(null);
-  const location = useLocation();
-
 
   useEffect(() => {
     const fetchUserData = async () => {
