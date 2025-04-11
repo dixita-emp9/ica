@@ -18,28 +18,6 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetchUser();
-        setUser(response.data);
-  
-        const portfolioResponse = await fetchUserPortfolios();
-        console.log("Fetched Portfolio Response:", portfolioResponse.data);
-  
-        if (portfolioResponse.data && portfolioResponse.data.wishlists) {
-          setPortfolios(portfolioResponse.data.wishlists); // ✅ Store only user's wishlists
-        }
-      } catch (err) {
-        console.error("Error fetching user:", err);
-        setError('Failed to load user data.');
-      }
-    };
-  
-    fetchUserData();
-  }, []);
-
-  
-  useEffect(() => {
     const getPortfolios = async () => {
       try {
         const response = await fetchUserPortfolios();
@@ -108,38 +86,6 @@ const ProductDetail = () => {
     window.open(`https://wa.me/?text=${message}`, "_blank");
   };
 
-  const handleCreateNewPortfolio = async () => {
-    try {
-      const today = new Date();
-      const dateStr = `${String(today.getDate()).padStart(2, '0')}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getFullYear()).slice(-2)}`;
-      
-      const todayPortfolios = portfolios.filter(portfolio => portfolio.name.startsWith(dateStr));
-      const newCount = todayPortfolios.length + 1;
-      const newPortfolioName = `${dateStr}(${newCount})`;
-  
-      // Create portfolio
-      const response = await createPortfolio(newPortfolioName);
-      console.log("Portfolio Creation Response:", response); // Debug API response
-  
-      if (!response?.data || !response.data.id) {
-        throw new Error("Portfolio creation failed, no valid ID returned.");
-      }
-  
-      const newPortfolio = response.data;
-      setPortfolios([...portfolios, newPortfolio]);
-      setSelectedPortfolio(newPortfolio.id);
-  
-      // Add item to newly created portfolio
-      const addItemResponse = await addItemToPortfolio(newPortfolio.id, productId);
-      console.log("Add Item Response:", addItemResponse);
-  
-      setShowModal(false);
-    } catch (error) {
-      console.error("Error:", error);
-      setError("Failed to create portfolio and add item.");
-    }
-  };
-  
   const handleCreateNewPortfolioAndAddItem = async () => {
     try {
         const today = new Date();

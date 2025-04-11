@@ -72,16 +72,13 @@ const Portfolioslist = () => {
                 .map(([category, catData], catIndex) => ({
                   category,
                   posts: catData?.posts?.map((post, i) => ({ 
-                    ...post, 
-                    displayIndex: i + 1 
+                    ...post
                   })) || [],
-                  categoryPrefix: String.fromCharCode(97 + catIndex) // a, b, c
                 }));
               
               return {
                 subcategory,
-                categories: sortedCategories,
-                subcategoryPrefix: String.fromCharCode(65 + subcatIndex) // A, B, C
+                categories: sortedCategories
               };
             });
           
@@ -247,39 +244,40 @@ const Portfolioslist = () => {
               </h3>
             )}
 
-            {subcategories.map(({ subcategory, categories = [], subcategoryPrefix }) => (
+            {subcategories.map(({ subcategory, categories = [] }) => (
               <div key={`${parentCategory}-${subcategory}`} className="sub-category mb-3 ml-3">
                 <h5 className="subcategory-name">
-                  {subcategoryPrefix}. {subcategory}
+                  {subcategory}
                 </h5>
 
-                {categories.map(({ category, posts = [], categoryPrefix }) => (
-                  <div key={`${parentCategory}-${subcategory}-${category}`} className="category ml-4 mb-3">
-                    <p className="category-name mb-2">
-                      {categoryPrefix}. {category}
-                    </p>
-                    
-                    <div className="posts ml-4">
-                      {posts.map((post) => (
-                        <div
-                          className="mb-4"
-                          key={post.post_id}
-                          onClick={() => handleCardClick(post)}
-                        >
-                          <div className="card bg-dark text-white">
-                            {post.image && (
-                              <img
-                                src={`https://api.ica.amigosserver.com/storage/${post.image}`}
-                                className="card-img"
-                                alt={post.title}
-                              />
-                            )}
-                            <div className="card-img-overlay d-flex justify-content-between align-items-center">
-                              <h5 className="card-title">{post.displayIndex}. {post.title}</h5>
+                {categories.map(({ category, posts = [] }) => (
+                  <div className="main_category">
+                      <div key={`${parentCategory}-${subcategory}-${category}`} className="category ml-4 mb-3">
+                      <div className="posts ml-4">
+                        {posts.map((post) => (
+                          <div
+                            className="mb-4"
+                            key={post.post_id}
+                            onClick={() => handleCardClick(post)}
+                          >
+                            <div className="card bg-dark text-white">
+                              {post.image && (
+                                <img
+                                  src={`https://api.ica.amigosserver.com/storage/${post.image}`}
+                                  className="card-img"
+                                  alt={post.title}
+                                />
+                              )}
+                              <div className="card-img-overlay d-flex justify-content-between align-items-center">
+                                <h5 className="card-title">{post.title}</h5>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
+                      <p className="category-name mb-2">
+                        {category}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -321,14 +319,38 @@ const Portfolioslist = () => {
           .modal-buttons button {
             min-width: 80px;
           }
-          .parent-category {
+            .portfoiliolist .parent-category {
             font-weight: bold;
             font-size: 1.5rem;
-          }
+            background-color: #eeeeee;
+            padding: 15px;
+        }
 
-          .category-name {
-            font-weight: 500;
-          }
+        .portfoiliolist .subcategory-name {
+            border: 1px solid black;
+            padding: 10px 20px;
+            border-radius: 40px;
+            display: inline-block;
+            margin: 10px 0 20px 0;
+        }
+
+        .portfoiliolist .main_category {
+            display: flex;
+            /* flex-wrap: wrap; */
+            gap: 20px;
+        }
+
+        .portfoiliolist .category {
+            width: 300px;
+            max-width: 100%;
+            max-width: 200px;
+            text-transform: capitalize;
+        }
+
+        .portfoiliolist .inner_title {
+            color: black !important;
+            font-size: 16px;
+        }
         `}
       </style>
     </div>
