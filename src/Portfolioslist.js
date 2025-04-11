@@ -249,10 +249,9 @@ const Portfolioslist = () => {
                 <h5 className="subcategory-name">
                   {subcategory}
                 </h5>
-
-                {categories.map(({ category, posts = [] }) => (
-                  <div className="main_category">
-                      <div key={`${parentCategory}-${subcategory}-${category}`} className="category ml-4 mb-3">
+                <div className="main_category">
+                  {categories.map(({ category, posts = [] }) => (
+                    <div key={`${parentCategory}-${subcategory}-${category}`} className="category ml-4 mb-3">
                       <div className="posts ml-4">
                         {posts.map((post) => (
                           <div
@@ -279,8 +278,8 @@ const Portfolioslist = () => {
                         {category}
                       </p>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             ))}
           </div>
