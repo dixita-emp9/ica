@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { generatePdf } from './services/apiService';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { fetchUserPortfolios, addItemToPortfolio, fetchPostBySlug, fetchUser, createPortfolio,createPortfolioAndAddItem } from './services/apiService';
+import { fetchUserPortfolios, addItemToPortfolio, fetchPostById,fetchPostBySlug, fetchUser, createPortfolioAndAddItem } from './services/apiService';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
@@ -16,6 +16,27 @@ const ProductDetail = () => {
   const [selectedPortfolio, setSelectedPortfolio] = useState("");
   const [error, setError] = useState('');
   const [product, setProduct] = useState(null);
+
+    useEffect(() => {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetchUser();
+          setUser(response.data);
+    
+          const portfolioResponse = await fetchUserPortfolios();
+          console.log("Fetched Portfolio Response:", portfolioResponse.data);
+    
+          if (portfolioResponse.data && portfolioResponse.data.wishlists) {
+            setPortfolios(portfolioResponse.data.wishlists); // ✅ Store only user's wishlists
+          }
+        } catch (err) {
+          console.error("Error fetching user:", err);
+          setError('Failed to load user data.');
+        }
+      };
+    
+      fetchUserData();
+    }, []);
 
   useEffect(() => {
     const getPortfolios = async () => {
