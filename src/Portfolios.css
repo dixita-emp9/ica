@@ -59,7 +59,7 @@ button.pdf_btn svg{
   border-radius: 50%;
 }
 .card {
-  border-radius: 15px;
+  border: none !important;
   overflow: hidden;
 }
 .card-img {
@@ -68,7 +68,8 @@ button.pdf_btn svg{
   object-fit: cover;
 }
 h5.card-title{
-  color: #fff !important;
+  color: #000000 !important;
+  font-size: 1rem;
 }
 .qr-scanner-overlay {
   position: fixed;

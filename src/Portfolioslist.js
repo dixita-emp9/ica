@@ -186,8 +186,6 @@ const Portfolioslist = () => {
           </button>
         </div>
 
-
-
         <div>
           <button className="pdf_btn" onClick={handleDownloadPDF}>
             <i className="fa fa-download"></i> Save PDF
@@ -232,12 +230,12 @@ const Portfolioslist = () => {
         </div>
       )}
 
-<div className="portfoiliolist container mt-4">
+      <div className="portfoiliolist container mt-4">
         {error && <div className="alert alert-warning">{error}</div>}
 
         {/* Add null check before mapping */}
         {Array.isArray(groupedPosts) && groupedPosts.map(({ parentCategory, subcategories = [] }) => (
-          <div key={parentCategory} className="category-section mb-4">
+          <div key={parentCategory} className="category-section">
             {parentCategory !== "Uncategorized" && (
               <h3 className="parent-category font-weight-bold">
                 {parentCategory}
@@ -245,21 +243,23 @@ const Portfolioslist = () => {
             )}
 
             {subcategories.map(({ subcategory, categories = [] }) => (
-              <div key={`${parentCategory}-${subcategory}`} className="sub-category mb-3 ml-3">
-                <h5 className="subcategory-name">
-                  {subcategory}
-                </h5>
+              <div key={`${parentCategory}-${subcategory}`} className="sub-category">
+                <h5 className="subcategory-name">{subcategory}</h5>
+
                 <div className="main_category">
                   {categories.map(({ category, posts = [] }) => (
-                    <div key={`${parentCategory}-${subcategory}-${category}`} className="category ml-4 mb-3">
-                      <div className="posts ml-4">
+                    <div
+                      key={`${parentCategory}-${subcategory}-${category}`}
+                      className="category"
+                    >
+                      <div className="posts">
                         {posts.map((post) => (
                           <div
                             className="mb-4"
                             key={post.post_id}
                             onClick={() => handleCardClick(post)}
                           >
-                            <div className="card bg-dark text-white">
+                            <div className="card">
                               {post.image && (
                                 <img
                                   src={`https://api.ica.amigosserver.com/storage/${post.image}`}
@@ -267,16 +267,14 @@ const Portfolioslist = () => {
                                   alt={post.title}
                                 />
                               )}
-                              <div className="card-img-overlay d-flex justify-content-between align-items-center">
+                              <p className="category-name mb-2">{category}</p>
+                              <div>
                                 <h5 className="card-title">{post.title}</h5>
                               </div>
                             </div>
                           </div>
                         ))}
                       </div>
-                      <p className="category-name mb-2">
-                        {category}
-                      </p>
                     </div>
                   ))}
                 </div>
@@ -318,38 +316,40 @@ const Portfolioslist = () => {
           .modal-buttons button {
             min-width: 80px;
           }
-            .portfoiliolist .parent-category {
+          
+          .portfoiliolist .parent-category {
             font-weight: bold;
             font-size: 1.5rem;
             background-color: #eeeeee;
             padding: 15px;
-        }
+          }
+          
+          .portfoiliolist .subcategory-name {
+              border: 1px solid black;
+              padding: 10px;
+              border-radius: 40px;
+              display: inline-block;
+              font-size: 1.1rem;
+              margin: 10px 0 20px 0;
+          }
 
-        .portfoiliolist .subcategory-name {
-            border: 1px solid black;
-            padding: 10px 20px;
-            border-radius: 40px;
-            display: inline-block;
-            margin: 10px 0 20px 0;
-        }
+          .portfoiliolist .main_category {
+              display: flex;
+              /* flex-wrap: wrap; */
+              gap: 20px;
+          }
 
-        .portfoiliolist .main_category {
-            display: flex;
-            /* flex-wrap: wrap; */
-            gap: 20px;
-        }
+          .portfoiliolist .category {
+              width: 300px;
+              max-width: 100%;
+              max-width: 200px;
+              text-transform: capitalize;
+          }
 
-        .portfoiliolist .category {
-            width: 300px;
-            max-width: 100%;
-            max-width: 200px;
-            text-transform: capitalize;
-        }
-
-        .portfoiliolist .inner_title {
-            color: black !important;
-            font-size: 16px;
-        }
+          .portfoiliolist .inner_title {
+              color: black !important;
+              font-size: 16px;
+          }
         `}
       </style>
     </div>
