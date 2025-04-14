@@ -265,15 +265,18 @@ const ProductDetail = () => {
         </div>
 
         <div className='product-container mt-4'>
-              
-          <div className='prod-title'>
-            <h5 className="black-text product_code">Product Name : </h5>     
-            <span>{product.title}</span>
+          
+          <div>
+            <img
+              src={`https://api.ica.amigosserver.com/storage/${product.image}`}
+              className="card-img prod-title"
+              alt={product.title}
+            />
           </div>
 
           <div>
-            <h5 className="black-text product_code">Product Code: </h5>
-            <span>{product.product_code}</span>
+            <h5 className="black-text product_code">Product Name : <span>{product.title}</span></h5>
+            <h5 className="black-text product_code">Product Code : <span>{product.code}</span></h5>
           </div>
 
           <div className="row justify-content-center mt-4">

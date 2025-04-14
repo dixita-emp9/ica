@@ -176,3 +176,8 @@ button.create_btn svg{
   background: #fff;
   transition: 0.3s;
 }
+
+span {
+  font-size: 1rem;
+  font-weight: normal;
+}
