@@ -164,3 +164,14 @@ export const verifyOtp = async (phoneNumber, otp) => {
   }
 };
 
+
+
+export const fetchFinishesData = async () => {
+  try {
+    const response = await axiosInstance.get("/finishes");
+    return response.data?.data || {}; // Access the data directly from response
+  } catch (error) {
+    console.error("Error fetching finishes data:", error);
+    return {};
+  }
+};

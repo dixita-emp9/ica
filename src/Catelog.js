@@ -204,20 +204,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { generatePdf } from "./services/apiService";
+import { generatePdf, fetchFinishesData } from "./services/apiService";
 import "./Catelog.css";
 
-// Fetch API to get finishes data
-const fetchFinishesData = async () => {
-    try {
-        const response = await fetch("http://127.0.0.1:8000/api/finishes");
-        const data = await response.json();
-        return data.data || {}; // Return the `data` field or an empty object
-    } catch (error) {
-        console.error("Error fetching finishes data:", error);
-        return {};
-    }
-};
 
 const Catelog = () => {
     const [groupedPosts, setGroupedPosts] = useState([]);
