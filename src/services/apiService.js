@@ -165,7 +165,6 @@ export const verifyOtp = async (phoneNumber, otp) => {
 };
 
 
-
 export const fetchFinishesData = async () => {
   try {
     const response = await axiosInstance.get("/finishes");
