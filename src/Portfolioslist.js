@@ -32,23 +32,23 @@ const Portfolioslist = () => {
         const categoryOrder = post.category_order || 9999;
 
         if (!acc[parentCategory]) {
-          acc[parentCategory] = { 
-            order: parentCategoryOrder, 
-            subcategories: {} 
+          acc[parentCategory] = {
+            order: parentCategoryOrder,
+            subcategories: {}
           };
         }
 
         if (!acc[parentCategory].subcategories[subcategory]) {
-          acc[parentCategory].subcategories[subcategory] = { 
-            order: subcategoryOrder, 
-            categories: {} 
+          acc[parentCategory].subcategories[subcategory] = {
+            order: subcategoryOrder,
+            categories: {}
           };
         }
 
         if (!acc[parentCategory].subcategories[subcategory].categories[category]) {
-          acc[parentCategory].subcategories[subcategory].categories[category] = { 
-            order: categoryOrder, 
-            posts: [] 
+          acc[parentCategory].subcategories[subcategory].categories[category] = {
+            order: categoryOrder,
+            posts: []
           };
         }
 
@@ -61,27 +61,27 @@ const Portfolioslist = () => {
         .sort(([, a], [, b]) => (a?.order || 0) - (b?.order || 0))
         .map(([parentCategory, parentData]) => {
           const subcategories = parentData?.subcategories ? Object.entries(parentData.subcategories) : [];
-          
+
           const sortedSubcategories = subcategories
             .sort(([, a], [, b]) => (a?.order || 0) - (b?.order || 0))
             .map(([subcategory, subcatData], subcatIndex) => {
               const categories = subcatData?.categories ? Object.entries(subcatData.categories) : [];
-              
+
               const sortedCategories = categories
                 .sort(([, a], [, b]) => (a?.order || 0) - (b?.order || 0))
                 .map(([category, catData], catIndex) => ({
                   category,
-                  posts: catData?.posts?.map((post, i) => ({ 
+                  posts: catData?.posts?.map((post, i) => ({
                     ...post
                   })) || [],
                 }));
-              
+
               return {
                 subcategory,
                 categories: sortedCategories
               };
             });
-          
+
           return {
             parentCategory,
             subcategories: sortedSubcategories,
@@ -102,7 +102,7 @@ const Portfolioslist = () => {
 
   const handleCardClick = (post) => {
     console.log("Navigating with:", post);
-  
+
     if (!post.slug) {
       console.error("Slug is missing for the post object", post);
     } else {
@@ -113,12 +113,12 @@ const Portfolioslist = () => {
           wishlistItems,
           category: post.category_name,
           parentCategory: post.parent_category_name,
-          productId : post.id,
+          productId: post.id,
         },
       });
     }
-  };  
-  
+  };
+
   const handleDownloadPDF = async () => {
     try {
       const productIds = wishlistItems.map(item => item.post_id);
@@ -127,15 +127,15 @@ const Portfolioslist = () => {
         setError("No valid product IDs found.");
         return;
       }
-  
+
       const response = await generatePdf(productIds);
-  
+
       if (response && response.data) {
         const blob = new Blob([response.data], { type: "application/pdf" });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         const filename = `Product_Catalog_${Date.now()}.pdf`;
-  
+
         a.href = url;
         a.setAttribute("download", filename);
         document.body.appendChild(a);
@@ -148,7 +148,7 @@ const Portfolioslist = () => {
       console.error("Error generating PDF:", err);
       setError("Failed to download PDF.");
     }
-  };  
+  };
 
   // Handle Wishlist Name Edit
   const handleEditClick = () => {
@@ -159,7 +159,7 @@ const Portfolioslist = () => {
   const handleSaveClick = async () => {
     try {
       const response = await updateWishlistName(portfolioId, newWishlistName);
-  
+
       if (response.status === 200) {
         setWishlistTitle(newWishlistName);
         setIsEditing(false);
@@ -168,14 +168,14 @@ const Portfolioslist = () => {
       }
     } catch (error) {
       console.error("Error updating wishlist name:", error);
-  
+
       if (error.response && error.response.status === 422) {
         setError(error.response.data.message || "Portfolio name already exists.");
       } else {
         setError("An error occurred while updating.");
       }
     }
-  };  
+  };
 
   return (
     <div className="main_menu_wrapper container-fluid">
@@ -194,20 +194,20 @@ const Portfolioslist = () => {
       </div>
 
       <div className="wishlist-name text-center flex-grow-1">
-          <h3 className="mb-0 mt-3 text-light">
-            {wishlistTitle}
-            <button className="btn btn-sm ml-2" onClick={handleEditClick}>
-              <i className="fa fa-edit text-white"></i>
-            </button>
-          </h3>
-        </div>
-        
+        <h3 className="mb-0 mt-3 text-light">
+          {wishlistTitle}
+          <button className="btn btn-sm ml-2" onClick={handleEditClick}>
+            <i className="fa fa-edit text-white"></i>
+          </button>
+        </h3>
+      </div>
+
       {/* Edit Name Modal */}
       {isEditing && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h5>Edit Portfolio Name</h5>
-            
+
             {/* Display Error Inside Pop-up */}
             {error && <div className="alert alert-danger">{error}</div>}
 
@@ -316,14 +316,14 @@ const Portfolioslist = () => {
           .modal-buttons button {
             min-width: 80px;
           }
-          
+
           .portfoiliolist .parent-category {
             font-weight: bold;
             font-size: 1.5rem;
             background-color: #eeeeee;
             padding: 15px;
           }
-          
+
           .portfoiliolist .subcategory-name {
               border: 1px solid black;
               padding: 10px;
@@ -357,3 +357,13 @@ const Portfolioslist = () => {
 };
 
 export default Portfolioslist;
+
+
+
+
+
+
+
+
+
+

@@ -1,21 +1,25 @@
-header{
+header {
   position: relative;
   overflow: hidden;
- 
+
 }
+
 nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.mainlogo{
+
+.mainlogo {
   height: 100px !important;
 }
-.profilelogo{
+
+.profilelogo {
   margin-top: 10px !important;
   height: 50px !important;
   border-radius: 50%;
 }
+
 .curve {
   color: white;
   position: relative;
@@ -25,7 +29,10 @@ nav {
   width: 100%;
   height: 40vh;
 }
+
 .side-menu {
+  max-width: 640px;
+  margin: 0 auto;
   position: fixed;
   top: 0;
   left: 0;
@@ -36,31 +43,42 @@ nav {
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
   animation: slideIn 0.3s forwards;
 }
+
 .side-menu-content {
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 @keyframes slideIn {
-  from { right: -100%; }
-  to { right: 0; }
+  from {
+    right: -100%;
+  }
+
+  to {
+    right: 0;
+  }
 }
+
 .menu-header {
   text-align: center;
   margin-bottom: 30px;
 }
+
 .profile-picture {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   margin-bottom: 10px;
 }
+
 .menu-items {
   list-style-type: none;
   padding: 0;
   text-align: center;
 }
+
 .menu-items li {
   margin: 10px 0;
   padding: 10px;
@@ -71,22 +89,26 @@ nav {
   box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
+
 .menu-items li:hover {
   color: #000;
 }
+
 .menu-footer {
   text-align: center;
   margin-top: 35px;
 }
+
 .menu-footer img {
   width: 140px;
 }
+
 .menu-footer p {
   margin-top: 10px;
   color: #888;
 }
 
-.fa-arrow-left::before{
+.fa-arrow-left::before {
   font-size: 15px !important;
 }
 
@@ -94,11 +116,13 @@ nav {
   display: flex;
   justify-content: space-between;
 }
-.backbtn button{
+
+.backbtn button {
   border-radius: 10px;
   padding: 5px 15px;
   border: none;
 }
+
 .iframe-container {
   /* position: fixed; */
   /* width: 100% !important; */
@@ -106,9 +130,11 @@ nav {
   margin: 0 auto;
   padding: 0;
 }
-.btn-danger{
+
+.btn-danger {
   background-color: #e30613 !important;
 }
+
 .bi-list {
   margin-top: 10px !important;
   width: 50px;

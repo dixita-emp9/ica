@@ -16,7 +16,7 @@ const Head = () => {
             .then((response) => {
                 setUserName(response.data.name);
                 // Set the avatar URL dynamically
-                setUserAvatar(`https://api.ica.amigosserver.com/storage/${response.data.avatar || 'default-avatar.png'}`); 
+                setUserAvatar(`https://api.ica.amigosserver.com/storage/${response.data.avatar || 'default-avatar.png'}`);
             })
             .catch((error) => {
                 console.error('Error fetching user data:', error);
@@ -29,7 +29,7 @@ const Head = () => {
             await startQrScanner((decodedText) => {
                 console.log('Scanned QR Code:', decodedText);
                 window.location.href = decodedText; // Redirect to scanned URL
-            }, () => {}); // You can pass a no-op for setScannerActive
+            }, () => { }); // You can pass a no-op for setScannerActive
         } catch (error) {
             console.error('Error starting QR scanner:', error);
         }
@@ -43,7 +43,7 @@ const Head = () => {
         } else {
             navigate(path); // Navigate to other paths
         }
-    };    
+    };
 
     const handleLogoClick = () => {
         if (location.pathname === '/portfolios') {
@@ -68,37 +68,37 @@ const Head = () => {
     return (
         <header>
             <nav className="curve">
-                <i 
-                    className="bi bi-list" 
-                    style={{ fontSize: "2rem", cursor: "pointer" }} 
+                <i
+                    className="bi bi-list"
+                    style={{ fontSize: "2rem", cursor: "pointer" }}
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 ></i>
-                <img 
-                    src="/ICA_logo_White.png" 
-                    alt="ICA Logo" 
-                    className="mainlogo" 
-                    onClick={handleLogoClick} 
+                <img
+                    src="/ICA_logo_White.png"
+                    alt="ICA Logo"
+                    className="mainlogo"
+                    onClick={handleLogoClick}
                 />
-                <img 
+                <img
                     src={userAvatar} // Use dynamic avatar here
-                    alt="Profile Logo" 
-                    className="img-fluid profilelogo" 
+                    alt="Profile Logo"
+                    className="img-fluid profilelogo"
                     onClick={() => navigate('/profile')}
                 />
             </nav>
-            
+
             {isMenuOpen && (
                 <div className="side-menu">
                     <div className="side-menu-content">
-                        <i 
-                            className="bi bi-x" 
-                            style={{ fontSize: "2rem", cursor: "pointer" }} 
+                        <i
+                            className="bi bi-x"
+                            style={{ fontSize: "2rem", cursor: "pointer" }}
                             onClick={() => setIsMenuOpen(false)}
                         ></i>
                         <div className="menu-header">
-                            <img 
+                            <img
                                 src={userAvatar} // Use dynamic avatar here
-                                alt="Profile" 
+                                alt="Profile"
                                 className="profile-picture"
                             />
                             <h4>{userName ? userName : 'Loading...'}</h4>
@@ -107,13 +107,14 @@ const Head = () => {
                             <li className='btn' onClick={() => handleMenuItemClick('/profile')}><i className="fa fa-user"></i> Profile</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/portfolios')}><i className="fa fa-home"></i> Home</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/scan-qr')}><i className="fa fa-camera"></i> Scan QR Code</li>
+                            <li className='btn' onClick={() => handleMenuItemClick('/catelog')}><i className="fa fa-book"></i> Catelog</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/createportfolio')}><i className="fa fa-briefcase"></i> Create New Portfolio</li>
                             <li className='btn' onClick={handleLogout}><i className="fa fa-sign-out"></i> Sign Out</li>
                         </ul>
                         <div className="menu-footer">
-                            <img 
-                                src="/ICA_logo_Black.png" 
-                                alt="ICA Logo" 
+                            <img
+                                src="/ICA_logo_Black.png"
+                                alt="ICA Logo"
                                 className="img-fluid"
                             />
                         </div>

@@ -20,10 +20,10 @@ const Newportfolio = () => {
       try {
         const response = await fetchUser();
         setUser(response.data);
-        
+
         const portfoliosResponse = await fetchUserPortfolios();
         console.log("Fetched Portfolios:", portfoliosResponse.data);
-  
+
         if (portfoliosResponse.data && portfoliosResponse.data.wishlists) {
           setPortfolios(portfoliosResponse.data.wishlists);  // ✅ Ensure wishlists are stored
         }
@@ -32,24 +32,24 @@ const Newportfolio = () => {
         setError("Failed to load user data.");
       }
     };
-  
+
     fetchUserData();
-  }, []);  
+  }, []);
 
   const handlePortfolioClick = (wishlistId) => {
     if (!portfolios || portfolios.length === 0) {
       console.error("No wishlists found.");
       return;
     }
-  
+
     const selectedWishlist = portfolios.find((wishlist) => wishlist.id === wishlistId);
-  
+
     if (selectedWishlist) {
       console.log("Navigating with:", selectedWishlist);
       navigate(`/portfolioslist/${wishlistId}`, {
         state: {
-          portfolioId: wishlistId, 
-          wishlistName: selectedWishlist.name, 
+          portfolioId: wishlistId,
+          wishlistName: selectedWishlist.name,
           wishlistItems: selectedWishlist.items || [],  // ✅ Sending full post details
         },
       });
@@ -60,7 +60,7 @@ const Newportfolio = () => {
 
   const handleBackClick = () => {
     // Navigate to the Portfolioslist with the wishlistId
-      navigate('/portfolios');
+    navigate('/portfolios');
   };
 
   // Modal control functions
@@ -71,14 +71,14 @@ const Newportfolio = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Clear previous errors
-  
+
     try {
       const response = await createPortfolio(portfolioName);
       console.log("Portfolio created:", response.data);
-  
+
       setShowModal(false);
       setWishlist("");
-  
+
       // Refresh portfolios
       const refreshedResponse = await fetchUserPortfolios();
       if (refreshedResponse.data && refreshedResponse.data.wishlists) {
@@ -91,14 +91,14 @@ const Newportfolio = () => {
         setError("Something went wrong, please try again."); // Fallback error message
       }
     }
-  };   
+  };
 
   return (
     <div className="main_menu_wrapper container">
       <div className='d-flex justify-content-between'>
         <div className='backbtn'>
           <button onClick={handleBackClick}>
-          <i className="fa fa-arrow-left"></i>
+            <i className="fa fa-arrow-left"></i>
           </button>
         </div>
         <div>
@@ -107,8 +107,8 @@ const Newportfolio = () => {
       </div>
 
       <div className="portfolios mt-4 pt-5">
-                {/* Create New Portfolio Button */}
-                <div>
+        {/* Create New Portfolio Button */}
+        <div>
           <button className="create_btn" onClick={handleModalOpen}>
             <svg fill="#6c757d" viewBox="0 0 302.816 302.816">
               <path d="M298.423,152.996c-5.857-5.858-15.354-5.858-21.213,0l-35.137,35.136
@@ -121,7 +121,7 @@ const Newportfolio = () => {
             <span>Create new</span>
           </button>
         </div>
-        
+
         <div className="row">
           {portfolios && portfolios.length > 0 ? ( // ✅ Ensure portfolios is checked properly
             portfolios.map((wishlist) => (

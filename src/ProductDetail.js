@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { generatePdf } from './services/apiService';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { fetchUserPortfolios, addItemToPortfolio, fetchPostById,fetchPostBySlug, fetchUser, createPortfolioAndAddItem } from './services/apiService';
+import { fetchUserPortfolios, addItemToPortfolio, fetchPostById, fetchPostBySlug, fetchUser, createPortfolioAndAddItem } from './services/apiService';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
@@ -16,46 +16,32 @@ const ProductDetail = () => {
   const [selectedPortfolio, setSelectedPortfolio] = useState("");
   const [error, setError] = useState('');
   const [product, setProduct] = useState(null);
-
-    useEffect(() => {
-      const fetchUserData = async () => {
-        try {
-          const response = await fetchUser();
-          setUser(response.data);
-    
-          const portfolioResponse = await fetchUserPortfolios();
-          console.log("Fetched Portfolio Response:", portfolioResponse.data);
-    
-          if (portfolioResponse.data && portfolioResponse.data.wishlists) {
-            setPortfolios(portfolioResponse.data.wishlists); // ✅ Store only user's wishlists
-          }
-        } catch (err) {
-          console.error("Error fetching user:", err);
-          setError('Failed to load user data.');
-        }
-      };
-    
-      fetchUserData();
-    }, []);
+  const [isProductInPortfolio, setIsProductInPortfolio] = useState(false); // Track if product exists in any portfolio
 
   useEffect(() => {
-    const getPortfolios = async () => {
+    const fetchUserDataAndCheckProduct = async () => {
       try {
-        const response = await fetchUserPortfolios();
-        const data = response.data;
-  
-        if (Array.isArray(data)) {
-          setPortfolios(data);
-        } else {
-          setPortfolios([data]); // ✅ Wrap single object in an array
+        const response = await fetchUser();
+        setUser(response.data);
+
+        const portfolioResponse = await fetchUserPortfolios();
+        if (portfolioResponse.data && portfolioResponse.data.wishlists) {
+          setPortfolios(portfolioResponse.data.wishlists);
+
+          // Check if the product exists in any portfolio
+          const productExists = portfolioResponse.data.wishlists.some(portfolio =>
+            portfolio.items.some(item => item.post_id === productId) // Match productId with post_id
+          );
+          setIsProductInPortfolio(productExists); // Update state
         }
-      } catch (error) {
-        console.error('Error fetching portfolios:', error);
+      } catch (err) {
+        console.error("Error fetching user or portfolios:", err);
+        setError('Failed to load user data.');
       }
     };
-  
-    getPortfolios();
-  }, []);  
+
+    fetchUserDataAndCheckProduct();
+  }, [productId]);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -76,13 +62,13 @@ const ProductDetail = () => {
   const handleDownloadPDF = async () => {
     try {
       const response = await generatePdf([productId]); // Pass productId in an array
-  
+
       if (response && response.data) {
         const blob = new Blob([response.data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         const filename = `Product_${productId}_${Date.now()}.pdf`; // Unique filename
-  
+
         a.href = url;
         a.setAttribute('download', filename);
         document.body.appendChild(a);
@@ -99,81 +85,81 @@ const ProductDetail = () => {
 
   const handleWhatsAppClick = (event) => {
     event.preventDefault(); // Prevent default link behavior
-  
+
     const currentUrl = encodeURIComponent(window.location.href); // Encode URL
     const message = `Check out this link: ${currentUrl}`; // WhatsApp auto-links URLs
-  
+
     // Open WhatsApp with the message
     window.open(`https://wa.me/?text=${message}`, "_blank");
   };
 
   const handleCreateNewPortfolioAndAddItem = async () => {
     try {
-        const today = new Date();
-        const day = String(today.getDate()).padStart(2, '0');
-        const month = today.toLocaleString('en-US', { month: 'short' });
-        const year = String(today.getFullYear()).slice(-2);
-        
-        const dateStr = `${day}${month}${year}`; // Format: 02Feb25
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');
+      const month = today.toLocaleString('en-US', { month: 'short' });
+      const year = String(today.getFullYear()).slice(-2);
 
-        const todayPortfolios = portfolios
-            .map(portfolio => portfolio.name)
-            .filter(name => name.startsWith(dateStr))
-            .map(name => {
-                const match = name.match(/\((\d+)\)$/);
-                return match ? parseInt(match[1], 10) : 0;
-            });
+      const dateStr = `${day}${month}${year}`; // Format: 02Feb25
 
-        const newCount = todayPortfolios.length ? Math.max(...todayPortfolios) + 1 : 1;
-        const newPortfolioName = `${dateStr}(${newCount})`;
+      const todayPortfolios = portfolios
+        .map(portfolio => portfolio.name)
+        .filter(name => name.startsWith(dateStr))
+        .map(name => {
+          const match = name.match(/\((\d+)\)$/);
+          return match ? parseInt(match[1], 10) : 0;
+        });
 
-        console.log("New Portfolio Name:", newPortfolioName);
+      const newCount = todayPortfolios.length ? Math.max(...todayPortfolios) + 1 : 1;
+      const newPortfolioName = `${dateStr}(${newCount})`;
 
-        // Create portfolio & add item
-        const response = await createPortfolioAndAddItem(newPortfolioName, productId);
+      console.log("New Portfolio Name:", newPortfolioName);
 
-        console.log("Portfolio Created & Item Added:", response);
+      // Create portfolio & add item
+      const response = await createPortfolioAndAddItem(newPortfolioName, productId);
 
-        if (response?.portfolio) {
-            setPortfolios([...portfolios, response.portfolio]); // Update state immediately
+      console.log("Portfolio Created & Item Added:", response);
 
-            // ✅ Fetch updated portfolios to get the latest items
-            const updatedPortfolios = await fetchUserPortfolios();
-            console.log("Updated Portfolios:", updatedPortfolios.data);
-            setPortfolios(updatedPortfolios.data.wishlists || []);
+      if (response?.portfolio) {
+        setPortfolios([...portfolios, response.portfolio]); // Update state immediately
 
-            navigate(`/portfolioslist/${response.portfolio.id}`, {
-                state: {
-                    portfolioId: response.portfolio.id,
-                    wishlistName: response.portfolio.name,
-                    wishlistItems: updatedPortfolios.data.wishlists.find(p => p.id === response.portfolio.id)?.items || [],
-                },
-            });
-        }
+        // ✅ Fetch updated portfolios to get the latest items
+        const updatedPortfolios = await fetchUserPortfolios();
+        console.log("Updated Portfolios:", updatedPortfolios.data);
+        setPortfolios(updatedPortfolios.data.wishlists || []);
 
-        setShowModal(false);
+        navigate(`/portfolioslist/${response.portfolio.id}`, {
+          state: {
+            portfolioId: response.portfolio.id,
+            wishlistName: response.portfolio.name,
+            wishlistItems: updatedPortfolios.data.wishlists.find(p => p.id === response.portfolio.id)?.items || [],
+          },
+        });
+      }
+
+      setShowModal(false);
     } catch (error) {
-        console.error("Error:", error);
-        setError("Failed to create portfolio and add item.");
+      console.error("Error:", error);
+      setError("Failed to create portfolio and add item.");
     }
   };
 
   const handleBackClick = () => {
     const { portfolioId, wishlistItems, wishlistName } = location.state || {}; // Extract wishlistName too
-  
+
     if (portfolioId && wishlistItems && wishlistName) {
-      navigate(`/portfolioslist/${portfolioId}`, { 
+      navigate(`/portfolioslist/${portfolioId}`, {
         state: { portfolioId, wishlistItems, wishlistName } // Ensure wishlistName is passed
       });
     } else {
       navigate('/portfolios'); // Fallback if no state is available
     }
-  };  
-  
+  };
+
   const handleViewInARClick = () => {
     navigate('/viewinar', { state: { productId, arUrl: product.ar_url } });
-  };  
-  
+  };
+
   const handleSaveToPortfolioClick = () => {
     setShowModal(true);
   };
@@ -187,58 +173,58 @@ const ProductDetail = () => {
     setError(null); // Reset error before proceeding
 
     if (!selectedPortfolio) {
-        setError('Please select a portfolio.');
-        return;
+      setError('Please select a portfolio.');
+      return;
     }
 
     if (!productId) {
-        setError('Invalid item selected.');
-        return;
+      setError('Invalid item selected.');
+      return;
     }
 
     try {
-        console.log("Selected Portfolio ID:", selectedPortfolio);
+      console.log("Selected Portfolio ID:", selectedPortfolio);
 
-        // Check if the item exists in the selected portfolio
-        const portfolio = portfolios.find(p => p.id === Number(selectedPortfolio));
+      // Check if the item exists in the selected portfolio
+      const portfolio = portfolios.find(p => p.id === Number(selectedPortfolio));
 
-        console.log("Found Portfolio:", portfolio);
+      console.log("Found Portfolio:", portfolio);
 
-        if (portfolio) {
-            console.log("Portfolio Items:", portfolio.items);
-            if (portfolio.items.includes(productId)) {
-                setError('Item already exists in the selected portfolio.');
-                return;
-            }
+      if (portfolio) {
+        console.log("Portfolio Items:", portfolio.items);
+        if (portfolio.items.includes(productId)) {
+          setError('Item already exists in the selected portfolio.');
+          return;
         }
+      }
 
-        const response = await addItemToPortfolio(selectedPortfolio, productId);
-        console.log("Add Item Response:", response);
+      const response = await addItemToPortfolio(selectedPortfolio, productId);
+      console.log("Add Item Response:", response);
 
-        if (response?.error) {
-            throw new Error(response.error);
-        }
+      if (response?.error) {
+        throw new Error(response.error);
+      }
 
-        // ✅ Manually update the portfolio state after adding the item
-        const updatedPortfolios = portfolios.map(p => 
-          p.id === Number(selectedPortfolio) ? { ...p, items: [...p.items, Number(productId)] } : p
+      // ✅ Manually update the portfolio state after adding the item
+      const updatedPortfolios = portfolios.map(p =>
+        p.id === Number(selectedPortfolio) ? { ...p, items: [...p.items, Number(productId)] } : p
       );
-      
-        setPortfolios(updatedPortfolios);
 
-        setShowModal(false);
+      setPortfolios(updatedPortfolios);
+
+      setShowModal(false);
     } catch (error) {
-        console.error("Error saving to portfolio:", error);
+      console.error("Error saving to portfolio:", error);
 
-        if (error.response?.status === 400) {
-            setError("Item already exists in the portfolio.");
-        } else if (error.response?.status === 404) {
-            setError("Portfolio not found.");
-        } else {
-            setError("Something went wrong, please try again.");
-        }
+      if (error.response?.status === 400) {
+        setError("Item already exists in the portfolio.");
+      } else if (error.response?.status === 404) {
+        setError("Portfolio not found.");
+      } else {
+        setError("Something went wrong, please try again.");
+      }
     }
-};
+  };
 
   if (!product) {
     return <p>Loading...</p>;
@@ -251,10 +237,10 @@ const ProductDetail = () => {
         <div className='d-flex align-items-center justify-content-between' >
           {/* Back Button */}
           <div className='backbtn'>
-        <button onClick={handleBackClick}>
-          <i className="fa fa-arrow-left"></i>
-        </button>
-      </div>
+            <button onClick={handleBackClick}>
+              <i className="fa fa-arrow-left"></i>
+            </button>
+          </div>
 
           {/* Download PDF Button */}
           <div>
@@ -265,7 +251,7 @@ const ProductDetail = () => {
         </div>
 
         <div className='product-container mt-4'>
-          
+
           <div>
             <img
               src={`https://api.ica.amigosserver.com/storage/${product.image}`}
@@ -282,29 +268,30 @@ const ProductDetail = () => {
           <div className="row justify-content-center mt-4">
             <div className="col-12 col-md-6 justify_center">
               <div dangerouslySetInnerHTML={{ __html: product.body }} />
-              </div>
-            
+            </div>
+
+            {!isProductInPortfolio && ( // Conditionally render the button
               <div className='portfolio_btn-div button-container pt-3'>
                 <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Liked the Finish? Add it to your collection </strong></span></h5>
                 <button className="portfolio_btn" onClick={handleSaveToPortfolioClick}>
                   <i className="fa fa-folder-open" style={{ marginRight: '10px' }}></i>Save to Portfolio
                 </button>
-                
               </div>
+            )}
 
-              <div className='button-container portfolio_btn-div '>
+            <div className='button-container portfolio_btn-div '>
               <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Visualise the Finish on a furniture piece </strong></span></h5>
-                <button className="portfolio_btn" onClick={handleViewInARClick}>
-                  <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
-                </button>
-              </div>
+              <button className="portfolio_btn" onClick={handleViewInARClick}>
+                <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
+              </button>
+            </div>
 
-              <div className="whatsapp">
-                <a href="#" onClick={handleWhatsAppClick}>
-                  <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Share via WhatsApp </strong></span></h5>
-                  <img src="/whatsapp.png" alt="whatsapp" />
-                </a>
-              </div>
+            <div className="whatsapp">
+              <a href="#" onClick={handleWhatsAppClick}>
+                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Share via WhatsApp </strong></span></h5>
+                <img src="/whatsapp.png" alt="whatsapp" />
+              </a>
+            </div>
           </div>
         </div>
 

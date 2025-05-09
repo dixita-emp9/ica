@@ -1,6 +1,7 @@
 .portfolios {
   background-color: #fff;
-  height: auto; /* Adjust height based on content */
+  height: auto;
+  /* Adjust height based on content */
   border-radius: 20px;
   padding: 20px;
 }
@@ -8,7 +9,8 @@
 .portfoiliolist {
   background-color: #fff;
   padding: 30px;
-  height: auto; /* Adjust height dynamically */
+  height: auto;
+  /* Adjust height dynamically */
   border-radius: 20px;
 }
 
@@ -20,36 +22,44 @@
   justify-content: space-evenly;
   align-items: center;
 }
-.pdf_btn{
+
+.pdf_btn {
   width: 100%;
   max-width: 160px;
   border: none;
   font-size: 15px;
   font-weight: 500;
   line-height: 30px !important;
-  border-radius: 10px; 
+  border-radius: 10px;
   padding: 5px 15px;
   box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
 }
-button{
-  color:#000;
+
+button {
+  color: #000;
 }
-button.pdf_btn svg{
+
+button.pdf_btn svg {
   width: 25%;
 }
-.portfolio-box{
+
+.portfolio-box {
   border-radius: 20px;
 }
+
 .portfolio-box p {
   margin-bottom: 0;
 }
+
 .portfolio-box small {
   color: #6c757d;
 }
+
 .card-title {
   font-size: 1.25rem;
   margin: 0;
 }
+
 .btn-outline-light {
   border: 2px solid white;
   font-size: 1.5rem;
@@ -58,19 +68,23 @@ button.pdf_btn svg{
   background-color: transparent;
   border-radius: 50%;
 }
+
 .card {
   border: none !important;
   overflow: hidden;
 }
+
 .card-img {
   border-radius: 15px;
   height: 150px;
   object-fit: cover;
 }
-h5.card-title{
+
+h5.card-title {
   color: #000000 !important;
   font-size: 1rem;
 }
+
 .qr-scanner-overlay {
   position: fixed;
   top: 0;
@@ -84,34 +98,42 @@ h5.card-title{
   justify-content: center;
   z-index: 1000;
 }
+
 .qr-scanner-overlay video {
   border: 1px solid #fff;
 }
-.create_btn{
+
+.create_btn {
   width: 100%;
   border: none;
   color: #6c757d;
   background-color: #fff;
   font-size: 22px;
-  margin: 10px 0; /* Adds spacing between the buttons */
+  margin: 10px 0;
+  /* Adds spacing between the buttons */
   box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
   padding: 15px 50px;
   text-align: left;
 }
-.create_btn span{
+
+.create_btn span {
   margin-left: 15px;
 }
-button.create_btn svg{
+
+button.create_btn svg {
   width: 20%;
 }
-.modelcard{
+
+.modelcard {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   padding: 20px 50px;
   box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
-}.full-screen-popup {
+}
+
+.full-screen-popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -164,9 +186,12 @@ button.create_btn svg{
 }
 
 .close-button:hover {
-  background: red; /* Red background on hover */
-  color: white; /* White icon on hover */
-  border-color: darkred; /* Darker red border on hover */
+  background: red;
+  /* Red background on hover */
+  color: white;
+  /* White icon on hover */
+  border-color: darkred;
+  /* Darker red border on hover */
 }
 
 .portfolio-box {

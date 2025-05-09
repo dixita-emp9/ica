@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.ica.amigosserver.com/api';
-// const API_URL = 'http://127.0.0.1:8000/api';
+// const API_URL = 'https://api.ica.amigosserver.com/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 // Create an axios instance for API calls
 const axiosInstance = axios.create({
@@ -17,7 +17,7 @@ const API_ENDPOINTS = {
   USER_UPDATE: '/user/update',
   LOGOUT: '/logout',
   USER_PORTFOLIOS: '/user/portfolios',
-  USER_PORTFOLIO : '/user/portfolio',
+  USER_PORTFOLIO: '/user/portfolio',
   USER_WISHLIST: '/user/wishlist',
   GENERATE_PDF: '/generate-pdf',
   SEND_OTP: "/send-otp", // New OTP endpoint
@@ -114,14 +114,14 @@ export const addItemToPortfolio = async (portfolioId, itemId) => {
 
 export const createPortfolioAndAddItem = async (name, itemId) => {
   try {
-      const response = await axiosInstance.post('/portfolios/create-and-add-item', {
-          name,
-          item_id: itemId,
-      });
-      return response.data;
+    const response = await axiosInstance.post('/portfolios/create-and-add-item', {
+      name,
+      item_id: itemId,
+    });
+    return response.data;
   } catch (error) {
-      console.error("Error creating portfolio and adding item:", error.response?.data);
-      throw error;
+    console.error("Error creating portfolio and adding item:", error.response?.data);
+    throw error;
   }
 };
 
@@ -154,9 +154,9 @@ export const sendOtp = async (phone_number) => {
 
 export const verifyOtp = async (phoneNumber, otp) => {
   try {
-    const response = await axiosInstance.post("/verify-otp", { 
-      phone_number: phoneNumber, 
-      otp 
+    const response = await axiosInstance.post("/verify-otp", {
+      phone_number: phoneNumber,
+      otp
     });
     return response.data;
   } catch (error) {
