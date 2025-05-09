@@ -107,7 +107,7 @@ const Head = () => {
                             <li className='btn' onClick={() => handleMenuItemClick('/profile')}><i className="fa fa-user"></i> Profile</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/portfolios')}><i className="fa fa-home"></i> Home</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/scan-qr')}><i className="fa fa-camera"></i> Scan QR Code</li>
-                            <li className='btn' onClick={() => handleMenuItemClick('/catelog')}><i className="fa fa-book"></i> Catelog</li>
+                            <li className='btn' onClick={() => handleMenuItemClick('/catelog')}><i className="fa fa-book"></i>Catalog</li>
                             <li className='btn' onClick={() => handleMenuItemClick('/createportfolio')}><i className="fa fa-briefcase"></i> Create New Portfolio</li>
                             <li className='btn' onClick={handleLogout}><i className="fa fa-sign-out"></i> Sign Out</li>
                         </ul>
