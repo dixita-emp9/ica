@@ -326,7 +326,7 @@ const Catelog = () => {
                 </div>
             </div>
 
-            <div className="portfoiliolist container mt-4 p-4">
+            <div className="portfoiliolist container mt-4">
                 {error && <div className="alert alert-warning">{error}</div>}
 
                 {Array.isArray(groupedPosts) && groupedPosts.length > 0 ? (
@@ -338,7 +338,7 @@ const Catelog = () => {
                                 <div key={`${parentCategory}-${subcategory}`} className="sub-category">
                                     <h5 className="subcategory-name border border-dark rounded-pill d-inline-block py-2 px-4 my-3">{subcategory}</h5>
 
-                                    <div className="main-category d-flex flex-wrap gap-4">
+                                    <div className="main-category d-flex flex-wrap">
                                         {categories
                                             .filter((cat) => cat.posts.length > 0)
                                             .map(({ category, posts }) => (

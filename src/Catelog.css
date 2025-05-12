@@ -211,6 +211,14 @@ span {
   flex-direction: column;
 } */
 
+.portfoiliolist {
+    padding: 30px 20px !important;
+}
+
+.main-category {
+    gap: 20px !important;
+}
+
 .card {
     cursor: pointer;
 }
@@ -221,11 +229,26 @@ span {
     max-width: 150px;
 }
 
-@media (max-width:425px) {
+@media (max-width:450px) {
+    .portfoiliolist {
+        padding: 30px 10px !important;
+    }
+
+    .main-category {
+        gap: 0 !important;
+    }
+
+    .main-category .category {
+        padding: 0 5px;
+        width: 50%;
+    }
+}
+
+/* @media (max-width:425px) {
 
     .custom-post-card,
     .posts .card img {
         width: 100%;
         max-width: 100%;
     }
-}
+} */
