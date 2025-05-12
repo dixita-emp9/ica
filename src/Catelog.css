@@ -229,7 +229,7 @@ span {
     max-width: 150px;
 }
 
-@media (max-width:450px) {
+@media (max-width:425px) {
     .portfoiliolist {
         padding: 30px 10px !important;
     }
