@@ -160,17 +160,12 @@ const ProductDetail = () => {
   //   navigate('/viewinar', { state: { productId, arUrl: product.ar_url } });
   // };
 
-  // const handleViewInARClick1 = () => {
-  //   navigate('/viewinar', { state: { productId, arUrl2: product.ar_url_2 } });
-  // };
-
-  // const handleViewInARClick2 = () => {
-  //   navigate('/viewinar', { state: { productId, arUrl3: product.ar_url_3 } });
-  // };
-
-  const handleViewInARClick = (urlIndex) => {
-    const arKey = urlIndex === 1 ? 'ar_url' : `ar_url_${urlIndex}`;
-    navigate('/viewinar', { state: { productId, arKey } });
+  const handleViewInARClick = (url) => {
+    if (!url) {
+      setError('AR URL not available');
+      return;
+    }
+    navigate('/viewinar', { state: { productId, arUrl: url } });
   };
 
   const handleSaveToPortfolioClick = () => {
@@ -292,18 +287,23 @@ const ProductDetail = () => {
               </div>
             )}
 
-            <div className='button-container portfolio_btn-div '>
+            <div className="button-container portfolio_btn-div ">
               <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Visualise the Finish on a furniture piece </strong></span></h5>
-              <button className="portfolio_btn" onClick={() => handleViewInARClick(1)}>
-                <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
-              </button>
-              <button className="portfolio_btn" onClick={() => handleViewInARClick(2)}>
-                <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
-              </button>
-              <button className="portfolio_btn" onClick={() => handleViewInARClick(3)}>
-                <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
-              </button>
+              
+              {[product.ar_url, product.ar_url_2, product.ar_url_3].map((url, index) => (
+                url ? (
+                  <button
+                    key={index}
+                    className="portfolio_btn"
+                    onClick={() => handleViewInARClick(url)}
+                  >
+                    <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>
+                    View in AR {index > 0 ? `(${index + 1})` : ''}
+                  </button>
+                ) : null
+              ))}
             </div>
+
 
             <div className="whatsapp">
               <a href="#" onClick={handleWhatsAppClick}>
