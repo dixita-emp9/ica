@@ -160,6 +160,13 @@ const ProductDetail = () => {
     navigate('/viewinar', { state: { productId, arUrl: product.ar_url } });
   };
 
+  const handleViewInARClick1 = () => {
+    navigate('/viewinar', { state: { productId, arUrl: product.ar_url1 } });
+  };
+
+  const handleViewInARClick2 = () => {
+    navigate('/viewinar', { state: { productId, arUrl: product.ar_url2 } });
+  };
   const handleSaveToPortfolioClick = () => {
     setShowModal(true);
   };
@@ -282,6 +289,12 @@ const ProductDetail = () => {
             <div className='button-container portfolio_btn-div '>
               <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Visualise the Finish on a furniture piece </strong></span></h5>
               <button className="portfolio_btn" onClick={handleViewInARClick}>
+                <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
+              </button>
+              <button className="portfolio_btn" onClick={handleViewInARClick1}>
+                <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
+              </button>
+              <button className="portfolio_btn" onClick={handleViewInARClick2}>
                 <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>View in AR
               </button>
             </div>
