@@ -5,18 +5,22 @@ import { fetchPostById } from './services/apiService';
 const ViewAr = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { productId, arUrl: initialArUrl } = location.state || {};
+  const { productId, arKey = 'ar_url' } = location.state || {};
 
-  const [arUrl, setArUrl] = useState(initialArUrl || '');
+  const [arUrl, setArUrl] = useState('');
 
   useEffect(() => {
-    // Fetch product data if arUrl is not available
-    if (!arUrl && productId) {
+    if (productId && arKey) {
       const fetchProductData = async () => {
         try {
           const response = await fetchPostById(productId);
-          if (response && response.data) {
-            setArUrl(response.data.ar_url);
+          if (response?.data) {
+            const urlFromKey = response.data[arKey];
+            if (urlFromKey) {
+              setArUrl(urlFromKey);
+            } else {
+              console.warn(`No URL found for key: ${arKey}`);
+            }
           }
         } catch (error) {
           console.error('Error fetching product data:', error);
@@ -25,13 +29,13 @@ const ViewAr = () => {
 
       fetchProductData();
     }
-  }, [productId, arUrl]);
+  }, [productId, arKey]);
 
   const handleBackClick = () => {
     if (productId) {
-      navigate(`/portfolios/${productId}`); // Navigate back to ProductDetail with productId
+      navigate(`/portfolios/${productId}`);
     } else {
-      navigate('/portfolios'); // Fallback navigation
+      navigate('/portfolios');
     }
   };
 
@@ -52,7 +56,7 @@ const ViewAr = () => {
                 display: 'block',
                 width: '100%',
                 height: '100vh',
-               }}
+              }}
               allow="camera; gyroscope; accelerometer; magnetometer; xr-spatial-tracking; microphone;"
             ></iframe>
           ) : (

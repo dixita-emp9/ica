@@ -169,8 +169,8 @@ const ProductDetail = () => {
   // };
 
   const handleViewInARClick = (urlIndex) => {
-    const urlKey = urlIndex === 1 ? 'ar_url' : `ar_url_${urlIndex}`;
-    navigate('/viewinar', { state: { productId, arUrl: product[urlKey] } });
+    const arKey = urlIndex === 1 ? 'ar_url' : `ar_url_${urlIndex}`;
+    navigate('/viewinar', { state: { productId, arKey } });
   };
 
   const handleSaveToPortfolioClick = () => {
