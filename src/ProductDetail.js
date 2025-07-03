@@ -295,9 +295,9 @@ const ProductDetail = () => {
               </h5>
 
               {[
-                { url: product.ar_url, label: 'Center Table Creativa' },
-                { url: product.ar_url_2, label: 'Console Creativa' },
-                { url: product.ar_url_3, label: 'Wardrobe Creativa' }
+                { url: product.ar_url, label: 'View table in AR' },
+                { url: product.ar_url_2, label: 'View console in AR' },
+                { url: product.ar_url_3, label: 'View wardrobe in AR' }
               ].map((item, index) => (
                 item.url ? (
                   <button
