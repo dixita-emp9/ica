@@ -287,24 +287,31 @@ const ProductDetail = () => {
               </div>
             )}
 
-            <div className="button-container portfolio_btn-div ">
-              <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Visualise the Finish on a furniture piece </strong></span></h5>
-              
-              {[product.ar_url, product.ar_url_2, product.ar_url_3].map((url, index) => (
-                url ? (
+            <div className="button-container portfolio_btn-div"> 
+              <h5>
+                <span style={{ color: 'rgb(0, 0, 0)' }}>
+                  <strong>Visualise the Finish on a furniture piece</strong>
+                </span>
+              </h5>
+
+              {[
+                { url: product.ar_url, label: 'Center Table Creativa' },
+                { url: product.ar_url_2, label: 'Console Creativa' },
+                { url: product.ar_url_3, label: 'Wardrobe Creativa' }
+              ].map((item, index) => (
+                item.url ? (
                   <button
                     key={index}
                     className="portfolio_btn"
-                    onClick={() => handleViewInARClick(url)}
+                    onClick={() => handleViewInARClick(item.url)}
                   >
                     <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>
-                    View in AR {index > 0 ? `(${index + 1})` : ''}
+                    {item.label}
                   </button>
                 ) : null
               ))}
             </div>
-
-
+            
             <div className="whatsapp">
               <a href="#" onClick={handleWhatsAppClick}>
                 <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Share via WhatsApp </strong></span></h5>
