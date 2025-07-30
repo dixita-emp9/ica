@@ -75,9 +75,10 @@ button.pdf_btn svg {
 }
 
 .card-img {
-    border-radius: 15px;
-    height: 150px;
-    object-fit: cover;
+    width: auto;
+    max-height: 160px;
+    margin: 0 auto;
+    display: block;
 }
 
 h5.card-title {

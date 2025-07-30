@@ -5,25 +5,34 @@
   border-radius: 20px !important;
   /* text-align: center; */
 }
+
 /* .image-container {
   padding: 20px 20px 0px 20px !important;
 } */
 .product_img {
   border-radius: 20px !important;
   margin-bottom: 10px;
-  height: 200px !important; 
-  width: 100%; display: block;
+  height: 200px !important;
+  width: 100%;
+  display: block;
 }
 
-.pl-10{
+.maincontent img {
+  max-width: 100%;
+  ;
+}
+
+.pl-10 {
   padding-left: 10px;
 }
 
-.prod-cat,.prod-title {
+.prod-cat,
+.prod-title {
   padding-bottom: 20px;
 }
+
 .product_code {
-  font-weight : bold;
+  font-weight: bold;
 }
 
 .btn {
@@ -31,34 +40,41 @@
   align-items: center;
   justify-content: center;
 }
+
 .btn i {
   margin-right: 10px;
 }
+
 .button-container {
   display: flex;
   justify-content: center;
   /* align-items: center; */
-  flex-direction: column; /* Align buttons vertically */
+  flex-direction: column;
+  /* Align buttons vertically */
 }
 
 .portfolio_btn {
   width: 100%;
-  max-width: 300px; /* Adjust the max-width as needed */
+  max-width: 300px;
+  /* Adjust the max-width as needed */
   border: none;
   background-color: #fff;
   font-size: 18px;
-  margin: 10px 0; /* Adds spacing between the buttons */
+  margin: 10px 0;
+  /* Adds spacing between the buttons */
   box-shadow: 10px 5px 10px 0px rgba(0, 0, 0, 0.1);
   padding: 15px 50px;
   text-align: left;
 }
+
 .portfolio_btn-div {
-  padding-bottom: 2rem ;
+  padding-bottom: 2rem;
 }
 
-button.portfolio_btn svg{
+button.portfolio_btn svg {
   width: 12%;
 }
+
 ul {
   list-style-type: disc;
   padding-left: 20px;
@@ -98,10 +114,13 @@ footer {
 .footer-social a:hover {
   color: #0056b3;
 }
-.whatsapp{
+
+.whatsapp {
   margin-bottom: 15px;
 }
-.whatsapp img,.whatsapp h5{
+
+.whatsapp img,
+.whatsapp h5 {
   display: inline-block;
   color: #000 !important;
 }
@@ -111,7 +130,7 @@ footer {
   height: 35px;
 }
 
-.whatsapp a{
+.whatsapp a {
   text-decoration: none;
   color: #000;
 }

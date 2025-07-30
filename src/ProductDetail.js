@@ -273,7 +273,7 @@ const ProductDetail = () => {
             <h5 className="black-text product_code">Product Code : <span>{product.code}</span></h5>
           </div>
 
-          <div className="row justify-content-center mt-4">
+          <div className="row justify-content-center mt-4 maincontent">
             <div className="col-12 col-md-6 justify_center">
               <div dangerouslySetInnerHTML={{ __html: product.body }} />
             </div>
@@ -287,31 +287,35 @@ const ProductDetail = () => {
               </div>
             )}
 
-            <div className="button-container portfolio_btn-div"> 
-              <h5>
-                <span style={{ color: 'rgb(0, 0, 0)' }}>
-                  <strong>Visualise the Finish on a furniture piece</strong>
-                </span>
-              </h5>
+            {
+              (product.ar_url || product.ar_url_2 || product.ar_url_3) && (
+                <div className="button-container portfolio_btn-div">
+                  <h5>
+                    <span style={{ color: 'rgb(0, 0, 0)' }}>
+                      <strong>Visualise the Finish on a furniture piece</strong>
+                    </span>
+                  </h5>
 
-              {[
-                { url: product.ar_url, label: 'View table in AR' },
-                { url: product.ar_url_2, label: 'View console in AR' },
-                { url: product.ar_url_3, label: 'View wardrobe in AR' }
-              ].map((item, index) => (
-                item.url ? (
-                  <button
-                    key={index}
-                    className="portfolio_btn"
-                    onClick={() => handleViewInARClick(item.url)}
-                  >
-                    <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>
-                    {item.label}
-                  </button>
-                ) : null
-              ))}
-            </div>
-            
+                  {[
+                    { url: product.ar_url, label: 'View table in AR' },
+                    { url: product.ar_url_2, label: 'View console in AR' },
+                    { url: product.ar_url_3, label: 'View wardrobe in AR' }
+                  ].map((item, index) => (
+                    item.url ? (
+                      <button
+                        key={index}
+                        className="portfolio_btn"
+                        onClick={() => handleViewInARClick(item.url)}
+                      >
+                        <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>
+                        {item.label}
+                      </button>
+                    ) : null
+                  ))}
+                </div>
+              )
+            }
+
             <div className="whatsapp">
               <a href="#" onClick={handleWhatsAppClick}>
                 <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Share via WhatsApp </strong></span></h5>
