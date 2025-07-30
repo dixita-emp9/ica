@@ -75,8 +75,7 @@ button.pdf_btn svg {
 }
 
 .card-img {
-    width: auto;
-    max-height: 160px;
+    height: auto;
     margin: 0 auto;
     display: block;
 }
