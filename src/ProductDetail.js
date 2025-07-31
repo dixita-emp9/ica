@@ -145,20 +145,9 @@ const ProductDetail = () => {
   };
 
   const handleBackClick = () => {
-    const { portfolioId, wishlistItems, wishlistName } = location.state || {}; // Extract wishlistName too
-
-    if (portfolioId && wishlistItems && wishlistName) {
-      navigate(`/portfolioslist/${portfolioId}`, {
-        state: { portfolioId, wishlistItems, wishlistName } // Ensure wishlistName is passed
-      });
-    } else {
-      navigate('/portfolios'); // Fallback if no state is available
-    }
+    // Navigate back to the previous page in the history stack
+    navigate(-1);
   };
-
-  // const handleViewInARClick = () => {
-  //   navigate('/viewinar', { state: { productId, arUrl: product.ar_url } });
-  // };
 
   const handleViewInARClick = (url) => {
     if (!url) {
@@ -200,7 +189,12 @@ const ProductDetail = () => {
 
       if (portfolio) {
         console.log("Portfolio Items:", portfolio.items);
-        if (portfolio.items.includes(productId)) {
+        // Note: The `portfolio.items.includes(productId)` check might be problematic
+        // if `portfolio.items` contains objects and `productId` is just an ID.
+        // You might need to adjust this based on the actual structure of `portfolio.items`.
+        // For example, if items are objects like {id: 1, post_id: 123}, you'd check:
+        // portfolio.items.some(item => item.post_id === productId)
+        if (portfolio.items.some(item => item.post_id === productId)) { // Assuming items have a post_id
           setError('Item already exists in the selected portfolio.');
           return;
         }
@@ -215,11 +209,11 @@ const ProductDetail = () => {
 
       // ✅ Manually update the portfolio state after adding the item
       const updatedPortfolios = portfolios.map(p =>
-        p.id === Number(selectedPortfolio) ? { ...p, items: [...p.items, Number(productId)] } : p
+        p.id === Number(selectedPortfolio) ? { ...p, items: [...p.items, { post_id: Number(productId) }] } : p // Add as an object
       );
 
       setPortfolios(updatedPortfolios);
-
+      setIsProductInPortfolio(true); // Mark product as in portfolio
       setShowModal(false);
     } catch (error) {
       console.error("Error saving to portfolio:", error);
