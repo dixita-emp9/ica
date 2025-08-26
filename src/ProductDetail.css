@@ -138,3 +138,13 @@ footer {
 .justify_center p {
   text-align: justify;
 }
+
+.maincontent h3 {
+  font-weight: bold;
+}
+
+.maincontent h3,
+.maincontent td {
+  color: #000 !important;
+  font-size: 1.25rem;
+}

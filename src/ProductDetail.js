@@ -231,7 +231,7 @@ const ProductDetail = () => {
   if (!product) {
     return <p>Loading...</p>;
   }
-  console.log("Product object:", product);
+  console.log("Product object:", product.body);
   return (
     <div className='main_menu_wrapper'>
       <div className='container'>
