@@ -231,7 +231,7 @@ const ProductDetail = () => {
   if (!product) {
     return <p>Loading...</p>;
   }
-
+  console.log("Product object:", product);
   return (
     <div className='main_menu_wrapper'>
       <div className='container'>
@@ -269,7 +269,7 @@ const ProductDetail = () => {
 
           <div className="row justify-content-center mt-4 maincontent">
             <div className="col-12 col-md-6 justify_center">
-              <div dangerouslySetInnerHTML={{ __html: product.body }} />
+              <div dangerouslySetInnerHTML={{ __html: product.print_body }} />
             </div>
 
             {!isProductInPortfolio && ( // Conditionally render the button
