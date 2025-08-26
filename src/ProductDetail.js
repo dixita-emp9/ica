@@ -269,7 +269,7 @@ const ProductDetail = () => {
 
           <div className="row justify-content-center mt-4 maincontent">
             <div className="col-12 col-md-6 justify_center">
-              <div dangerouslySetInnerHTML={{ __html: product.print_body }} />
+              <div dangerouslySetInnerHTML={{ __html: product.body }} />
             </div>
 
             {!isProductInPortfolio && ( // Conditionally render the button
