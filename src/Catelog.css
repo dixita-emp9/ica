@@ -240,7 +240,10 @@ span {
 
     .main-category .category {
         padding: 0 5px;
-        width: 50%;
+        width: 100%;
+        border-bottom: 1px solid #000;
+        margin: 10px 0px;
+        padding-bottom: 10px;
     }
 }
 
