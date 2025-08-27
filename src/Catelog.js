@@ -357,7 +357,7 @@ const Catelog = () => {
                                                                     )}
                                                                     <p className="category-name mb-2">{category}</p>
                                                                     <div>
-                                                                        <h5 className="card-title">{post.title}</h5>
+                                                                        <h5 className="card-title">{post.order} - {post.title}</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
