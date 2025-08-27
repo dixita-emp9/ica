@@ -74,7 +74,7 @@ const Head = () => {
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 ></i>
                 <img
-                    src="/ICA_logo_White.png"
+                    src="/ICA_logo_Red.png"
                     alt="ICA Logo"
                     className="mainlogo"
                     onClick={handleLogoClick}
