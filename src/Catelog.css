@@ -247,6 +247,14 @@ span {
     }
 }
 
+@media (max-width:369px) {
+    .posts .card img {
+        width: 100%;
+        max-width: 100px;
+    }
+
+}
+
 /* @media (max-width:425px) {
 
     .custom-post-card,
