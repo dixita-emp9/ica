@@ -223,7 +223,11 @@ span {
     cursor: pointer;
 }
 
-.custom-post-card,
+.custom-post-card {
+    width: 100%;
+    max-width: 150px;
+}
+
 .posts .card img {
     width: 100%;
     max-width: 150px;
