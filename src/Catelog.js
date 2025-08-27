@@ -207,7 +207,6 @@ import { useNavigate } from "react-router-dom";
 import { generatePdf, fetchFinishesData } from "./services/apiService";
 import "./Catelog.css";
 
-
 const Catelog = () => {
     const [groupedPosts, setGroupedPosts] = useState([]);
     const [error, setError] = useState("");
@@ -267,7 +266,7 @@ const Catelog = () => {
     }, []);
 
     const handleBackClick = () => {
-        navigate("/portfolios"); // Navigate to the portfolios page
+        navigate("/portfolios");
     };
 
     const handleCardClick = (post) => {
@@ -344,7 +343,7 @@ const Catelog = () => {
                                             .map(({ category, posts }) => (
                                                 <div key={`${parentCategory}-${subcategory}-${category}`} className="category">
                                                     <div className="posts d-flex gap-3 flex-wrap justify-content-around justify-content-space-between">
-                                                        {posts.map((post) => (
+                                                        {posts.sort((a, b) => a.order - b.order).map((post) => (
                                                             <div key={post.id} className="custom-post-card my-2" onClick={() => handleCardClick(post)}>
                                                                 <div className="card">
                                                                     {post.image ? (
