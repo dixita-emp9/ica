@@ -233,7 +233,7 @@ const ProductDetail = () => {
   }
   console.log("Product object:", product.body);
   return (
-    <div className='main_menu_wrapper'>
+    <div className='main_menu_wrapper prdctdetail'>
       <div className='container'>
 
         <div className='d-flex align-items-center justify-content-between' >
@@ -267,8 +267,8 @@ const ProductDetail = () => {
             <h5 className="black-text product_code">Product Code : <span>{product.code}</span></h5>
           </div>
 
-          <div className="row justify-content-center mt-4 maincontent">
-            <div className="col-12 col-md-6 justify_center">
+          <div className="row mt-4 maincontent">
+            <div className="col-12 col-md-12 justify_center">
               <div dangerouslySetInnerHTML={{ __html: product.body }} />
             </div>
 

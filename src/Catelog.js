@@ -342,7 +342,7 @@ const Catelog = () => {
                                             .filter((cat) => cat.posts.length > 0)
                                             .map(({ category, posts }) => (
                                                 <div key={`${parentCategory}-${subcategory}-${category}`} className="category">
-                                                    <div className="posts d-flex gap-3 flex-wrap justify-content-around justify-content-space-between">
+                                                    <div className="posts d-flex gap-3 flex-wrap">
                                                         {posts.sort((a, b) => a.order - b.order).map((post) => (
                                                             <div key={post.id} className="custom-post-card my-2" onClick={() => handleCardClick(post)}>
                                                                 <div className="card">
@@ -373,8 +373,8 @@ const Catelog = () => {
                 ) : (
                     <div className="alert alert-info">No catalog data available</div>
                 )}
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

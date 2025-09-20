@@ -246,16 +246,16 @@ const Portfolioslist = () => {
               <div key={`${parentCategory}-${subcategory}`} className="sub-category">
                 <h5 className="subcategory-name">{subcategory}</h5>
 
-                <div className="main_category">
+                <div className="main-category d-flex flex-wrap">
                   {categories.map(({ category, posts = [] }) => (
                     <div
                       key={`${parentCategory}-${subcategory}-${category}`}
                       className="category"
                     >
-                      <div className="posts">
+                      <div className="posts d-flex gap-3 flex-wrap">
                         {posts.map((post) => (
                           <div
-                            className="mb-4"
+                            className="custom-post-card my-2"
                             key={post.post_id}
                             onClick={() => handleCardClick(post)}
                           >
@@ -340,9 +340,9 @@ const Portfolioslist = () => {
           }
 
           .portfoiliolist .category {
-              width: 300px;
-              max-width: 100%;
-              max-width: 200px;
+              // width: 300px;
+              // max-width: 100%;
+              // max-width: 200px;
               text-transform: capitalize;
           }
 

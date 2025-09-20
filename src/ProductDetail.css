@@ -1,3 +1,7 @@
+.prdctdetail * {
+  font-size: 18px !important;
+}
+
 .product-container {
   background-color: #fff !important;
   padding: 15px !important;
@@ -135,8 +139,15 @@ footer {
   color: #000;
 }
 
+.justify_center p::first-letter {
+  text-transform: capitalize;
+}
+
 .justify_center p {
   text-align: justify;
+  text-transform: lowercase;
+  padding: 1rem 0;
+  ;
 }
 
 .maincontent h3 {
@@ -147,4 +158,37 @@ footer {
 .maincontent td {
   color: #000 !important;
   font-size: 1.25rem;
+}
+
+table.features-table {
+  padding-bottom: 20px;
+  display: block;
+}
+
+table.features-table tr {
+  height: auto;
+}
+
+table.features-table tr .imag {
+  width: 10vw;
+}
+
+table.features-table tr td {
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.additional_info p {
+  margin: 0;
+  padding: 0 0 20px 0;
+}
+
+.product-container * {
+  text-transform: lowercase;
+  /* make everything lowercase */
+}
+
+.product-container *::first-letter {
+  text-transform: uppercase;
+  /* capitalize first letter */
 }

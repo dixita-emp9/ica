@@ -76,7 +76,7 @@ button.pdf_btn svg {
 
 .card-img {
     height: auto;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     display: block;
 }
 
@@ -205,6 +205,15 @@ button.create_btn svg {
 span {
     font-size: 1rem;
     font-weight: normal;
+}
+
+.product_code span {
+    text-transform: lowercase;
+    display: block;
+}
+
+.product_code span::first-letter {
+    text-transform: uppercase;
 }
 
 /* .main-category{
