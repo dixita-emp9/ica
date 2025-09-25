@@ -87,7 +87,7 @@ const ProductDetail = () => {
     event.preventDefault(); // Prevent default link behavior
 
     const currentUrl = encodeURIComponent(window.location.href); // Encode URL
-    const message = `Check out this link: ${currentUrl}`; // WhatsApp auto-links URLs
+    const message = `Thank you for visiting the ICA Experience Center. Here's the portfolio of finishes you liked during your visit: ${currentUrl}`; // WhatsApp auto-links URLs
 
     // Open WhatsApp with the message
     window.open(`https://wa.me/?text=${message}`, "_blank");
