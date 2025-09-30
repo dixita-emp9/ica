@@ -264,7 +264,7 @@ const ProductDetail = () => {
 
           <div>
             <h5 className="black-text product_code">Product Name : <span>{product.title}</span></h5>
-            <h5 className="black-text product_code">Product Code : <span>{product.code}</span></h5>
+            <h5 className="black-text product_code">Product Code : <span style={{ textTransform: 'uppercase' }}>{product.code}</span></h5>
           </div>
 
           <div className="row mt-4 maincontent">
@@ -274,97 +274,97 @@ const ProductDetail = () => {
 
             {!isProductInPortfolio && ( // Conditionally render the button
               <div className='portfolio_btn-div button-container pt-3'>
-                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Liked the Finish? Add it to your collection </strong></span></h5>
+                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong style={{text-transform:'none'}}>Liked the Finish? Add it to your collection </strong></span></h5>
                 <button className="portfolio_btn" onClick={handleSaveToPortfolioClick}>
                   <i className="fa fa-folder-open" style={{ marginRight: '10px' }}></i>Save to Portfolio
                 </button>
               </div>
             )}
 
-            {
-              (product.ar_url || product.ar_url_2 || product.ar_url_3) && (
-                <div className="button-container portfolio_btn-div">
-                  <h5>
-                    <span style={{ color: 'rgb(0, 0, 0)' }}>
-                      <strong>Visualise the Finish on a furniture piece</strong>
-                    </span>
-                  </h5>
+          {
+            (product.ar_url || product.ar_url_2 || product.ar_url_3) && (
+              <div className="button-container portfolio_btn-div">
+                <h5>
+                  <span style={{ color: 'rgb(0, 0, 0)' }}>
+                    <strong>Visualise the Finish on a furniture piece</strong>
+                  </span>
+                </h5>
 
-                  {[
-                    { url: product.ar_url, label: 'View table in AR' },
-                    { url: product.ar_url_2, label: 'View console in AR' },
-                    { url: product.ar_url_3, label: 'View wardrobe in AR' }
-                  ].map((item, index) => (
-                    item.url ? (
-                      <button
-                        key={index}
-                        className="portfolio_btn"
-                        onClick={() => handleViewInARClick(item.url)}
-                      >
-                        <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>
-                        {item.label}
-                      </button>
-                    ) : null
-                  ))}
-                </div>
-              )
-            }
+                {[
+                  { url: product.ar_url, label: 'View table in AR' },
+                  { url: product.ar_url_2, label: 'View console in AR' },
+                  { url: product.ar_url_3, label: 'View wardrobe in AR' }
+                ].map((item, index) => (
+                  item.url ? (
+                    <button
+                      key={index}
+                      className="portfolio_btn"
+                      onClick={() => handleViewInARClick(item.url)}
+                    >
+                      <i className="bi bi-phone" style={{ marginRight: '10px' }}></i>
+                      {item.label}
+                    </button>
+                  ) : null
+                ))}
+              </div>
+            )
+          }
 
-            <div className="whatsapp">
-              <a href="#" onClick={handleWhatsAppClick}>
-                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Share via WhatsApp </strong></span></h5>
-                <img src="/whatsapp.png" alt="whatsapp" />
-              </a>
-            </div>
+          <div className="whatsapp">
+            <a href="#" onClick={handleWhatsAppClick}>
+              <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Share via WhatsApp </strong></span></h5>
+              <img src="/whatsapp.png" alt="whatsapp" />
+            </a>
           </div>
         </div>
-
-        <Modal show={showModal} onHide={handleModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Select Portfolio</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {error && <p className="text-danger">{error}</p>}
-            <Form onSubmit={handleFormSubmit}>
-              <Form.Group controlId="formPortfolio">
-                <Form.Label>Select an existing portfolio</Form.Label>
-                <Form.Control
-                  as="select"
-                  value={selectedPortfolio}
-                  onChange={(e) => setSelectedPortfolio(e.target.value)}
-                  required
-                >
-                  <option value="">Select a portfolio</option>
-                  {portfolios.length > 0 ? (
-                    portfolios.map((portfolio) => (
-                      <option key={portfolio.id} value={portfolio.id}>
-                        {portfolio.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option disabled>No portfolios found</option>
-                  )}
-                </Form.Control>
-              </Form.Group>
-
-              <Button variant="danger" type="submit" className="mt-3">
-                Save to Portfolio
-              </Button>
-            </Form>
-
-            <hr />
-
-            <div className="text-center">
-              <p>OR</p>
-              <Button variant="danger" onClick={handleCreateNewPortfolioAndAddItem}>
-                Create New Portfolio
-              </Button>
-            </div>
-          </Modal.Body>
-        </Modal>
-
       </div>
+
+      <Modal show={showModal} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Select Portfolio</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {error && <p className="text-danger">{error}</p>}
+          <Form onSubmit={handleFormSubmit}>
+            <Form.Group controlId="formPortfolio">
+              <Form.Label>Select an existing portfolio</Form.Label>
+              <Form.Control
+                as="select"
+                value={selectedPortfolio}
+                onChange={(e) => setSelectedPortfolio(e.target.value)}
+                required
+              >
+                <option value="">Select a portfolio</option>
+                {portfolios.length > 0 ? (
+                  portfolios.map((portfolio) => (
+                    <option key={portfolio.id} value={portfolio.id}>
+                      {portfolio.name}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>No portfolios found</option>
+                )}
+              </Form.Control>
+            </Form.Group>
+
+            <Button variant="danger" type="submit" className="mt-3">
+              Save to Portfolio
+            </Button>
+          </Form>
+
+          <hr />
+
+          <div className="text-center">
+            <p>OR</p>
+            <Button variant="danger" onClick={handleCreateNewPortfolioAndAddItem}>
+              Create New Portfolio
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
     </div>
+    </div >
   );
 };
 

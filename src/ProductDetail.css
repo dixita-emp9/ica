@@ -185,6 +185,7 @@ table.features-table tr td {
 
 .product-container * {
   text-transform: lowercase;
+  color: #000 !important;
   /* make everything lowercase */
 }
 
