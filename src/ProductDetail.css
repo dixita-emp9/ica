@@ -181,6 +181,7 @@ table.features-table tr td {
 .additional_info p {
   margin: 0;
   padding: 0 0 20px 0;
+  text-transform: capitalize;
 }
 
 .product-container * {
