@@ -57,8 +57,9 @@
   /* Align buttons vertically */
 }
 
-h3 {
-  text-transform: capitalize;
+.product-container h3,
+.product-container h5 {
+  text-transform: capitalize !important;
 }
 
 .portfolio_btn {
