@@ -57,6 +57,10 @@
   /* Align buttons vertically */
 }
 
+.additional_info h3 {
+  text-transform: capitalize;
+}
+
 .portfolio_btn {
   width: 100%;
   max-width: 300px;
