@@ -274,7 +274,7 @@ const ProductDetail = () => {
 
             {!isProductInPortfolio && ( // Conditionally render the button
               <div className='portfolio_btn-div button-container pt-3'>
-                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong style={{ textTransform: 'none' }}>Liked the Finish? Add it to your collection </strong></span></h5>
+                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong style={{ textTransform: 'none' }}>Liked the Finish? Add it to your Collection </strong></span></h5>
                 <button className="portfolio_btn" onClick={handleSaveToPortfolioClick}>
                   <i className="fa fa-folder-open" style={{ marginRight: '10px' }}></i>Save to Portfolio
                 </button>

@@ -58,7 +58,8 @@
 }
 
 .product-container h3,
-.product-container h5 {
+.product-container h5,
+.product-container button {
   text-transform: capitalize !important;
 }
 
