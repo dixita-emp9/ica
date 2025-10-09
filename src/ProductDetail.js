@@ -312,7 +312,7 @@ const ProductDetail = () => {
 
             <div className="whatsapp">
               <a href="#" onClick={handleWhatsAppClick}>
-                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong>Share via WhatsApp </strong></span></h5>
+                <h5><span style={{ color: 'rgb(0, 0, 0)' }}><strong style={{ textTransform: 'none' }}>Share via WhatsApp </strong></span></h5>
                 <img src="/whatsapp.png" alt="whatsapp" />
               </a>
             </div>
